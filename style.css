@@ -1,0 +1,223 @@
+/* =========================
+   RESET GLOBAL
+========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =========================
+   FOND GLOBAL
+========================= */
+body {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url("images/background.png") center / cover no-repeat fixed;
+  color: #fff;
+}
+
+/* =========================
+   PAGE CONNEXION / ACCUEIL
+========================= */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-box {
+  background: rgba(25, 25, 25, 0.95);
+  padding: 35px 30px;
+  width: 340px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  animation: fadeIn 0.6s ease;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.login-box p {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+}
+
+.login-box input:focus {
+  outline: 2px solid #4caf50;
+}
+
+/* =========================
+   BOUTONS
+========================= */
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.login-box button:hover {
+  transform: scale(1.03);
+}
+
+/* Connexion */
+.btn-login {
+  background: #4caf50;
+  color: #fff;
+}
+
+.btn-login:hover {
+  background: #43a047;
+}
+
+/* Nouveau joueur */
+.btn-register {
+  background: #1e88e5;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.btn-register:hover {
+  background: #1976d2;
+}
+
+/* =========================
+   MESSAGE ERREUR / INFO
+========================= */
+#loginMessage {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ff7676;
+  min-height: 18px;
+}
+
+/* =========================
+   BARRE SUPÉRIEURE (JEU)
+========================= */
+.top-bar {
+  background: rgba(30, 30, 30, 0.95);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 25px;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.player-info span {
+  margin-left: 15px;
+  font-weight: bold;
+}
+
+/* =========================
+   MENU PRINCIPAL
+========================= */
+.main-menu {
+  background: rgba(50, 50, 50, 0.95);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.main-menu button {
+  background: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.main-menu button:hover {
+  background: #66bb6a;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+.dashboard {
+  background: rgba(245, 240, 220, 0.96);
+  color: #222;
+  margin: 30px auto;
+  padding: 25px;
+  width: 85%;
+  max-width: 900px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.dashboard h2 {
+  margin-bottom: 20px;
+}
+
+/* =========================
+   CARTES
+========================= */
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card.warning {
+  background: #fff3cd;
+  border-left: 6px solid #ff9800;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 600px) {
+  .login-box {
+    width: 90%;
+  }
+
+  .dashboard {
+    width: 95%;
+  }
+}
