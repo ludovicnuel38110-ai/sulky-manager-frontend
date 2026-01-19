@@ -2,34 +2,65 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Sulky Manager - Dashboard</title>
+  <title>Sulky Manager – Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- =====================
+HEADER
+===================== -->
 <header class="top-bar">
   <div class="logo">🐎 Sulky Manager</div>
 
   <div class="player-info">
     <span id="playerName"></span>
-    <button id="logoutBtn">🚪 Déconnexion</button>
+    <button id="logoutBtn" class="logout-btn">🚪 Déconnexion</button>
   </div>
 </header>
 
+<!-- =====================
+MENU PRINCIPAL
+===================== -->
 <nav class="main-menu">
-  <button>🏠 Tableau de bord</button>
+  <button class="active">🏠 Tableau de bord</button>
   <button>🐎 Écurie</button>
   <button>🏁 Courses</button>
   <button>🛒 Marché</button>
 </nav>
 
+<!-- =====================
+CONTENU DASHBOARD
+===================== -->
 <main class="dashboard">
   <h2>Bienvenue <span id="welcomeName"></span> 👋</h2>
-  <p>Ton aventure commence ici.</p>
+
+  <p class="subtitle">
+    Ton aventure de manager hippique commence ici.
+  </p>
+
+  <section class="cards">
+    <div class="card">
+      <h3>🐎 Ton Écurie</h3>
+      <p>Gère tes chevaux et améliore leurs performances.</p>
+    </div>
+
+    <div class="card">
+      <h3>🏁 Courses</h3>
+      <p>Inscris tes chevaux et affronte d’autres joueurs.</p>
+    </div>
+
+    <div class="card">
+      <h3>🛒 Marché</h3>
+      <p>Achète et vends chevaux & équipements.</p>
+    </div>
+  </section>
 </main>
 
+<!-- =====================
+SCRIPTS
+===================== -->
 <script src="script.js"></script>
+
 </body>
 </html>
-<h2>Bienvenue <span id="playerName"></span></h2>
-<button id="logoutBtn">Déconnexion</button>
