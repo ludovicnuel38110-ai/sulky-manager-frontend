@@ -1,8 +1,12 @@
+require("dotenv").config(); // ⭐ OBLIGATOIRE
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const authRoutes = require("./routes/auth"); // 🔴 IMPORTANT
+// Routes
+const authRoutes = require("./routes/auth");
+const playerRoutes = require("./routes/player");
 
 const app = express();
 
@@ -10,25 +14,27 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use("/api/auth", authRoutes); // 🔴 ICI le bug était
+// Routes API
+app.use("/api/auth", authRoutes);
+app.use("/api/player", playerRoutes);
 
 // Test route
 app.get("/", (req, res) => {
   res.send("API Sulky Manager OK");
 });
 
-// DB
+// 🔍 DEBUG Render
+console.log("🔍 MONGO_URI =", process.env.MONGO_URI);
+
+// MongoDB Atlas (Render)
 mongoose
-  .connect("mongodb://127.0.0.1:27017/sulky_manager")
-  .then(() => console.log("MongoDB connecté"))
-  .catch(err => console.error(err));
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connecté"))
+  .catch((err) => console.error("❌ MongoDB error:", err));
 
-// Server
-app.listen(5000, () => {
-  console.log("Serveur lancé sur le port 5000");
+// Port Render
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur lancé sur le port ${PORT}`);
 });
-app.use("/api/player", require("./routes/player"));
-const playerRoutes = require("./routes/player");
-
-app.use("/api/player", playerRoutes);
