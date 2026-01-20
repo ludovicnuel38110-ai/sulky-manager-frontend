@@ -46,6 +46,10 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "Champs manquants" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "Email ou mot de passe incorrect" });
@@ -56,9 +60,10 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Email ou mot de passe incorrect" });
     }
 
+    // 🔐 JWT avec variable d'environnement
     const token = jwt.sign(
-      { userId: user._id },
-      "SECRET_KEY",
+      { id: user._id },
+      process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 

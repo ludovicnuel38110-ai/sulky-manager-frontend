@@ -26,7 +26,7 @@ app.use(express.json());
 // Routes API
 // =====================
 app.use("/api/auth", require("./routes/auth"));
-
+app.use("/api", require("./routes/protected"));
 // =====================
 // Frontend (public)
 // =====================

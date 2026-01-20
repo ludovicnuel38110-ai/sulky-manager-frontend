@@ -6,112 +6,112 @@ const API_URL = "https://sulky-manager-backend.onrender.com";
 // =====================
 // PAGE CONNEXION (index.html)
 // =====================
-const loginBtn = document.getElementById("loginBtn");
+document.addEventListener("DOMContentLoaded", () => {
 
-if (loginBtn) {
-  loginBtn.addEventListener("click", async () => {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const message = document.getElementById("loginMessage");
+  const loginBtn = document.getElementById("loginBtn");
 
-    if (!email || !password) {
-      message.textContent = "❌ Tous les champs sont obligatoires";
-      return;
-    }
+  if (loginBtn) {
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const message = document.getElementById("loginMessage");
 
-    message.textContent = "Connexion en cours...";
-
-    try {
-      const res = await fetch(`${API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        message.textContent = data.message || "❌ Erreur de connexion";
+      if (!email || !password) {
+        message.textContent = "❌ Tous les champs sont obligatoires";
         return;
       }
 
-      // 🔐 Sauvegarde session
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("player", JSON.stringify(data.user));
+      message.textContent = "Connexion en cours...";
 
-      // ➜ Dashboard
-      window.location.href = "dashboard.html";
-    } catch (err) {
-      console.error(err);
-      message.textContent = "❌ Serveur indisponible";
-    }
-  });
-}
+      try {
+        const res = await fetch(`${API_URL}/api/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
 
-// =====================
-// PAGE INSCRIPTION (register.html)
-// =====================
-const registerBtn = document.getElementById("registerBtn");
+        const data = await res.json();
 
-if (registerBtn) {
-  registerBtn.addEventListener("click", async () => {
-    const username = document.getElementById("username").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const message = document.getElementById("registerMessage");
+        if (!res.ok) {
+          message.textContent = data.message || "❌ Erreur de connexion";
+          return;
+        }
 
-    if (!username || !email || !password) {
-      message.textContent = "❌ Tous les champs sont obligatoires";
-      return;
-    }
+        // 🔐 Sauvegarde session
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("player", JSON.stringify(data.user));
 
-    message.textContent = "Création du compte en cours...";
+        // ➜ Dashboard
+        window.location.href = "dashboard.html";
 
-    try {
-      const res = await fetch(`${API_URL}/api/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-        }),
-      });
+      } catch (err) {
+        console.error(err);
+        message.textContent = "❌ Serveur indisponible";
+      }
+    });
+  }
 
-      const data = await res.json();
+  // =====================
+  // PAGE INSCRIPTION (register.html)
+  // =====================
+  const registerBtn = document.getElementById("registerBtn");
 
-      if (!res.ok) {
-        message.textContent = data.message || "❌ Erreur inscription";
+  if (registerBtn) {
+    registerBtn.addEventListener("click", async () => {
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const message = document.getElementById("registerMessage");
+
+      if (!username || !email || !password) {
+        message.textContent = "❌ Tous les champs sont obligatoires";
         return;
       }
 
-      message.style.color = "lightgreen";
-      message.textContent = "✅ Compte créé ! Redirection...";
+      message.textContent = "Création du compte en cours...";
 
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1500);
-    } catch (err) {
-      console.error(err);
-      message.textContent = "❌ Serveur indisponible";
+      try {
+        const res = await fetch(`${API_URL}/api/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          message.textContent = data.message || "❌ Erreur inscription";
+          return;
+        }
+
+        message.style.color = "lightgreen";
+        message.textContent = "✅ Compte créé ! Redirection...";
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+
+      } catch (err) {
+        console.error(err);
+        message.textContent = "❌ Serveur indisponible";
+      }
+    });
+  }
+
+  // =====================
+  // PROTECTION DASHBOARD (ÉTAPE 1)
+  // =====================
+  if (window.location.pathname.includes("dashboard.html")) {
+    const token = localStorage.getItem("token");
+    const playerData = localStorage.getItem("player");
+
+    if (!token || !playerData) {
+      // 🚫 Pas connecté → retour login
+      window.location.href = "index.html";
+      return;
     }
-  });
-}
 
-// =====================
-// PAGE DASHBOARD
-// =====================
-if (window.location.pathname.includes("dashboard.html")) {
-  const token = localStorage.getItem("token");
-  const playerData = localStorage.getItem("player");
-
-  if (!token || !playerData) {
-    window.location.href = "index.html";
-  } else {
+    // Affichage infos joueur
     const player = JSON.parse(playerData);
 
     const playerNameEl = document.getElementById("playerName");
@@ -125,17 +125,17 @@ if (window.location.pathname.includes("dashboard.html")) {
       welcomeNameEl.textContent = player.username;
     }
   }
-}
 
-// =====================
-// DÉCONNEXION
-// =====================
-const logoutBtn = document.getElementById("logoutBtn");
+  // =====================
+  // DÉCONNEXION
+  // =====================
+  const logoutBtn = document.getElementById("logoutBtn");
 
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("player");
-    window.location.href = "index.html";
-  });
-}
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+  }
+
+});
