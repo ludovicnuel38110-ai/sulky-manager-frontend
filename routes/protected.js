@@ -1,16 +1,13 @@
 const express = require("express");
-const auth = require("../middleware/auth");
-const User = require("../models/User");
+const auth = require("./middleware/auth");
 
 const router = express.Router();
 
-router.get("/me", auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.userId).select("-password");
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: "Erreur serveur" });
-  }
+router.get("/protected", auth, (req, res) => {
+  res.json({
+    message: "Accès autorisé",
+    userId: req.user.id
+  });
 });
 
 module.exports = router;
