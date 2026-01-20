@@ -1,57 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Fiche cheval</title>
-  <link rel="stylesheet" href="css/horse.css">
+  <meta charset="UTF-8" />
+  <title>Fiche Cheval</title>
+  <link rel="stylesheet" href="css/horse.css" />
 </head>
 <body>
 
-<header class="horse-header">
-  <h1 id="horseName">🐎 Nom du cheval</h1>
-  <p class="horse-type">Discipline : <strong>Trot</strong></p>
-</header>
+<div class="horse-card">
+  <h1 id="horseName">Nom du cheval</h1>
+  <p class="breed">🐎 Trotteur Français</p>
 
-<main class="horse-card">
-
-  <section class="horse-info">
-    <p>👤 Propriétaire : <span id="ownerName"></span></p>
-    <p>🎂 Âge : <span id="horseAge"></span> jours</p>
-  </section>
-
-  <section class="stats">
-    <h2>📊 Compétences</h2>
-
+  <div class="stats">
     <div class="stat">
-      <label>⚡ Vitesse</label>
-      <div class="bar">
-        <div class="fill" id="speedBar"></div>
-      </div>
+      <span>⚡ Vitesse</span>
+      <div class="bar"><div id="speed"></div></div>
     </div>
 
     <div class="stat">
-      <label>💪 Endurance</label>
-      <div class="bar">
-        <div class="fill" id="enduranceBar"></div>
-      </div>
+      <span>💪 Endurance</span>
+      <div class="bar"><div id="endurance"></div></div>
     </div>
 
     <div class="stat">
-      <label>🤸 Agilité</label>
-      <div class="bar">
-        <div class="fill" id="agilityBar"></div>
-      </div>
+      <span>🎯 Agilité</span>
+      <div class="bar"><div id="agility"></div></div>
     </div>
 
     <div class="stat">
-      <label>🧠 Entraînement</label>
-      <div class="bar">
-        <div class="fill" id="trainingBar"></div>
-      </div>
+      <span>📚 Entraînement</span>
+      <div class="bar"><div id="training"></div></div>
     </div>
-  </section>
+  </div>
 
-</main>
+  <p class="genetics">🧬 Potentiel max : <span id="potential"></span>%</p>
+</div>
 
 <script src="js/horse.js"></script>
 </body>
