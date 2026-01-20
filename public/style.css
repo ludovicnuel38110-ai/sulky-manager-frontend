@@ -20,7 +20,7 @@ body {
 }
 
 /* =========================
-   PAGE CONNEXION / ACCUEIL
+   PAGE CONNEXION
 ========================= */
 .login-page {
   display: flex;
@@ -81,7 +81,6 @@ body {
   transform: scale(1.03);
 }
 
-/* Connexion */
 .btn-login {
   background: #4caf50;
   color: #fff;
@@ -91,7 +90,6 @@ body {
   background: #43a047;
 }
 
-/* Nouveau joueur */
 .btn-register {
   background: #1e88e5;
   color: #fff;
@@ -103,7 +101,7 @@ body {
 }
 
 /* =========================
-   MESSAGE ERREUR / INFO
+   MESSAGES
 ========================= */
 #loginMessage {
   margin-top: 15px;
@@ -113,11 +111,10 @@ body {
 }
 
 /* =========================
-   BARRE SUPÉRIEURE (JEU)
+   BARRE SUPÉRIEURE
 ========================= */
 .top-bar {
   background: rgba(30, 30, 30, 0.95);
-  color: white;
   display: flex;
   justify-content: space-between;
   padding: 14px 25px;
@@ -130,9 +127,24 @@ body {
   font-weight: bold;
 }
 
-.player-info span {
-  margin-left: 15px;
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logout-btn {
+  background: #e53935;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
   font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #c62828;
 }
 
 /* =========================
@@ -176,7 +188,11 @@ body {
 }
 
 .dashboard h2 {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  margin-bottom: 25px;
 }
 
 /* =========================
@@ -190,9 +206,48 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-.card.warning {
-  background: #fff3cd;
-  border-left: 6px solid #ff9800;
+/* =========================
+   SECTION CHEVAUX
+========================= */
+.horses {
+  margin-top: 35px;
+}
+
+#createHorseBtn {
+  padding: 10px 15px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+#createHorseBtn:hover {
+  background: #43a047;
+}
+
+#horseLimitMessage {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #d32f2f;
+}
+
+#horseList {
+  list-style: none;
+}
+
+#horseList li {
+  padding: 10px;
+  background: #fff;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#horseList li:hover {
+  background: #f0f0f0;
 }
 
 /* =========================
