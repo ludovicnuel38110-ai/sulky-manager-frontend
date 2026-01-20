@@ -1,6 +1,6 @@
 const express = require("express");
 const Horse = require("../models/Horse");
-const auth = require("../middleware/auth");
+const auth = require('../middleware/auth')
 const generateGenetics = require("../utils/generateGenetics");
 
 const router = express.Router();
