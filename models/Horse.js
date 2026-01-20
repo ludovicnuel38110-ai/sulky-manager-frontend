@@ -1,26 +1,39 @@
 const mongoose = require("mongoose");
 
 const HorseSchema = new mongoose.Schema({
-  name: {
+  name: String,
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+
+  type: {
     type: String,
-    required: true
+    enum: ["trot"],
+    default: "trot"
   },
 
-  discipline: {
-    type: String,
-    default: "Trot"
-  },
+  age: { type: Number, default: 2 },
 
-  stats: {
+  genetics: {
     speed: Number,
     endurance: Number,
     agility: Number,
     training: Number
   },
 
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+  stats: {
+    speed: { type: Number, default: 0 },
+    endurance: { type: Number, default: 0 },
+    agility: { type: Number, default: 0 },
+    training: { type: Number, default: 0 }
+  },
+
+  lastProgress: {
+    type: Date,
+    default: Date.now
+  },
+
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 });
 
