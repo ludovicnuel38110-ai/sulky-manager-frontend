@@ -1,51 +1,51 @@
 body {
-  background: #2b2b2b;
   font-family: Arial, sans-serif;
-  color: #222;
-}
-
-.horse-header {
-  background: #1e1e1e;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
 }
 
 .horse-card {
-  background: #f5f0dc;
-  width: 600px;
-  margin: 30px auto;
-  padding: 20px;
+  background: #020617;
   border-radius: 12px;
+  padding: 25px;
+  width: 380px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
 }
 
-.horse-info p {
-  margin-bottom: 8px;
-  font-weight: bold;
+h1 {
+  text-align: center;
+  margin-bottom: 5px;
 }
 
-.stats h2 {
-  margin: 20px 0 10px;
+.breed {
+  text-align: center;
+  opacity: 0.7;
+  margin-bottom: 20px;
 }
 
 .stat {
   margin-bottom: 15px;
 }
 
-.stat label {
-  font-weight: bold;
-}
-
 .bar {
-  background: #ddd;
+  background: #1e293b;
   border-radius: 10px;
-  height: 18px;
   overflow: hidden;
+  height: 18px;
 }
 
-.fill {
+.bar div {
   height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
   width: 0%;
-  background: linear-gradient(90deg, #4caf50, #8bc34a);
-  transition: width 0.5s ease;
+  transition: width 0.8s ease;
+}
+
+.genetics {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
 }

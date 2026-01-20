@@ -33,16 +33,24 @@ MENU PRINCIPAL
 CONTENU DASHBOARD
 ===================== -->
 <main class="dashboard">
-  <h2>Bienvenue <span id="welcomeName"></span> 👋</h2>
 
+  <h2>Bienvenue <span id="welcomeName"></span> 👋</h2>
   <p class="subtitle">
     Ton aventure de manager hippique commence ici.
   </p>
 
+  <!-- =====================
+  CARTES INFO
+  ===================== -->
   <section class="cards">
     <div class="card">
       <h3>🐎 Ton Écurie</h3>
-      <p>Gère tes chevaux et améliore leurs performances.</p>
+      <p>Crée jusqu’à 5 chevaux de trot et fais-les progresser.</p>
+    </div>
+
+    <div class="card">
+      <h3>💰 Finances</h3>
+      <p>Solde actuel : <strong><span id="playerBalance">0</span> €</strong></p>
     </div>
   </section>
 
@@ -55,15 +63,18 @@ CONTENU DASHBOARD
     <button id="createHorseBtn">➕ Créer un cheval</button>
     <p id="horseLimitMessage"></p>
 
-    <ul id="horseList"></ul>
+    <ul id="horseList">
+      <!-- Chevaux générés dynamiquement -->
+    </ul>
   </section>
+
 </main>
 
 <!-- =====================
 SCRIPTS
 ===================== -->
 <script src="script.js"></script>
-<script src="js/horse.js"></script>
+<script src="js/dashboard.js"></script>
 
 </body>
 </html>

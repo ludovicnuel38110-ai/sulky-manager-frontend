@@ -1,23 +1,40 @@
-// 🧪 Données test (plus tard via API)
-const horse = {
-  name: "Dark Punch",
-  owner: "test1",
-  age: 12,
-  stats: {
-    speed: 45,
-    endurance: 60,
-    agility: 50,
-    training: 30
-  }
-};
+// ============================
+// HORSE PAGE SCRIPT
+// ============================
 
-// Infos
-document.getElementById("horseName").textContent = "🐎 " + horse.name;
-document.getElementById("ownerName").textContent = horse.owner;
-document.getElementById("horseAge").textContent = horse.age;
+// Récupération du cheval sélectionné
+const horse = JSON.parse(localStorage.getItem("selectedHorse"));
 
-// Barres
-document.getElementById("speedBar").style.width = horse.stats.speed + "%";
-document.getElementById("enduranceBar").style.width = horse.stats.endurance + "%";
-document.getElementById("agilityBar").style.width = horse.stats.agility + "%";
-document.getElementById("trainingBar").style.width = horse.stats.training + "%";
+// Sécurité : si aucun cheval sélectionné
+if (!horse) {
+  alert("Aucun cheval sélectionné");
+  window.location.href = "dashboard.html";
+}
+
+// ============================
+// Affichage infos générales
+// ============================
+document.getElementById("horseName").innerText = horse.name;
+document.getElementById("potential").innerText = horse.genetics.potential;
+
+// ============================
+// Fonction pour animer les barres
+// ============================
+function setBar(id, value) {
+  const bar = document.getElementById(id);
+  bar.style.width = value + "%";
+  bar.innerText = value + "%";
+}
+
+// ============================
+// Stats du cheval
+// ============================
+setBar("speed", horse.stats.speed);
+setBar("endurance", horse.stats.endurance);
+setBar("agility", horse.stats.agility);
+setBar("training", horse.training.level);
+
+// ============================
+// Infos debug (optionnel)
+// ============================
+console.log("🐎 Cheval chargé :", horse);
