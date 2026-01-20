@@ -4,17 +4,13 @@ const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true,
-    trim: true
+    unique: true
   },
-
   email: {
     type: String,
     required: true,
-    unique: true,
-    lowercase: true
+    unique: true
   },
-
   password: {
     type: String,
     required: true
@@ -26,17 +22,10 @@ const UserSchema = new mongoose.Schema({
     default: 10000
   },
 
-  horses: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Horse"
-    }
-  ],
-
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  horses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Horse"
+  }]
 });
 
 module.exports = mongoose.model("User", UserSchema);

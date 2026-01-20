@@ -16,9 +16,15 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Champs manquants" });
     }
 
-    const existingUser = await User.findOne({ email });
+    // Vérifie email OU username
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }]
+    });
+
     if (existingUser) {
-      return res.status(400).json({ message: "Email déjà utilisé" });
+      return res.status(400).json({
+        message: "Email ou nom d'utilisateur déjà utilisé"
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,14 +33,20 @@ router.post("/register", async (req, res) => {
       username,
       email,
       password: hashedPassword,
+
+      // 🎮 GAMEPLAY
+      balance: 10000, // solde de départ
+      horses: []      // liste des chevaux
     });
 
     await user.save();
 
-    res.status(201).json({ message: "Compte créé avec succès" });
+    res.status(201).json({
+      message: "Compte créé avec succès"
+    });
 
   } catch (err) {
-    console.error(err);
+    console.error("REGISTER ERROR:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
@@ -60,7 +72,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Email ou mot de passe incorrect" });
     }
 
-    // 🔐 JWT avec variable d'environnement
+    // 🔐 JWT
     const token = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET,
@@ -73,11 +85,12 @@ router.post("/login", async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
-      },
+        balance: user.balance
+      }
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("LOGIN ERROR:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
