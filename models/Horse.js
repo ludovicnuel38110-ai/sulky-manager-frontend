@@ -1,8 +1,16 @@
 const mongoose = require("mongoose");
 
 const HorseSchema = new mongoose.Schema({
-  name: String,
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  name: {
+    type: String,
+    required: true
+  },
+
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
 
   type: {
     type: String,
@@ -10,15 +18,7 @@ const HorseSchema = new mongoose.Schema({
     default: "trot"
   },
 
-  age: { type: Number, default: 2 },
-
-  genetics: {
-    speed: Number,
-    endurance: Number,
-    agility: Number,
-    training: Number
-  },
-
+  // 🎯 STATS ACTUELLES
   stats: {
     speed: { type: Number, default: 0 },
     endurance: { type: Number, default: 0 },
@@ -26,9 +26,17 @@ const HorseSchema = new mongoose.Schema({
     training: { type: Number, default: 0 }
   },
 
-  lastProgress: {
-    type: Date,
-    default: Date.now
+  // 🧬 POTENTIEL MAX (GÉNÉTIQUE)
+  maxStats: {
+    speed: Number,
+    endurance: Number,
+    agility: Number,
+    training: Number
+  },
+
+  ageDays: {
+    type: Number,
+    default: 0
   },
 
   createdAt: {

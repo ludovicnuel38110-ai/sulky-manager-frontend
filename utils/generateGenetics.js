@@ -1,12 +1,14 @@
-function random(min, max) {
+function randomStat(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-module.exports = function generateGenetics() {
+function generateGenetics() {
   return {
-    speed: random(60, 100),
-    endurance: random(60, 100),
-    agility: random(60, 100),
-    training: random(60, 100),
+    speed: randomStat(60, 100),
+    endurance: randomStat(60, 100),
+    agility: randomStat(60, 100),
+    training: randomStat(60, 100)
   };
-};
+}
+
+module.exports = generateGenetics;
