@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SULKY-BET</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1> SULKY-BET</h1>
+    <p>Le PMU officiel de Sulkyland</p>
+</header>
+
+<nav>
+    <button onclick="scrollToSection('courses')">Courses</button>
+    <button onclick="scrollToSection('results')">Résultats</button>
+    <button onclick="scrollToSection('ranking')">Classement</button>
+    <button onclick="scrollToSection('news')">Actualités</button>
+    <button onclick="scrollToSection('help')">Aide</button>
+</nav>
+
+<div class="section" id="courses">
+    <h2>🟢 Courses disponibles</h2>
+    <div id="coursesList">
+        <p>Chargement des courses...</p>
+    </div>
+</div>
+
+<div class="section" id="results">
+    <h2>🏆 Résultat du jour</h2>
+    <div id="resultsList">
+        <p>Aucun résultat pour le moment</p>
+    </div>
+</div>
+
+<div class="section" id="ranking">
+    <h2>📊 Classement des parieurs</h2>
+    <div id="rankingList">
+        <p>Bientôt disponible</p>
+    </div>
+</div>
+
+<div class="section" id="news">
+    <h2>📰 Actualité hippique</h2>
+    <ul>
+        <li>Nouvelle course Sulky-Bet ce soir</li>
+        <li>Flash domine le championnat</li>
+        <li>Bonus Sulky pour les gros parieurs</li>
+    </ul>
+</div>
+
+<div class="section" id="help">
+    <h2>🆘 Aide</h2>
+    <p>
+        Analyse la course, choisis ton pari et envoie ton pari en message privé sur Sulkyland.
+        Les gains sont crédités en <b>Sulky</b> (monnaie fictive du jeu).
+    </p>
+</div>
+
+<script>
+function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
