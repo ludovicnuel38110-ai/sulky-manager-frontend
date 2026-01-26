@@ -240,3 +240,33 @@ div[style*="border:2px solid #00ff88"]::after {
 div[style*="border:2px solid #00ff88"]:hover::after {
     opacity: 1;
 }
+/* ===== BANNIERE LIMITE DE MISE ===== */
+
+.bet-limit-banner {
+    margin: 15px auto 25px;
+    max-width: 900px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    color: #00ff88;
+    background: rgba(0, 40, 20, 0.85);
+    border: 2px solid #00ff88;
+    box-shadow: 0 0 15px rgba(0,255,136,0.4),
+                inset 0 0 15px rgba(0,255,136,0.15);
+    backdrop-filter: blur(6px);
+    text-shadow: 0 0 10px rgba(0,255,136,0.8);
+    animation: glowPulse 2.5s infinite alternate;
+}
+
+/* Animation néon PMU */
+@keyframes glowPulse {
+    from {
+        box-shadow: 0 0 10px rgba(0,255,136,0.3),
+                    inset 0 0 10px rgba(0,255,136,0.1);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(0,255,136,0.7),
+                    inset 0 0 20px rgba(0,255,136,0.3);
+    }
+}
