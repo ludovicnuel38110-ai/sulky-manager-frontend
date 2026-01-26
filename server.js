@@ -1,20 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const mongoose = require("mongoose");
+
+// 🔥 Initialise MongoDB (connexion unique)
+require("./config/db");
 
 const app = express();
-
-// =====================
-// MongoDB connexion
-// =====================
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB connecté"))
-  .catch((err) => {
-    console.error("❌ Erreur MongoDB :", err);
-    process.exit(1);
-  });
 
 // =====================
 // Middleware
