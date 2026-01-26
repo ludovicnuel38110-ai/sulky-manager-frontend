@@ -183,3 +183,60 @@ pre {
     margin: 15px 0;
     box-shadow: 0 0 15px rgba(0,255,136,0.4);
 }
+/* ===== NEON HOVER EFFECTS ===== */
+
+/* Glow général sur les boîtes d’info */
+.info-box {
+    transition: 0.3s ease;
+}
+
+.info-box:hover {
+    box-shadow: 0 0 15px #00ff88,
+                0 0 30px rgba(0,255,136,0.6),
+                0 0 60px rgba(0,255,136,0.3);
+    transform: scale(1.01);
+}
+
+/* Tableau des mises */
+table {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,255,136,0.2);
+}
+
+table tr {
+    transition: 0.25s ease;
+}
+
+table tr:hover {
+    background: rgba(0,255,136,0.1);
+    box-shadow: inset 0 0 15px rgba(0,255,136,0.4);
+}
+
+/* Titres néon */
+h2, h3 {
+    text-shadow: 0 0 10px rgba(0,255,136,0.8),
+                 0 0 20px rgba(0,255,136,0.4);
+}
+
+/* Blocs formule & limites */
+.info-box,
+div[style*="border:2px solid #00ff88"] {
+    position: relative;
+    overflow: hidden;
+}
+
+.info-box::after,
+div[style*="border:2px solid #00ff88"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(0,255,136,0.15), transparent);
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.info-box:hover::after,
+div[style*="border:2px solid #00ff88"]:hover::after {
+    opacity: 1;
+}
