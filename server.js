@@ -25,10 +25,8 @@ app.use(express.json());
 // =====================
 // Routes API
 // =====================
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api", require("./routes/protected"));
-app.use("/api/player", require("./routes/player"));
-app.use("/api/horses", require("./routes/horses")); // 🐎 CHEVAUX
+// Courses hippiques (PMU fictif Sulkyland)
+app.use("/api/races", require("./routes/races"));
 
 // =====================
 // Frontend (public)
@@ -36,7 +34,7 @@ app.use("/api/horses", require("./routes/horses")); // 🐎 CHEVAUX
 app.use(express.static(path.join(__dirname, "public")));
 
 // =====================
-// Fallback pages
+// Fallback (SPA)
 // =====================
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
