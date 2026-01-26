@@ -1,39 +1,42 @@
+/* ================= RESET ================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Segoe UI", sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* ===== BACKGROUND GLOBAL ===== */
+/* ================= BACKGROUND ================= */
+
 body {
     min-height: 100vh;
-    background-image:
-        linear-gradient(rgba(0,20,0,0.55), rgba(0,30,0,0.65)), /* 👈 opacité réduite */
+    background:
+        linear-gradient(rgba(10,10,10,0.75), rgba(0,0,0,0.85)),
         url("../images/bg.jpg");
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
-    color: white;
+    color: #e8fff5;
 }
 
-/* Effet glow Sulkyland */
+/* Halo lumineux */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, rgba(0,255,136,0.15), transparent 70%);
+    background: radial-gradient(circle at top, rgba(0,255,136,0.08), transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
+
 header {
     position: relative;
     z-index: 1;
-    background: rgba(0,50,0,0.9);
-    padding: 25px;
+    background: linear-gradient(to bottom, #001a0f, #000);
+    padding: 30px 20px;
     text-align: center;
     border-bottom: 3px solid #00ff88;
 }
@@ -41,232 +44,165 @@ header {
 header h1 {
     font-size: 42px;
     color: #00ff88;
-    text-shadow: 0 0 20px #00ff88;
+    text-shadow: 0 0 25px #00ff88;
 }
 
 header p {
-    color: #ccc;
+    color: #aaa;
+    margin-top: 8px;
 }
 
-/* ===== MENU ===== */
+/* ================= MENU ================= */
+
 nav {
     position: relative;
     z-index: 1;
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 25px;
     padding: 20px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.8);
 }
 
 nav button {
-    background: #003b1f;
+    background: #1b1b1b;
     border: 2px solid #00ff88;
     color: #00ff88;
-    padding: 12px 25px;
+    padding: 12px 26px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-weight: 600;
     transition: 0.3s;
 }
 
 nav button:hover {
     background: #00ff88;
-    color: black;
+    color: #000;
     box-shadow: 0 0 20px #00ff88;
 }
 
-/* ===== ZONES ===== */
+/* ================= ZONE PRINCIPALE ================= */
+
 .section {
     position: relative;
     z-index: 1;
     max-width: 1100px;
     margin: 40px auto;
-    background: rgba(0,0,0,0.65); /* un peu plus transparent */
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 0 30px rgba(0,255,136,0.25);
-    backdrop-filter: blur(3px);
+    background: rgba(0,0,0,0.7);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 0 40px rgba(0,255,136,0.15);
+    backdrop-filter: blur(4px);
 }
 
 .section h2 {
     color: #00ff88;
-    margin-bottom: 15px;
     border-bottom: 2px solid #00ff88;
     padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-/* ===== COURSE CARD ===== */
-.course {
-    background: rgba(0,80,40,0.65);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 0 15px rgba(0,255,136,0.15);
-}
+/* ================= BLOCS D’INFO ================= */
+
 .info-box {
-    background: rgba(0, 255, 136, 0.08);
+    background: linear-gradient(135deg, rgba(0,255,136,0.06), rgba(0,0,0,0.6));
     border: 2px solid #00ff88;
-    padding: 15px;
-    border-radius: 12px;
-    margin: 15px 0;
+    padding: 18px;
+    border-radius: 14px;
+    margin: 18px 0;
     color: #eafff5;
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 18px rgba(0,255,136,0.35);
+    transition: 0.3s;
 }
 
-/* ===== BOUTON PARIER ===== */
+.info-box:hover {
+    box-shadow: 0 0 25px #00ff88;
+    transform: scale(1.01);
+}
+
+/* ================= BANNIERE LIMITE DE MISE ================= */
+
+.bet-limit-banner {
+    margin: 20px auto 30px;
+    max-width: 950px;
+    padding: 16px 24px;
+    border-radius: 14px;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #ffdada;
+    background: linear-gradient(135deg, #2b0000, #700000, #2b0000);
+    border: 2px solid #ff4d4d;
+    box-shadow:
+        0 0 25px rgba(255,0,0,0.6),
+        inset 0 0 20px rgba(255,80,80,0.3);
+    text-shadow: 0 0 15px rgba(255,80,80,1);
+    animation: redPulse 2.5s infinite alternate;
+}
+
+/* Animation alerte PMU */
+@keyframes redPulse {
+    from {
+        box-shadow: 0 0 15px rgba(255,0,0,0.4);
+    }
+    to {
+        box-shadow: 0 0 35px rgba(255,80,80,0.9);
+    }
+}
+
+/* ================= TABLEAU ================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th {
+    background: #001f12;
+    color: #00ff88;
+    padding: 12px;
+    border-bottom: 2px solid #00ff88;
+}
+
+td {
+    background: rgba(0,0,0,0.7);
+    padding: 12px;
+    border-bottom: 1px solid rgba(0,255,136,0.3);
+    text-align: center;
+}
+
+/* ================= BLOCS CODE ================= */
+
+pre {
+    background: rgba(0,0,0,0.8);
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    padding: 18px;
+    border-radius: 12px;
+    margin: 18px 0;
+    box-shadow: 0 0 20px rgba(0,255,136,0.4);
+    font-family: Consolas, monospace;
+    white-space: pre-wrap;
+}
+
+/* ================= BOUTON ================= */
+
 .bet-btn {
-    background: gold;
+    background: linear-gradient(135deg, gold, orange);
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
+    padding: 12px 26px;
+    border-radius: 10px;
+    font-weight: 800;
     cursor: pointer;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255,215,0,0.8);
     transition: 0.3s;
 }
 
 .bet-btn:hover {
-    background: orange;
-    box-shadow: 0 0 15px gold;
-}
-/* ===== FIX blocs PRE (supprime les rectangles blancs) ===== */
-pre {
-    background: rgba(0, 255, 136, 0.08);
-    border: 2px solid #00ff88;
-    color: #eafff5;
-    padding: 15px;
-    border-radius: 12px;
-    margin: 15px 0;
-    box-shadow: 0 0 15px rgba(0,255,136,0.3);
-    white-space: pre-wrap;
-    font-family: Consolas, monospace;
-}
-.formula-box {
-    background: rgba(0, 255, 136, 0.1);
-    border: 2px solid #00ff88;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    margin: 20px 0;
-    box-shadow: 0 0 20px rgba(0,255,136,0.4);
-}
-
-.bet-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-.bet-table th {
-    background: #003b1f;
-    color: #00ff88;
-    padding: 12px;
-    border: 1px solid #00ff88;
-}
-
-.bet-table td {
-    padding: 12px;
-    border: 1px solid #00ff88;
-    text-align: center;
-    background: rgba(0,50,25,0.6);
-}
-
-.bet-format {
-    background: rgba(0,0,0,0.8);
-    border: 2px solid #00ff88;
-    color: #00ff88;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 15px 0;
-    box-shadow: 0 0 15px rgba(0,255,136,0.4);
-}
-/* ===== NEON HOVER EFFECTS ===== */
-
-/* Glow général sur les boîtes d’info */
-.info-box {
-    transition: 0.3s ease;
-}
-
-.info-box:hover {
-    box-shadow: 0 0 15px #00ff88,
-                0 0 30px rgba(0,255,136,0.6),
-                0 0 60px rgba(0,255,136,0.3);
-    transform: scale(1.01);
-}
-
-/* Tableau des mises */
-table {
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0,255,136,0.2);
-}
-
-table tr {
-    transition: 0.25s ease;
-}
-
-table tr:hover {
-    background: rgba(0,255,136,0.1);
-    box-shadow: inset 0 0 15px rgba(0,255,136,0.4);
-}
-
-/* Titres néon */
-h2, h3 {
-    text-shadow: 0 0 10px rgba(0,255,136,0.8),
-                 0 0 20px rgba(0,255,136,0.4);
-}
-
-/* Blocs formule & limites */
-.info-box,
-div[style*="border:2px solid #00ff88"] {
-    position: relative;
-    overflow: hidden;
-}
-
-.info-box::after,
-div[style*="border:2px solid #00ff88"]::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent, rgba(0,255,136,0.15), transparent);
-    opacity: 0;
-    transition: 0.4s;
-}
-
-.info-box:hover::after,
-div[style*="border:2px solid #00ff88"]:hover::after {
-    opacity: 1;
-}
-/* ===== BANNIERE LIMITE DE MISE ===== */
-
-.bet-limit-banner {
-    margin: 15px auto 25px;
-    max-width: 900px;
-    padding: 14px 20px;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: bold;
-    color: #00ff88;
-    background: rgba(0, 40, 20, 0.85);
-    border: 2px solid #00ff88;
-    box-shadow: 0 0 15px rgba(0,255,136,0.4),
-                inset 0 0 15px rgba(0,255,136,0.15);
-    backdrop-filter: blur(6px);
-    text-shadow: 0 0 10px rgba(0,255,136,0.8);
-    animation: glowPulse 2.5s infinite alternate;
-}
-
-/* Animation néon PMU */
-@keyframes glowPulse {
-    from {
-        box-shadow: 0 0 10px rgba(0,255,136,0.3),
-                    inset 0 0 10px rgba(0,255,136,0.1);
-    }
-    to {
-        box-shadow: 0 0 25px rgba(0,255,136,0.7),
-                    inset 0 0 20px rgba(0,255,136,0.3);
-    }
+    box-shadow: 0 0 30px gold;
+    transform: scale(1.05);
 }
