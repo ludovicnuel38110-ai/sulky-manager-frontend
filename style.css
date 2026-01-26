@@ -144,3 +144,42 @@ pre {
     white-space: pre-wrap;
     font-family: Consolas, monospace;
 }
+.formula-box {
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid #00ff88;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 20px 0;
+    box-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+
+.bet-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.bet-table th {
+    background: #003b1f;
+    color: #00ff88;
+    padding: 12px;
+    border: 1px solid #00ff88;
+}
+
+.bet-table td {
+    padding: 12px;
+    border: 1px solid #00ff88;
+    text-align: center;
+    background: rgba(0,50,25,0.6);
+}
+
+.bet-format {
+    background: rgba(0,0,0,0.8);
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    box-shadow: 0 0 15px rgba(0,255,136,0.4);
+}
