@@ -1,47 +1,19 @@
 const express = require("express");
-const Horse = require("../models/Horse");
-const auth = require('../middleware/auth')
-const generateGenetics = require("../utils/generateGenetics");
+const Race = require("../models/Race.");
 
 const router = express.Router();
 
-// ➕ Créer un cheval
-router.post("/create", auth, async (req, res) => {
-  try {
-    const { name } = req.body;
-    const userId = req.user.id;
-
-    if (!name) {
-      return res.status(400).json({ message: "Nom requis" });
-    }
-
-    // Limite à 5 chevaux
-    const horseCount = await Horse.countDocuments({ owner: userId });
-    if (horseCount >= 5) {
-      return res.status(400).json({ message: "Limite de 5 chevaux atteinte" });
-    }
-
-    const genetics = generateGenetics();
-
-    const horse = new Horse({
-      name,
-      owner: userId,
-      maxStats: genetics
-    });
-
-    await horse.save();
-    res.status(201).json(horse);
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Erreur création cheval" });
-  }
+// Liste des courses
+router.get("/", async (req, res) => {
+  const races = await Race.find().sort({ date: 1 });
+  res.json(races);
 });
 
-// 📄 Lister les chevaux du joueur
-router.get("/", auth, async (req, res) => {
-  const horses = await Horse.find({ owner: req.user.id });
-  res.json(horses);
+// Créer une course
+router.post("/", async (req, res) => {
+  const race = new Race(req.body);
+  await race.save();
+  res.json(race);
 });
 
 module.exports = router;
