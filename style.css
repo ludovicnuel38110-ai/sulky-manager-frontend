@@ -107,6 +107,15 @@ nav button:hover {
     align-items: center;
     box-shadow: 0 0 15px rgba(0,255,136,0.15);
 }
+.info-box {
+    background: rgba(0, 255, 136, 0.08);
+    border: 2px solid #00ff88;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 15px 0;
+    color: #eafff5;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
 
 /* ===== BOUTON PARIER ===== */
 .bet-btn {
