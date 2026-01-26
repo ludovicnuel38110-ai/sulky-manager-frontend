@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== BACKGROUND GLOBAL ===== */
+body {
+    min-height: 100vh;
+    background-image:
+        linear-gradient(rgba(0,20,0,0.55), rgba(0,30,0,0.65)), /* 👈 opacité réduite */
+        url("../images/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+}
+
+/* Effet glow Sulkyland */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(0,255,136,0.15), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ===== HEADER ===== */
+header {
+    position: relative;
+    z-index: 1;
+    background: rgba(0,50,0,0.9);
+    padding: 25px;
+    text-align: center;
+    border-bottom: 3px solid #00ff88;
+}
+
+header h1 {
+    font-size: 42px;
+    color: #00ff88;
+    text-shadow: 0 0 20px #00ff88;
+}
+
+header p {
+    color: #ccc;
+}
+
+/* ===== MENU ===== */
+nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    background: rgba(0,0,0,0.6);
+}
+
+nav button {
+    background: #003b1f;
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+nav button:hover {
+    background: #00ff88;
+    color: black;
+    box-shadow: 0 0 20px #00ff88;
+}
+
+/* ===== ZONES ===== */
+.section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 40px auto;
+    background: rgba(0,0,0,0.65); /* un peu plus transparent */
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 30px rgba(0,255,136,0.25);
+    backdrop-filter: blur(3px);
+}
+
+.section h2 {
+    color: #00ff88;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #00ff88;
+    padding-bottom: 10px;
+}
+
+/* ===== COURSE CARD ===== */
+.course {
+    background: rgba(0,80,40,0.65);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(0,255,136,0.15);
+}
+
+/* ===== BOUTON PARIER ===== */
+.bet-btn {
+    background: gold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.bet-btn:hover {
+    background: orange;
+    box-shadow: 0 0 15px gold;
+}
