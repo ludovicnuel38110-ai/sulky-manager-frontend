@@ -224,3 +224,19 @@ button, input {
 body::before {
     pointer-events: none;
 }
+body {
+    position: relative;
+}
+
+body::before {
+    pointer-events: none;
+    z-index: 0;
+}
+
+.form-container,
+.login-box,
+.register-box,
+form {
+    position: relative;
+    z-index: 10;
+}
