@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Inscription - Sulky Bet</title>
+
 <style>
 body {
   background:#051;
@@ -23,11 +24,12 @@ button {
 }
 </style>
 </head>
+
 <body>
 
 <h1>Créer un compte Sulky-Bet</h1>
 
-<input id="pseudo" placeholder="Pseudo"><br>
+<input id="username" placeholder="Pseudo"><br>
 <input id="password" type="password" placeholder="Mot de passe"><br>
 <button onclick="register()">Créer</button>
 
@@ -35,12 +37,15 @@ button {
 
 <script>
 function register() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
   fetch("https://sulky-manager-backend.onrender.com/api/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      pseudo: document.getElementById("pseudo").value,
-      password: document.getElementById("password").value
+      username: username,
+      password: password
     })
   })
   .then(res => res.json())
@@ -48,9 +53,12 @@ function register() {
     if (data.error) {
       document.getElementById("msg").innerText = data.error;
     } else {
-      alert("Compte créé !");
+      alert("Compte créé avec succès !");
       window.location.href = "login.html";
     }
+  })
+  .catch(() => {
+    document.getElementById("msg").innerText = "Erreur serveur";
   });
 }
 </script>

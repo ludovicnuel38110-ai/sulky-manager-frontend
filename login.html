@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Connexion - Sulky Bet</title>
+
 <style>
 body {
   background:#051;
@@ -24,11 +25,12 @@ button {
 }
 </style>
 </head>
+
 <body>
 
 <h1>Connexion Sulky-Bet</h1>
 
-<input id="pseudo" placeholder="Pseudo"><br>
+<input id="username" placeholder="Pseudo"><br>
 <input id="password" type="password" placeholder="Mot de passe"><br>
 <button id="loginBtn">Se connecter</button>
 
@@ -36,7 +38,7 @@ button {
 
 <script>
 document.getElementById("loginBtn").addEventListener("click", async () => {
-    const pseudo = document.getElementById("pseudo").value;
+    const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     const msg = document.getElementById("msg");
 
@@ -48,7 +50,10 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ pseudo, password })
+            body: JSON.stringify({
+              username: username,
+              password: password
+            })
         });
 
         const data = await res.json();
@@ -58,12 +63,12 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
             return;
         }
 
-        // Stockage propre
+        // Stockage du joueur
         localStorage.setItem("token", data.token);
-        localStorage.setItem("pseudo", data.pseudo);
+        localStorage.setItem("username", data.username);
         localStorage.setItem("balance", data.balance);
 
-        // Redirection
+        // Redirection vers l'accueil
         window.location.href = "index.html";
 
     } catch (err) {
