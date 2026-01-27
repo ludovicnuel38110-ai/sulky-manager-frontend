@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Inscription - Sulky Bet</title>
-
 <style>
 body {
   background:#051;
@@ -21,46 +20,54 @@ input, button {
 button {
   background:#00ff88;
   font-weight:bold;
+  cursor:pointer;
 }
 </style>
 </head>
-
 <body>
 
 <h1>Créer un compte Sulky-Bet</h1>
 
 <input id="username" placeholder="Pseudo"><br>
 <input id="password" type="password" placeholder="Mot de passe"><br>
-<button onclick="register()">Créer</button>
+<button id="registerBtn">Créer</button>
 
 <p id="msg"></p>
 
 <script>
-function register() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+document.getElementById("registerBtn").addEventListener("click", async () => {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const msg = document.getElementById("msg");
 
-  fetch("https://sulky-manager-backend.onrender.com/api/auth/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: username,
-      password: password
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.error) {
-      document.getElementById("msg").innerText = data.error;
-    } else {
-      alert("Compte créé avec succès !");
-      window.location.href = "login.html";
+  msg.innerText = "";
+
+  if (!username || !password) {
+    msg.innerText = "Pseudo et mot de passe requis";
+    return;
+  }
+
+  try {
+    const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.innerText = data.error || "Erreur lors de l'inscription";
+      return;
     }
-  })
-  .catch(() => {
-    document.getElementById("msg").innerText = "Erreur serveur";
-  });
-}
+
+    alert("Compte créé !");
+    window.location.href = "login.html";
+
+  } catch (err) {
+    msg.innerText = "Erreur serveur";
+  }
+});
 </script>
 
 </body>
