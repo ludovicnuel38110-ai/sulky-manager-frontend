@@ -2,41 +2,56 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Connexion – Sulky-Bet</title>
-<link rel="stylesheet" href="style.css">
+<title>Connexion - Sulky Bet</title>
+<style>
+body {
+  background:#051;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding-top:100px;
+}
+input, button {
+  padding:10px;
+  margin:10px;
+  border-radius:5px;
+  border:none;
+}
+button {
+  background:#00ff88;
+  font-weight:bold;
+}
+</style>
 </head>
 <body>
 
-<div class="section">
-    <h2>🔐 Connexion</h2>
+<h1>Connexion Sulky-Bet</h1>
 
-    <input id="loginPseudo" placeholder="Pseudo">
-    <input id="loginPassword" type="password" placeholder="Mot de passe">
+<input id="pseudo" placeholder="Pseudo"><br>
+<input id="password" type="password" placeholder="Mot de passe"><br>
+<button onclick="login()">Se connecter</button>
 
-    <button onclick="login()">Se connecter</button>
-
-    <p id="loginMsg"></p>
-</div>
+<p id="msg"></p>
 
 <script>
-async function login() {
-  const pseudo = document.getElementById("loginPseudo").value;
-  const password = document.getElementById("loginPassword").value;
-
-  const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/login", {
+function login() {
+  fetch("https://sulky-manager-backend.onrender.com/api/auth/login", {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ pseudo, password })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      pseudo: document.getElementById("pseudo").value,
+      password: document.getElementById("password").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      document.getElementById("msg").innerText = data.error;
+    } else {
+      localStorage.setItem("player", JSON.stringify(data));
+      window.location.href = "index.html";
+    }
   });
-
-  const data = await res.json();
-
-  if (data.error) {
-    document.getElementById("loginMsg").innerText = data.error;
-  } else {
-    localStorage.setItem("player", JSON.stringify(data));
-    window.location.href = "vincennes.html"; // ou ton accueil
-  }
 }
 </script>
 
