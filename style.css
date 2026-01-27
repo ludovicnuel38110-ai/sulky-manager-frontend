@@ -217,3 +217,10 @@ pre {
     box-shadow: 0 0 30px gold;
     transform: scale(1.05);
 }
+button, input {
+    position: relative;
+    z-index: 5;
+}
+body::before {
+    pointer-events: none;
+}
