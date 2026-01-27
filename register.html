@@ -1,54 +1,14 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Créer un compte - Sulky Bet</title>
-
-<style>
-body {
-  background:#051;
-  color:white;
-  font-family:Arial;
-  text-align:center;
-  padding-top:100px;
-}
-input, button {
-  padding:10px;
-  margin:10px;
-  border-radius:5px;
-  border:none;
-}
-button {
-  background:#00ff88;
-  font-weight:bold;
-  cursor:pointer;
-}
-</style>
-</head>
-
-<body>
-
-<h1>Créer un compte Sulky-Bet</h1>
-
-<input id="username" placeholder="Pseudo"><br>
-<input id="email" placeholder="Email"><br>
-<input id="password" type="password" placeholder="Mot de passe"><br>
-<button id="registerBtn">Créer</button>
-
-<p id="msg"></p>
-
 <script>
 document.getElementById("registerBtn").addEventListener("click", async () => {
   const username = document.getElementById("username").value.trim();
-  const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
   const msg = document.getElementById("msg");
 
   msg.innerText = "";
-  msg.style.color = "white";
+  msg.style.color = "red";
 
-  if (!username || !email || !password) {
-    msg.innerText = "Tous les champs sont requis";
+  if (!username || !password) {
+    msg.innerText = "Pseudo et mot de passe requis";
     return;
   }
 
@@ -58,7 +18,10 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ username, email, password })
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
     });
 
     const data = await res.json();
@@ -69,7 +32,7 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
     }
 
     msg.style.color = "#00ff88";
-    msg.innerText = "Compte créé ! Redirection...";
+    msg.innerText = "Compte créé avec succès !";
 
     setTimeout(() => {
       window.location.href = "login.html";
@@ -80,6 +43,3 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   }
 });
 </script>
-
-</body>
-</html>
