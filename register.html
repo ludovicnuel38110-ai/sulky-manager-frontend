@@ -1,3 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Créer un compte - Sulky Bet</title>
+
+<style>
+body {
+  background:#051;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding-top:100px;
+}
+input, button {
+  padding:10px;
+  margin:10px;
+  border-radius:5px;
+  border:none;
+}
+button {
+  background:#00ff88;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Créer un compte Sulky-Bet</h1>
+
+<input id="username" placeholder="Pseudo"><br>
+<input id="password" type="password" placeholder="Mot de passe"><br>
+<button id="registerBtn">Créer</button>
+
+<p id="msg"></p>
+
 <script>
 document.getElementById("registerBtn").addEventListener("click", async () => {
   const username = document.getElementById("username").value.trim();
@@ -43,3 +81,6 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   }
 });
 </script>
+
+</body>
+</html>
