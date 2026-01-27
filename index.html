@@ -8,6 +8,9 @@
 
 <body>
 
+<!-- BARRE DE CONNEXION -->
+<div id="topBar" class="top-bar"></div>
+
 <header>
     <h1>SULKY-BET</h1>
     <p>Le PMU officiel de Sulkyland</p>
@@ -61,6 +64,37 @@
 <script>
 function scrollToSection(id) {
     document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+
+/* ===========================
+   BARRE DE CONNEXION
+=========================== */
+
+const topBar = document.getElementById("topBar");
+
+const token = localStorage.getItem("token");
+const pseudo = localStorage.getItem("pseudo");
+const balance = localStorage.getItem("balance");
+
+if (!token) {
+    topBar.innerHTML = `
+        <div style="text-align:center; padding:15px; background:#000;">
+            <a href="login.html"><button>Connexion</button></a>
+            <a href="register.html"><button>Créer un compte</button></a>
+        </div>
+    `;
+} else {
+    topBar.innerHTML = `
+        <div style="text-align:center; padding:15px; background:#000;">
+            👤 <b>${pseudo}</b> | 💰 <b>${balance} Sulky</b>
+            <button id="logoutBtn">Déconnexion</button>
+        </div>
+    `;
+
+    document.getElementById("logoutBtn").onclick = () => {
+        localStorage.clear();
+        location.reload();
+    };
 }
 </script>
 
