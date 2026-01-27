@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const Player = require("../models/player.");
+const Player = require("../models/player");
 
 const router = express.Router();
 
