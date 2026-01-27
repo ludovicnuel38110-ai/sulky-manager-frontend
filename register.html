@@ -1,3 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Créer un compte - Sulky Bet</title>
+
+<style>
+body {
+  background:#051;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding-top:100px;
+}
+input, button {
+  padding:10px;
+  margin:10px;
+  border-radius:5px;
+  border:none;
+}
+button {
+  background:#00ff88;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Créer un compte Sulky-Bet</h1>
+
+<input id="username" placeholder="Pseudo"><br>
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Mot de passe"><br>
+<button id="registerBtn">Créer</button>
+
+<p id="msg"></p>
+
 <script>
 document.getElementById("registerBtn").addEventListener("click", async () => {
   const username = document.getElementById("username").value.trim();
@@ -5,17 +44,11 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   const password = document.getElementById("password").value.trim();
   const msg = document.getElementById("msg");
 
-  msg.style.color = "white";
   msg.innerText = "";
+  msg.style.color = "white";
 
-  // Sécurité champs
   if (!username || !email || !password) {
     msg.innerText = "Tous les champs sont requis";
-    return;
-  }
-
-  if (password.length < 4) {
-    msg.innerText = "Mot de passe trop court";
     return;
   }
 
@@ -25,29 +58,28 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        username,
-        email,
-        password
-      })
+      body: JSON.stringify({ username, email, password })
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      msg.innerText = data.error || "Erreur lors de l'inscription";
+      msg.innerText = data.error || "Erreur inscription";
       return;
     }
 
     msg.style.color = "#00ff88";
-    msg.innerText = "Compte créé avec succès ! Redirection...";
+    msg.innerText = "Compte créé ! Redirection...";
 
     setTimeout(() => {
       window.location.href = "login.html";
     }, 1000);
 
   } catch (err) {
-    msg.innerText = "Impossible de contacter le serveur";
+    msg.innerText = "Erreur serveur";
   }
 });
 </script>
+
+</body>
+</html>
