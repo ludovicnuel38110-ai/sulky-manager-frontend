@@ -61,11 +61,11 @@ nav {
     justify-content: center;
     gap: 25px;
     padding: 20px;
-    background: rgba(0,0,0,0.8);
+    background: rgba(4, 196, 52, 0.8);
 }
 
 nav button {
-    background: #1b1b1b;
+    background: #010e00;
     border: 2px solid #00ff88;
     color: #00ff88;
     padding: 12px 26px;
@@ -88,7 +88,7 @@ nav button:hover {
     z-index: 1;
     max-width: 1100px;
     margin: 40px auto;
-    background: rgba(0,0,0,0.7);
+    background: rgba(3, 214, 66, 0.7);
     border-radius: 18px;
     padding: 30px;
     box-shadow: 0 0 40px rgba(0,255,136,0.15);
@@ -172,10 +172,10 @@ table {
 }
 
 th {
-    background: #001f12;
+    background: hsl(155, 100%, 2%);
     color: #00ff88;
     padding: 12px;
-    border-bottom: 2px solid #00ff88;
+    border-bottom: 2px solid hsl(152, 80%, 35%);
 }
 
 td {
