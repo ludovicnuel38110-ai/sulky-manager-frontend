@@ -1,25 +1,20 @@
-const API_URL = "https://sulky-manager-backend.onrender.com/api/races";
+// Sulky-Bet – Frontend
 
-async function loadRaces() {
-  const res = await fetch(API_URL);
-  const races = await res.json();
+console.log("Sulky-Bet loaded");
 
-  const container = document.getElementById("races");
-  container.innerHTML = "";
+// On affiche directement les courses disponibles
+const coursesList = document.getElementById("coursesList");
 
-  races.forEach(race => {
-    const div = document.createElement("div");
-    div.className = "race";
-
-    div.innerHTML = `
-      <h3>${race.name}</h3>
-      <p>📍 ${race.hippodrome}</p>
-      <p>🕒 ${new Date(race.date).toLocaleString()}</p>
-      <button>Voir la course</button>
-    `;
-
-    container.appendChild(div);
-  });
+if (coursesList) {
+  coursesList.innerHTML = `
+    <div class="course">
+      <div>
+        <strong>R1 – VINCENNES</strong><br>
+        Dimanche 01 février 2026
+      </div>
+      <a href="vincennes.html">
+        <button class="bet-btn">Voir le programme</button>
+      </a>
+    </div>
+  `;
 }
-
-loadRaces();

@@ -1,39 +1,42 @@
+/* ================= RESET ================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Segoe UI", sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* ===== BACKGROUND GLOBAL ===== */
+/* ================= BACKGROUND ================= */
+
 body {
     min-height: 100vh;
-    background-image:
-        linear-gradient(rgba(0,20,0,0.55), rgba(0,30,0,0.65)), /* 👈 opacité réduite */
+    background:
+        linear-gradient(rgba(10,10,10,0.75), rgba(0,0,0,0.85)),
         url("../images/bg.jpg");
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
-    color: white;
+    color: #e8fff5;
 }
 
-/* Effet glow Sulkyland */
+/* Halo lumineux */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, rgba(0,255,136,0.15), transparent 70%);
+    background: radial-gradient(circle at top, rgba(0,255,136,0.08), transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
+
 header {
     position: relative;
     z-index: 1;
-    background: rgba(0,50,0,0.9);
-    padding: 25px;
+    background: linear-gradient(to bottom, #001a0f, #000);
+    padding: 30px 20px;
     text-align: center;
     border-bottom: 3px solid #00ff88;
 }
@@ -41,85 +44,176 @@ header {
 header h1 {
     font-size: 42px;
     color: #00ff88;
-    text-shadow: 0 0 20px #00ff88;
+    text-shadow: 0 0 25px #00ff88;
 }
 
 header p {
-    color: #ccc;
+    color: #aaa;
+    margin-top: 8px;
 }
 
-/* ===== MENU ===== */
+/* ================= MENU ================= */
+
 nav {
     position: relative;
     z-index: 1;
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 25px;
     padding: 20px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(4, 196, 52, 0.8);
 }
 
 nav button {
-    background: #003b1f;
+    background: #010e00;
     border: 2px solid #00ff88;
     color: #00ff88;
-    padding: 12px 25px;
+    padding: 12px 26px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-weight: 600;
     transition: 0.3s;
 }
 
 nav button:hover {
     background: #00ff88;
-    color: black;
+    color: #000;
     box-shadow: 0 0 20px #00ff88;
 }
 
-/* ===== ZONES ===== */
+/* ================= ZONE PRINCIPALE ================= */
+
 .section {
     position: relative;
     z-index: 1;
     max-width: 1100px;
     margin: 40px auto;
-    background: rgba(0,0,0,0.65); /* un peu plus transparent */
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 0 30px rgba(0,255,136,0.25);
-    backdrop-filter: blur(3px);
+    background: rgba(3, 214, 66, 0.7);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 0 40px rgba(0,255,136,0.15);
+    backdrop-filter: blur(4px);
 }
 
 .section h2 {
     color: #00ff88;
-    margin-bottom: 15px;
     border-bottom: 2px solid #00ff88;
     padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-/* ===== COURSE CARD ===== */
-.course {
-    background: rgba(0,80,40,0.65);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 0 15px rgba(0,255,136,0.15);
+/* ================= BLOCS D’INFO ================= */
+
+.info-box {
+    background: linear-gradient(135deg, rgba(0,255,136,0.06), rgba(0,0,0,0.6));
+    border: 2px solid #00ff88;
+    padding: 18px;
+    border-radius: 14px;
+    margin: 18px 0;
+    color: #eafff5;
+    box-shadow: 0 0 18px rgba(0,255,136,0.35);
+    transition: 0.3s;
 }
 
-/* ===== BOUTON PARIER ===== */
-.bet-btn {
-    background: gold;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+.info-box:hover {
+    box-shadow: 0 0 25px #00ff88;
+    transform: scale(1.01);
+}
+
+/* ===== BANNIERE LIMITE DE MISE (ROUGE PMU) ===== */
+.bet-limit-banner {
+    margin: 15px auto 25px;
+    max-width: 900px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    text-align: center;
     font-weight: bold;
+    color: #ffb3b3;
+    background: rgba(60, 0, 0, 0.85);
+    border: 2px solid #ff4d4d;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5),
+                inset 0 0 15px rgba(255, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    text-shadow: 0 0 8px rgba(255, 100, 100, 0.9);
+    animation: alertPulse 2.2s infinite alternate;
+}
+
+/* Animation pulsation alerte */
+@keyframes alertPulse {
+    from {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.3),
+                    inset 0 0 10px rgba(255, 0, 0, 0.2);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8),
+                    inset 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+}
+
+
+/* Animation alerte PMU */
+@keyframes redPulse {
+    from {
+        box-shadow: 0 0 15px rgba(255,0,0,0.4);
+    }
+    to {
+        box-shadow: 0 0 35px rgba(255,80,80,0.9);
+    }
+}
+
+/* ================= TABLEAU ================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th {
+    background: hsl(155, 100%, 2%);
+    color: #00ff88;
+    padding: 12px;
+    border-bottom: 2px solid hsl(152, 80%, 35%);
+}
+
+td {
+    background: rgba(0,0,0,0.7);
+    padding: 12px;
+    border-bottom: 1px solid rgba(0,255,136,0.3);
+    text-align: center;
+}
+
+/* ================= BLOCS CODE ================= */
+
+pre {
+    background: rgba(0,0,0,0.8);
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    padding: 18px;
+    border-radius: 12px;
+    margin: 18px 0;
+    box-shadow: 0 0 20px rgba(0,255,136,0.4);
+    font-family: Consolas, monospace;
+    white-space: pre-wrap;
+}
+
+/* ================= BOUTON ================= */
+
+.bet-btn {
+    background: linear-gradient(135deg, gold, orange);
+    border: none;
+    padding: 12px 26px;
+    border-radius: 10px;
+    font-weight: 800;
     cursor: pointer;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255,215,0,0.8);
     transition: 0.3s;
 }
 
 .bet-btn:hover {
-    background: orange;
-    box-shadow: 0 0 15px gold;
+    box-shadow: 0 0 30px gold;
+    transform: scale(1.05);
 }
