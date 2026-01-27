@@ -1,45 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-
-// 🔥 Connexion MongoDB (une seule fois)
 require("./config/db");
 
 const app = express();
 
-// =====================
-// Middleware
-// =====================
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// =====================
-// API Routes
-// =====================
-
-// Courses (PMU Sulkyland)
+// ================= ROUTES =================
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/admin", require("./routes/admin"));
 app.use("/api/races", require("./routes/races"));
 
-// Authentification joueurs (register / login)
-app.use("/api/auth", require("./routes/auth"));
-
-// Admin (créditer des joueurs)
-app.use("/api/admin", require("./routes/admin"));
-
-// =====================
-// Servir le frontend
-// =====================
-app.use(express.static(path.join(__dirname, "frontend")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "index.html"));
+// Test route
+app.get("/", (req, res) => {
+  res.send("Sulky Bet API is running");
 });
 
-// =====================
-// Lancement serveur
-// =====================
-const PORT = process.env.PORT || 3000;
-
+// ================= SERVER =================
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log("✅ Server running on port", PORT);
 });
