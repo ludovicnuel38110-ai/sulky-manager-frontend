@@ -30,7 +30,7 @@ button {
 
 <h1>Créer un compte Sulky-Bet</h1>
 
-<input id="username" placeholder="Pseudo"><br>
+<input id="pseudo" placeholder="Pseudo"><br>
 <input id="password" type="password" placeholder="Mot de passe"><br>
 <button id="registerBtn">Créer</button>
 
@@ -38,14 +38,14 @@ button {
 
 <script>
 document.getElementById("registerBtn").addEventListener("click", async () => {
-  const username = document.getElementById("username").value.trim();
+  const pseudo = document.getElementById("pseudo").value.trim();
   const password = document.getElementById("password").value.trim();
   const msg = document.getElementById("msg");
 
   msg.innerText = "";
   msg.style.color = "red";
 
-  if (!username || !password) {
+  if (!pseudo || !password) {
     msg.innerText = "Pseudo et mot de passe requis";
     return;
   }
@@ -57,7 +57,7 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username: username,
+        pseudo: pseudo,
         password: password
       })
     });
@@ -65,7 +65,7 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      msg.innerText = data.error || "Erreur inscription";
+      msg.innerText = data.message || "Erreur inscription";
       return;
     }
 
