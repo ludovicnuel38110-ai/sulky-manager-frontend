@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Dashboard</title>
+
+<style>
+body {
+  background:#051;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding-top:100px;
+}
+button {
+  padding:10px 20px;
+  margin:10px;
+  border:none;
+  border-radius:5px;
+  background:#00ff88;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="welcome">Bienvenue</h1>
+<h2 id="balance">Solde : ... €</h2>
+
+<button onclick="goRaces()">🏇 Voir les courses</button>
+<button onclick="logout()">🚪 Déconnexion</button>
+
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.href = "login.html";
+}
+
+fetch("https://sulky-manager-backend.onrender.com/api/users/me", {
+  headers: {
+    "Authorization": "Bearer " + token
+  }
+})
+.then(res => res.json())
+.then(data => {
+  document.getElementById("welcome").innerText = "Bienvenue " + data.pseudo;
+  document.getElementById("balance").innerText = "Solde : " + data.balance + " €";
+});
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+function goRaces() {
+  window.location.href = "races.html";
+}
+</script>
+
+</body>
+</html>
