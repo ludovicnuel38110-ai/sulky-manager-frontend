@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Inscription – Sulky-Bet</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="section">
+    <h2>📝 Inscription</h2>
+
+    <input id="regPseudo" placeholder="Pseudo">
+    <input id="regPassword" type="password" placeholder="Mot de passe">
+
+    <button onclick="register()">Créer un compte</button>
+
+    <p id="regMsg"></p>
+</div>
+
+<script>
+async function register() {
+  const pseudo = document.getElementById("regPseudo").value;
+  const password = document.getElementById("regPassword").value;
+
+  const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/register", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ pseudo, password })
+  });
+
+  const data = await res.json();
+
+  if (data.error) {
+    document.getElementById("regMsg").innerText = data.error;
+  } else {
+    document.getElementById("regMsg").innerText = "Compte créé. Tu peux te connecter.";
+  }
+}
+</script>
+
+</body>
+</html>
