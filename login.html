@@ -30,7 +30,7 @@ button {
 
 <h1>Connexion Sulky-Bet</h1>
 
-<input id="pseudo" placeholder="Pseudo"><br>
+<input id="username" placeholder="Pseudo"><br>
 <input id="password" type="password" placeholder="Mot de passe"><br>
 <button id="loginBtn">Se connecter</button>
 
@@ -38,48 +38,47 @@ button {
 
 <script>
 document.getElementById("loginBtn").addEventListener("click", async () => {
-    const pseudo = document.getElementById("pseudo").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const msg = document.getElementById("msg");
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const msg = document.getElementById("msg");
 
-    msg.innerText = "";
-    msg.style.color = "red";
+  msg.innerText = "";
+  msg.style.color = "red";
 
-    if (!pseudo || !password) {
-      msg.innerText = "Pseudo et mot de passe requis";
+  if (!username || !password) {
+    msg.innerText = "Pseudo et mot de passe requis";
+    return;
+  }
+
+  try {
+    const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.innerText = data.error || "Erreur de connexion";
       return;
     }
 
-    try {
-        const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              pseudo: pseudo,
-              password: password
-            })
-        });
+    // ✅ Stockage AVANT redirection
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("balance", data.balance);
 
-        const data = await res.json();
+    window.location.href = "dashboard.html";
 
-        if (!res.ok) {
-            msg.innerText = data.message || "Erreur de connexion";
-            return;
-        }
-
-        // Stockage sécurisé
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("pseudo", data.pseudo);
-        localStorage.setItem("balance", data.balance);
-
-        // Redirection vers le dashboard
-        window.location.href = "dashboard.html";
-
-    } catch (err) {
-        msg.innerText = "Erreur serveur";
-    }
+  } catch (err) {
+    msg.innerText = "Erreur serveur";
+  }
 });
 </script>
 
