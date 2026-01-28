@@ -64,6 +64,21 @@ main h2 {
   font-weight:bold;
   cursor:pointer;
 }
+
+/* ADMIN */
+#adminPanel {
+  margin-top:50px;
+  padding:25px;
+  border:2px solid #00ff88;
+  border-radius:10px;
+  display:none;
+}
+#adminPanel input {
+  padding:10px;
+  margin:8px;
+  border-radius:5px;
+  border:none;
+}
 </style>
 </head>
 
@@ -87,21 +102,28 @@ main h2 {
   <h2 id="balance">Solde : ... €</h2>
 
   <button class="action-btn" onclick="goRaces()">🏇 Voir les courses</button>
+
+  <!-- 🔐 PANEL ADMIN -->
+  <div id="adminPanel">
+    <h3>🛠️ Créditer un joueur</h3>
+    <input id="creditPseudo" placeholder="Pseudo du joueur"><br>
+    <input id="creditAmount" type="number" placeholder="Montant"><br>
+    <button class="action-btn" onclick="creditUser()">💰 Créditer</button>
+    <p id="adminMsg"></p>
+  </div>
 </main>
 
 <script>
 /* 🔐 Sécurité */
 const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
 
-if (!token) {
-  window.location.href = "login.html";
-}
+/* 🔓 Lecture du token */
+const payload = JSON.parse(atob(token.split(".")[1]));
 
 /* 🔄 Récupération utilisateur */
 fetch("https://sulky-manager-backend.onrender.com/api/users/me", {
-  headers: {
-    "Authorization": "Bearer " + token
-  }
+  headers: { "Authorization": "Bearer " + token }
 })
 .then(res => {
   if (res.status === 401) {
@@ -115,11 +137,42 @@ fetch("https://sulky-manager-backend.onrender.com/api/users/me", {
   if (!data) return;
   document.getElementById("welcome").innerText = "Bienvenue " + data.pseudo;
   document.getElementById("balance").innerText = "Solde : " + data.balance + " €";
-})
-.catch(() => {
-  localStorage.clear();
-  window.location.href = "login.html";
+
+  /* 👑 Admin uniquement */
+  if (payload.isAdmin === true) {
+    document.getElementById("adminPanel").style.display = "block";
+  }
 });
+
+/* 💰 Crédit admin */
+function creditUser() {
+  const pseudo = document.getElementById("creditPseudo").value.trim();
+  const amount = Number(document.getElementById("creditAmount").value);
+  const msg = document.getElementById("adminMsg");
+
+  msg.innerText = "";
+  msg.style.color = "red";
+
+  if (!pseudo || !amount || amount <= 0) {
+    msg.innerText = "Pseudo et montant valides requis";
+    return;
+  }
+
+  fetch("https://sulky-manager-backend.onrender.com/api/admin/add-balance", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({ pseudo, amount })
+  })
+  .then(r => r.json())
+  .then(data => {
+    msg.style.color = "#00ff88";
+    msg.innerText = data.message + " (nouveau solde: " + data.balance + " €)";
+  })
+  .catch(() => msg.innerText = "Erreur serveur");
+}
 
 /* Actions */
 function logout() {
