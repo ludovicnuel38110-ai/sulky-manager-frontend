@@ -222,3 +222,61 @@ body::after,
     pointer-events: none !important;
     z-index: 0 !important;
 }
+/* ===============================
+   RESPONSIVE MOBILE
+=============================== */
+
+@media (max-width: 768px) {
+
+  /* HEADER */
+  .header-content {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .header-text h1 {
+    font-size: 34px;
+  }
+
+  .header-text p {
+    font-size: 14px;
+    opacity: 0.85;
+  }
+
+  /* BOUTONS CONNEXION */
+  .header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .header-actions button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  /* NAVIGATION */
+  nav {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  nav button {
+    width: 100%;
+    padding: 14px;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin: 25px 15px;
+    padding: 20px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+}

@@ -8,12 +8,18 @@
 
 <body>
 
-<!-- BARRE DE CONNEXION -->
-<div id="topBar" class="top-bar"></div>
+<header class="main-header">
+    <div class="header-content">
 
-<header>
-    <h1>SULKY-BET</h1>
-    <p>Le PMU officiel de Sulkyland</p>
+        <div class="header-text">
+            <h1>SULKY-BET</h1>
+            <p>Le PMU officiel de Sulkyland</p>
+        </div>
+
+        <!-- ZONE CONNEXION / USER -->
+        <div id="authZone" class="header-actions"></div>
+
+    </div>
 </header>
 
 <nav>
@@ -67,33 +73,30 @@ function scrollToSection(id) {
 }
 
 /* ===========================
-   BARRE DE CONNEXION
+   AUTH HEADER
 =========================== */
 
-const topBar = document.getElementById("topBar");
+const authZone = document.getElementById("authZone");
 
 const token = localStorage.getItem("token");
 const pseudo = localStorage.getItem("pseudo");
 const balance = localStorage.getItem("balance");
 
 if (!token) {
-    topBar.innerHTML = `
-        <div style="text-align:center; padding:15px; background:#000;">
-            <a href="login.html"><button>Connexion</button></a>
-            <a href="register.html"><button>Créer un compte</button></a>
-        </div>
+    authZone.innerHTML = `
+        <a href="login.html"><button>Connexion</button></a>
+        <a href="register.html"><button>Créer un compte</button></a>
     `;
 } else {
-    topBar.innerHTML = `
-        <div style="text-align:center; padding:15px; background:#000;">
-            👤 <b>${pseudo}</b> | 💰 <b>${balance} Sulky</b>
-            <button id="logoutBtn">Déconnexion</button>
-        </div>
+    authZone.innerHTML = `
+        <span>👤 <b>${pseudo}</b></span>
+        <span>💰 <b>${balance} Sulky</b></span>
+        <button id="logoutBtn">Déconnexion</button>
     `;
 
     document.getElementById("logoutBtn").onclick = () => {
         localStorage.clear();
-        location.reload();
+        window.location.href = "index.html";
     };
 }
 </script>
