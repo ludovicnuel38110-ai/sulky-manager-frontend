@@ -1,39 +1,89 @@
-<script>
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  const pseudo = document.getElementById("pseudo").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const msg = document.getElementById("msg");
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion - Sulky Bet</title>
 
-  msg.innerText = "";
-  msg.style.color = "red";
-
-  if (!pseudo || !password) {
-    msg.innerText = "Pseudo et mot de passe requis";
-    return;
-  }
-
-  try {
-    const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pseudo, password })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      msg.innerText = data.error || "Erreur de connexion";
-      return;
+  <style>
+    body {
+      background: #051;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+      padding-top: 100px;
     }
 
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("pseudo", data.pseudo);
-    localStorage.setItem("balance", data.balance);
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: none;
+    }
 
-    window.location.href = "dashboard.html";
+    button {
+      background: #00ff88;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
 
-  } catch (err) {
-    msg.innerText = "Erreur serveur";
-  }
-});
-</script>
+<body>
+
+  <h1>Connexion Sulky-Bet</h1>
+
+  <input id="pseudo" placeholder="Pseudo"><br>
+  <input id="password" type="password" placeholder="Mot de passe"><br>
+  <button id="loginBtn">Se connecter</button>
+
+  <p id="msg"></p>
+
+  <script>
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const pseudo = document.getElementById("pseudo").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const msg = document.getElementById("msg");
+
+      msg.innerText = "";
+      msg.style.color = "red";
+
+      if (!pseudo || !password) {
+        msg.innerText = "Pseudo et mot de passe requis";
+        return;
+      }
+
+      try {
+        const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            pseudo: pseudo,
+            password: password
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          msg.innerText = data.message || "Erreur de connexion";
+          return;
+        }
+
+        // Stockage sécurisé
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("pseudo", data.pseudo);
+        localStorage.setItem("balance", data.balance);
+
+        // Redirection vers le dashboard
+        window.location.href = "dashboard.html";
+
+      } catch (err) {
+        msg.innerText = "Erreur serveur";
+      }
+    });
+  </script>
+
+</body>
+</html>
