@@ -117,7 +117,7 @@ nav button {
 <section class="dashboard">
 
   <div class="card">
-    <h2>Bienvenue <span id="username">joueur</span> 👋</h2>
+    <h2>Bienvenue <span id="pseudo">joueur</span> 👋</h2>
     <p>Gérez vos paris, consultez votre solde et accédez aux courses.</p>
   </div>
 
@@ -131,19 +131,24 @@ nav button {
 </section>
 
 <script>
-const username = localStorage.getItem("username");
+// 🔐 Sécurité minimale
+const token = localStorage.getItem("token");
+const pseudo = localStorage.getItem("pseudo");
 const balance = localStorage.getItem("balance");
 
-if (!username) {
+if (!token || !pseudo) {
   window.location.href = "login.html";
 }
 
-document.getElementById("username").innerText = username;
-document.getElementById("balanceBtn").innerText = "Solde : " + (balance || "...") + " €";
+// 🎯 Affichage
+document.getElementById("pseudo").innerText = pseudo;
+document.getElementById("balanceBtn").innerText =
+  "Solde : " + (balance ?? "...") + " €";
 
+// 🚪 Logout
 function logout() {
   localStorage.clear();
-  window.location.href = "index.html";
+  window.location.href = "login.html";
 }
 </script>
 
