@@ -8,6 +8,12 @@
 
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <div class="spinner"></div>
+  <p>Connexion au serveur Sulky-Bet...</p>
+</div>
+
 <header class="main-header">
     <div class="header-content">
 
@@ -29,44 +35,19 @@
     <button onclick="scrollToSection('news')">Actualités</button>
     <a href="aide.html"><button>Aide</button></a>
 </nav>
-<!-- PRESENTATION SULKY-BET -->
-<div class="section intro-section">
-    <h2> Bienvenue sur Sulky-Bet</h2>
 
+<!-- PRESENTATION -->
+<div class="section intro-section">
+    <h2>Bienvenue sur Sulky-Bet</h2>
     <p class="intro-text">
         Sulky-Bet est la plateforme officielle de paris hippiques de <b>Sulkyland</b>.
-        Pariez sur les plus grandes courses avec vos sulky, suivez vos gains en temps réel
-        et devenez l’un des meilleurs turfistes du jeu.
+        Pariez sur les plus grandes courses avec vos sulky.
     </p>
-
-    <div class="intro-features">
-        <div class="intro-box">
-             🏇<b>Pariez sur les courses</b><br>
-            Accédez aux programmes officiels et placez vos paris stratégiques.
-        </div>
-
-        <div class="intro-box">
-            💰 <b>Gérez votre solde</b><br>
-            Dépôts manuels, gains instantanés et suivi précis de vos Sulky.
-        </div>
-
-        <div class="intro-box">
-            🏆 <b>Classement des joueurs</b><br>
-            Grimpez dans le classement et imposez-vous comme un turfiste d’élite.
-        </div>
-    </div>
-
-    <div class="intro-cta">
-        <a href="register.html">
-            <button class="cta-btn">🚀 S’inscrire maintenant</button>
-        </a>
-    </div>
 </div>
 
 <!-- COURSES -->
 <div class="section" id="courses">
     <h2>🟢 Courses disponibles</h2>
-
     <div class="course">
         <div>
             <strong>R1 – VINCENNES</strong><br>
@@ -78,39 +59,13 @@
     </div>
 </div>
 
-<!-- RESULTATS -->
-<div class="section" id="results">
-    <h2>🏆 Résultat du jour</h2>
-    <p>Aucun résultat pour le moment</p>
-</div>
-
-<!-- CLASSEMENT -->
-<div class="section" id="ranking">
-    <h2>📊 Classement des parieurs</h2>
-    <p>Bientôt disponible</p>
-</div>
-
-<!-- ACTUS -->
-<div class="section" id="news">
-    <h2>📰 Actualité hippique</h2>
-    <ul>
-        <li>Nouvelle course Sulky-Bet ce soir</li>
-        <li>Flash domine le championnat</li>
-        <li>Bonus Sulky pour les gros parieurs</li>
-    </ul>
-</div>
-
 <script>
 function scrollToSection(id) {
     document.getElementById(id).scrollIntoView({ behavior: "smooth" });
 }
 
-/* ===========================
-   AUTH HEADER
-=========================== */
-
+/* AUTH HEADER */
 const authZone = document.getElementById("authZone");
-
 const token = localStorage.getItem("token");
 const pseudo = localStorage.getItem("pseudo");
 const balance = localStorage.getItem("balance");
@@ -132,6 +87,16 @@ if (!token) {
         window.location.href = "index.html";
     };
 }
+
+/* WAKE UP RENDER */
+fetch("https://sulky-manager-backend.onrender.com/")
+  .then(() => {
+    document.getElementById("loader").style.display = "none";
+  })
+  .catch(() => {
+    document.querySelector("#loader p").innerText =
+      "Réveil du serveur... merci de patienter ⏳";
+  });
 </script>
 
 </body>
