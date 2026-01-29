@@ -361,3 +361,36 @@ body::after,
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+/* ===== TABLE PARTANTS ===== */
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead {
+  background: rgba(0,0,0,0.6);
+}
+
+th {
+  color: #00ff88;
+  padding: 12px;
+  border-bottom: 2px solid #00ff88;
+  text-align: left;
+}
+
+td {
+  padding: 10px;
+  background: rgba(0,0,0,0.55);
+  border-bottom: 1px solid rgba(0,255,136,0.3);
+  color: #eafff5;
+}
+
+tr:hover td {
+  background: rgba(0,255,136,0.08);
+}
