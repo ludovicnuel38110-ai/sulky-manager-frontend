@@ -11,19 +11,18 @@
 <header class="main-header">
   <div class="header-content">
     <div class="header-text">
-      <h1 id="raceTitle">C1 – Course</h1>
-      <p id="raceDate">Date</p>
+      <h1 id="raceTitle">Course</h1>
+      <p id="raceDate"></p>
     </div>
 
     <div class="header-actions">
-      <a href="courses.html">
+      <a href="races.html">
         <button>⬅ Retour aux courses</button>
       </a>
     </div>
   </div>
 </header>
 
-<!-- SECTION PARTANTS -->
 <div class="section">
   <h2>🐎 Partants</h2>
 
@@ -40,20 +39,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td colspan="6">Chargement des partants...</td>
-        </tr>
+        <tr><td colspan="6">Chargement...</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
 <script>
-/* 🔎 Lecture id course dans URL */
 const params = new URLSearchParams(window.location.search);
 const raceId = params.get("id");
 
-/* 🔗 Appel API backend */
 fetch("https://sulky-manager-backend.onrender.com/api/courses/" + raceId)
   .then(res => res.json())
   .then(data => {
@@ -79,7 +74,7 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses/" + raceId)
   })
   .catch(() => {
     document.querySelector("#partantsTable tbody").innerHTML =
-      "<tr><td colspan='6'>Erreur de chargement</td></tr>";
+      "<tr><td colspan='6'>Erreur chargement</td></tr>";
   });
 </script>
 
