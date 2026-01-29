@@ -11,7 +11,7 @@
 <header class="main-header">
   <div class="header-content">
     <div class="header-text">
-      <h1 id="raceTitle">Course</h1>
+      <h1 id="raceTitle">Chargement...</h1>
       <p id="raceDate"></p>
     </div>
 
@@ -23,6 +23,7 @@
   </div>
 </header>
 
+<!-- SECTION PARTANTS -->
 <div class="section">
   <h2>🐎 Partants</h2>
 
@@ -39,43 +40,57 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td colspan="6">Chargement...</td></tr>
+        <tr><td colspan="6">Chargement des partants...</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
 <script>
+/* 🔎 Lecture ID course depuis URL */
 const params = new URLSearchParams(window.location.search);
 const raceId = params.get("id");
 
-fetch("https://sulky-manager-backend.onrender.com/api/courses/" + raceId)
-  .then(res => res.json())
-  .then(data => {
+/* Sécurité si id absent */
+if (!raceId) {
+  document.getElementById("raceTitle").innerText = "Course introuvable";
+  document.querySelector("#partantsTable tbody").innerHTML =
+    "<tr><td colspan='6'>Aucune course sélectionnée</td></tr>";
+} else {
 
-    document.getElementById("raceTitle").innerText = data.label;
-    document.getElementById("raceDate").innerText = data.date;
+  /* 🔗 Appel API backend */
+  fetch("https://sulky-manager-backend.onrender.com/api/courses/" + raceId)
+    .then(res => {
+      if (!res.ok) throw new Error("Not found");
+      return res.json();
+    })
+    .then(data => {
 
-    const tbody = document.querySelector("#partantsTable tbody");
-    tbody.innerHTML = "";
+      document.getElementById("raceTitle").innerText = data.label;
+      document.getElementById("raceDate").innerText = data.date;
 
-    data.partants.forEach((p, index) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${index+1}</td>
-        <td><b>${p.cheval}</b></td>
-        <td>${p.driver}</td>
-        <td>${p.proprietaire}</td>
-        <td>${p.musique}</td>
-        <td>${p.cote}</td>
-      `;
-      tbody.appendChild(tr);
+      const tbody = document.querySelector("#partantsTable tbody");
+      tbody.innerHTML = "";
+
+      data.partants.forEach((p, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td><b>${p.cheval}</b></td>
+          <td>${p.driver}</td>
+          <td>${p.proprietaire}</td>
+          <td>${p.musique}</td>
+          <td>${p.cote}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(() => {
+      document.getElementById("raceTitle").innerText = "Course introuvable";
+      document.querySelector("#partantsTable tbody").innerHTML =
+        "<tr><td colspan='6'>Erreur de chargement</td></tr>";
     });
-  })
-  .catch(() => {
-    document.querySelector("#partantsTable tbody").innerHTML =
-      "<tr><td colspan='6'>Erreur chargement</td></tr>";
-  });
+}
 </script>
 
 </body>
