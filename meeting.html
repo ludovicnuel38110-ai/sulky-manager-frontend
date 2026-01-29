@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Sulky-Bet – Courses de la réunion</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Sulky-Bet – Courses de la réunion</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -40,18 +40,33 @@ if (!reunionId) {
   throw new Error("Missing reunion ID");
 }
 
-fetch("https://sulky-manager-backend.onrender.com/api/courses/reunion/" + reunionId)
-  .then(res => res.json())
+const API_URL = "https://sulky-manager-backend.onrender.com/api/courses/reunion/"
+  + encodeURIComponent(reunionId);
+
+fetch(API_URL)
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("Erreur API");
+    }
+    return res.json();
+  })
   .then(courses => {
+    console.log("Courses chargées :", courses);
+
     const container = document.getElementById("coursesList");
     container.innerHTML = "";
 
-    if (!courses || courses.length === 0) {
+    if (!Array.isArray(courses) || courses.length === 0) {
       container.innerHTML = "<p>Aucune course disponible</p>";
       return;
     }
 
     courses.forEach(course => {
+      if (!course.id || !course.label) {
+        console.warn("Course invalide ignorée :", course);
+        return;
+      }
+
       const div = document.createElement("div");
       div.className = "course";
 
@@ -59,7 +74,7 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses/reunion/" + reunio
         <div>
           <strong>${course.label}</strong>
         </div>
-        <a href="race.html?id=${course.id}">
+        <a href="race.html?id=${encodeURIComponent(course.id)}">
           <button class="bet-btn">Voir les partants</button>
         </a>
       `;
@@ -67,8 +82,8 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses/reunion/" + reunio
       container.appendChild(div);
     });
   })
-  .catch(err => {
-    console.error(err);
+  .catch(error => {
+    console.error("Erreur chargement courses :", error);
     document.getElementById("coursesList").innerHTML =
       "<p>Erreur chargement courses</p>";
   });

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Sulky-Bet – Réunions</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Sulky-Bet – Réunions</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -37,20 +37,31 @@
 </div>
 
 <script>
-fetch("https://sulky-manager-backend.onrender.com/api/courses")
-  .then(res => res.json())
+const API_URL = "https://sulky-manager-backend.onrender.com/api/courses";
+
+fetch(API_URL)
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("Erreur API");
+    }
+    return res.json();
+  })
   .then(reunions => {
+    console.log("Réunions chargées :", reunions);
 
     const container = document.getElementById("reunionsList");
     container.innerHTML = "";
 
-    if (!reunions || reunions.length === 0) {
+    if (!Array.isArray(reunions) || reunions.length === 0) {
       container.innerHTML = "<p>Aucune réunion disponible</p>";
       return;
     }
 
     reunions.forEach(reunion => {
-      if (!reunion._id) return;
+      if (!reunion._id || !reunion.reunion) {
+        console.warn("Réunion invalide ignorée :", reunion);
+        return;
+      }
 
       const div = document.createElement("div");
       div.className = "course";
@@ -58,9 +69,9 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses")
       div.innerHTML = `
         <div>
           <strong>${reunion.reunion}</strong><br>
-          ${reunion.date || ""}
+          ${reunion.date ? reunion.date : ""}
         </div>
-        <a href="meeting.html?id=${reunion._id}">
+        <a href="meeting.html?id=${encodeURIComponent(reunion._id)}">
           <button class="bet-btn">Voir les courses</button>
         </a>
       `;
@@ -68,7 +79,8 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses")
       container.appendChild(div);
     });
   })
-  .catch(() => {
+  .catch(error => {
+    console.error("Erreur chargement réunions :", error);
     document.getElementById("reunionsList").innerHTML =
       "<p>Erreur de chargement des réunions</p>";
   });
