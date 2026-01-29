@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <title>SULKY-BET</title>
 <link rel="stylesheet" href="style.css">
+
+<!-- 🔐 REDIRECTION SI CONNECTÉ -->
+<script>
+const tokenCheck = localStorage.getItem("token");
+if (tokenCheck) {
+  window.location.href = "dashboard.html";
+}
+</script>
+
 </head>
 
 <body>
@@ -36,10 +45,9 @@
     <a href="aide.html"><button>Aide</button></a>
 </nav>
 
-</div>
-<!-- PRESENTATION SULKY-BET -->
+<!-- PRESENTATION -->
 <div class="section intro-section">
-    <h2> Bienvenue sur Sulky-Bet</h2>
+    <h2>Bienvenue sur Sulky-Bet</h2>
 
     <p class="intro-text">
         Sulky-Bet est la plateforme officielle de paris hippiques de <b>Sulkyland</b>.
@@ -71,7 +79,7 @@
     </div>
 </div>
 
-<!-- COURSES -->
+<!-- COURSES (exemple vitrine publique) -->
 <div class="section" id="courses">
     <h2>🟢 Courses disponibles</h2>
     <div class="course">
@@ -79,8 +87,8 @@
             <strong>R1 – VINCENNES</strong><br>
             Dimanche 01 février 2026
         </div>
-        <a href="vincennes.html">
-            <button class="bet-btn">Voir le programme</button>
+        <a href="login.html">
+            <button class="bet-btn">Se connecter pour parier</button>
         </a>
     </div>
 </div>
