@@ -128,7 +128,7 @@ fetch("https://sulky-manager-backend.onrender.com/api/users/me", {
 .then(res => {
   if (res.status === 401) {
     localStorage.clear();
-    window.location.href = "login.html";
+    window.location.href = "courses.html";
     return;
   }
   return res.json();
