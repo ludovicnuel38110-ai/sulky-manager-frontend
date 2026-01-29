@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Course</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="main-header">
+  <div class="header-content">
+    <div class="header-text">
+      <h1 id="raceTitle">Course</h1>
+    </div>
+    <div class="header-actions">
+      <a href="courses.html"><button>⬅ Retour réunions</button></a>
+    </div>
+  </div>
+</header>
+
+<div class="section">
+  <h2>🐎 Partants</h2>
+  <table id="horseTable">
+    <tr>
+      <th>#</th>
+      <th>Cheval</th>
+      <th>Driver</th>
+      <th>Propriétaire</th>
+      <th>Musique</th>
+      <th>Cote</th>
+    </tr>
+  </table>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const raceId = params.get("id");
+
+fetch("https://sulky-manager-backend.onrender.com/api/races/" + raceId)
+.then(res => res.json())
+.then(race => {
+
+  document.getElementById("raceTitle").innerText = race.label;
+
+  const table = document.getElementById("horseTable");
+
+  race.horses.forEach(h => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${h.number}</td>
+      <td>${h.name}</td>
+      <td>${h.driver}</td>
+      <td>${h.owner}</td>
+      <td>${h.music}</td>
+      <td>${h.odds}</td>
+    `;
+    table.appendChild(row);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -2,93 +2,59 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sulky-Bet – Courses</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- HEADER -->
 <header class="main-header">
   <div class="header-content">
     <div class="header-text">
       <h1>SULKY-BET</h1>
-      <p>Liste des courses disponibles</p>
+      <p>Liste des réunions</p>
     </div>
     <div class="header-actions">
-      <a href="dashboard.html">
-        <button>⬅ Retour dashboard</button>
-      </a>
+      <a href="dashboard.html"><button>⬅ Retour dashboard</button></a>
     </div>
   </div>
 </header>
 
-<!-- NAV -->
 <nav>
   <a href="index.html"><button>Accueil</button></a>
   <button disabled>Courses</button>
-  <button disabled>Résultats</button>
-  <button disabled>Classement</button>
 </nav>
 
-<!-- COURSES -->
 <div class="section">
-  <h2>🏇 Courses disponibles</h2>
-
-  <!-- Loader -->
-  <div id="loader" style="text-align:center; padding:30px;">
-    ⏳ Chargement des courses...
-  </div>
-
-  <!-- Conteneur dynamique -->
-  <div id="coursesList"></div>
+  <h2>🏇 Réunions disponibles</h2>
+  <div id="meetings">Chargement...</div>
 </div>
 
 <script>
-const API_URL = "https://sulky-manager-backend.onrender.com/api/courses";
+fetch("https://sulky-manager-backend.onrender.com/api/courses")
+.then(res => res.json())
+.then(meetings => {
+  const box = document.getElementById("meetings");
+  box.innerHTML = "";
 
-fetch(API_URL)
-  .then(res => {
-    if (!res.ok) throw new Error("Erreur API");
-    return res.json();
-  })
-  .then(courses => {
-    const container = document.getElementById("coursesList");
-    const loader = document.getElementById("loader");
-    loader.style.display = "none";
+  meetings.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "course";
 
-    if (courses.length === 0) {
-      container.innerHTML = "<p>Aucune course disponible</p>";
-      return;
-    }
+    div.innerHTML = `
+      <div>
+        <strong>${m.name}</strong><br>
+        ${m.date}
+      </div>
+      <button class="bet-btn" onclick="openMeeting(${m.id})">Voir les courses</button>
+    `;
 
-    courses.forEach(course => {
-      const div = document.createElement("div");
-      div.className = "course";
-
-      div.innerHTML = `
-        <div>
-          <strong>${course.name}</strong><br>
-          ${course.date}
-        </div>
-        ${
-          course.link
-          ? `<a href="${course.link}">
-               <button class="bet-btn">Voir le programme</button>
-             </a>`
-          : `<button class="bet-btn" disabled>Bientôt</button>`
-        }
-      `;
-
-      container.appendChild(div);
-    });
-  })
-  .catch(err => {
-    document.getElementById("loader").innerHTML =
-      "❌ Impossible de charger les courses (serveur en veille ?)";
-    console.error(err);
+    box.appendChild(div);
   });
+});
+
+function openMeeting(id){
+  window.location.href = "meeting.html?id=" + id;
+}
 </script>
 
 </body>
