@@ -90,7 +90,7 @@ main h2 {
 </header>
 
 <nav>
-  <button onclick="goRaces()">Courses</button>
+  <button onclick="goCourses()">Courses</button>
   <button disabled>Résultats</button>
   <button disabled>Classement</button>
   <button disabled>Actualités</button>
@@ -101,7 +101,7 @@ main h2 {
   <h1 id="welcome">Bienvenue</h1>
   <h2 id="balance">Solde : ... €</h2>
 
-  <button class="action-btn" onclick="goRaces()">🏇 Voir les courses</button>
+  <button class="action-btn" onclick="goCourses()">🏇 Voir les courses</button>
 
   <!-- 🔐 PANEL ADMIN -->
   <div id="adminPanel">
@@ -177,12 +177,11 @@ function creditUser() {
 /* Actions */
 function logout() {
   localStorage.clear();
-  window.location.href = "https://sulky-manager-frontend.onrender.com/";
-
+  window.location.href = "index.html";
 }
 
-function goRaces() {
-  window.location.href = "races.html";
+function goCourses() {
+  window.location.href = "courses.html";
 }
 </script>
 
