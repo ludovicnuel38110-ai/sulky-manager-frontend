@@ -2,58 +2,73 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Sulky-Bet – Programme</title>
+<title>Sulky-Bet – Courses de la réunion</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header class="main-header">
   <div class="header-content">
     <div class="header-text">
-      <h1 id="title">Programme</h1>
-      <p id="date"></p>
+      <h1 id="reunionTitle">Réunion</h1>
+      <p id="reunionDate"></p>
     </div>
+
     <div class="header-actions">
-      <a href="courses.html"><button>⬅ Retour réunions</button></a>
+      <a href="races.html">
+        <button>⬅ Retour réunions</button>
+      </a>
     </div>
   </div>
 </header>
 
 <div class="section">
   <h2>📋 Courses de la réunion</h2>
-  <div id="raceList">Chargement...</div>
+  <div id="coursesList">
+    <p>Chargement des courses...</p>
+  </div>
 </div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const meetingId = params.get("id");
+const reunionId = params.get("id");
 
-fetch("https://sulky-manager-backend.onrender.com/api/courses/" + meetingId)
-.then(res => res.json())
-.then(meeting => {
-
-  document.getElementById("title").innerText = meeting.name;
-  document.getElementById("date").innerText = meeting.date;
-
-  const list = document.getElementById("raceList");
-  list.innerHTML = "";
-
-  meeting.races.forEach(r => {
-    const div = document.createElement("div");
-    div.className = "course";
-
-    div.innerHTML = `
-      <div><strong>${r.label}</strong></div>
-      <button class="bet-btn" onclick="openRace(${r.id})">Voir les chevaux</button>
-    `;
-
-    list.appendChild(div);
-  });
-});
-
-function openRace(id){
-  window.location.href = "race.html?id=" + id;
+if(!reunionId){
+  document.getElementById("reunionTitle").innerText = "Réunion introuvable";
+  document.getElementById("coursesList").innerHTML =
+    "<p>ID de réunion manquant</p>";
+  throw new Error("Missing reunion id");
 }
+
+fetch("https://sulky-manager-backend.onrender.com/api/courses/reunion/" + reunionId)
+  .then(res => res.json())
+  .then(courses => {
+
+    const container = document.getElementById("coursesList");
+    container.innerHTML = "";
+
+    courses.forEach(course => {
+      const div = document.createElement("div");
+      div.className = "course";
+
+      div.innerHTML = `
+        <div>
+          <strong>${course.label}</strong>
+        </div>
+        <a href="race.html?id=${course.id}">
+          <button class="bet-btn">Voir les partants</button>
+        </a>
+      `;
+
+      container.appendChild(div);
+    });
+
+  })
+  .catch(() => {
+    document.getElementById("coursesList").innerHTML =
+      "<p>Erreur chargement courses</p>";
+  });
 </script>
 
 </body>

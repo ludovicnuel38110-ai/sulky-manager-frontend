@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Sulky-Bet – Partants</title>
+<title>Sulky-Bet – Réunions</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,86 +11,59 @@
 <header class="main-header">
   <div class="header-content">
     <div class="header-text">
-      <h1 id="raceTitle">Chargement...</h1>
-      <p id="raceDate"></p>
+      <h1>SULKY-BET</h1>
+      <p>Réunions disponibles</p>
     </div>
-
     <div class="header-actions">
-      <a href="races.html">
-        <button>⬅ Retour aux courses</button>
-      </a>
+      <a href="dashboard.html"><button>⬅ Retour dashboard</button></a>
     </div>
   </div>
 </header>
 
-<!-- SECTION PARTANTS -->
-<div class="section">
-  <h2>🐎 Partants</h2>
+<nav>
+  <a href="index.html"><button>Accueil</button></a>
+  <button disabled>Courses</button>
+  <button disabled>Résultats</button>
+  <button disabled>Classement</button>
+</nav>
 
-  <div class="table-container">
-    <table id="partantsTable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Cheval</th>
-          <th>Driver</th>
-          <th>Propriétaire</th>
-          <th>Musique</th>
-          <th>Cote</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="6">Chargement des partants...</td></tr>
-      </tbody>
-    </table>
+<div class="section">
+  <h2>🟢 Réunions disponibles</h2>
+  <div id="reunionsList">
+    <p>Chargement des réunions...</p>
   </div>
 </div>
 
 <script>
-/* 🔎 Lecture ID course depuis URL */
-const params = new URLSearchParams(window.location.search);
-const raceId = params.get("id");
+fetch("https://sulky-manager-backend.onrender.com/api/courses")
+  .then(res => res.json())
+  .then(reunions => {
 
-/* Sécurité si id absent */
-if (!raceId) {
-  document.getElementById("raceTitle").innerText = "Course introuvable";
-  document.querySelector("#partantsTable tbody").innerHTML =
-    "<tr><td colspan='6'>Aucune course sélectionnée</td></tr>";
-} else {
+    const container = document.getElementById("reunionsList");
+    container.innerHTML = "";
 
-  /* 🔗 Appel API backend */
-  fetch("https://sulky-manager-backend.onrender.com/api/courses/" + raceId)
-    .then(res => {
-      if (!res.ok) throw new Error("Not found");
-      return res.json();
-    })
-    .then(data => {
+    reunions.forEach(reunion => {
+      const div = document.createElement("div");
+      div.className = "course";
 
-      document.getElementById("raceTitle").innerText = data.label;
-      document.getElementById("raceDate").innerText = data.date;
+      div.innerHTML = `
+        <div>
+          <strong>${reunion.reunion}</strong><br>
+          ${reunion.date}
+        </div>
+        <a href="meeting.html?id=${reunion._id}">
+          <button class="bet-btn">Voir les courses</button>
+        </a>
+      `;
 
-      const tbody = document.querySelector("#partantsTable tbody");
-      tbody.innerHTML = "";
-
-      data.partants.forEach((p, index) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${index + 1}</td>
-          <td><b>${p.cheval}</b></td>
-          <td>${p.driver}</td>
-          <td>${p.proprietaire}</td>
-          <td>${p.musique}</td>
-          <td>${p.cote}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    })
-    .catch(() => {
-      document.getElementById("raceTitle").innerText = "Course introuvable";
-      document.querySelector("#partantsTable tbody").innerHTML =
-        "<tr><td colspan='6'>Erreur de chargement</td></tr>";
+      container.appendChild(div);
     });
-}
+
+  })
+  .catch(() => {
+    document.getElementById("reunionsList").innerHTML =
+      "<p>Erreur de chargement des réunions</p>";
+  });
 </script>
 
 </body>
