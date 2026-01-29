@@ -2,24 +2,29 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sulky-Bet – Courses</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header class="main-header">
   <div class="header-content">
     <div class="header-text">
       <h1>SULKY-BET</h1>
-      <p>Liste des courses</p>
+      <p>Liste des courses disponibles</p>
     </div>
     <div class="header-actions">
-      <a href="dashboard.html"><button>⬅ Retour dashboard</button></a>
+      <a href="dashboard.html">
+        <button>⬅ Retour dashboard</button>
+      </a>
     </div>
   </div>
 </header>
 
+<!-- NAV -->
 <nav>
   <a href="index.html"><button>Accueil</button></a>
   <button disabled>Courses</button>
@@ -27,19 +32,36 @@
   <button disabled>Classement</button>
 </nav>
 
+<!-- COURSES -->
 <div class="section">
   <h2>🏇 Courses disponibles</h2>
-  <div id="coursesList">
-    <p>Chargement des courses...</p>
+
+  <!-- Loader -->
+  <div id="loader" style="text-align:center; padding:30px;">
+    ⏳ Chargement des courses...
   </div>
+
+  <!-- Conteneur dynamique -->
+  <div id="coursesList"></div>
 </div>
 
 <script>
-fetch("https://sulky-manager-backend.onrender.com/api/courses")
-  .then(res => res.json())
+const API_URL = "https://sulky-manager-backend.onrender.com/api/courses";
+
+fetch(API_URL)
+  .then(res => {
+    if (!res.ok) throw new Error("Erreur API");
+    return res.json();
+  })
   .then(courses => {
     const container = document.getElementById("coursesList");
-    container.innerHTML = "";
+    const loader = document.getElementById("loader");
+    loader.style.display = "none";
+
+    if (courses.length === 0) {
+      container.innerHTML = "<p>Aucune course disponible</p>";
+      return;
+    }
 
     courses.forEach(course => {
       const div = document.createElement("div");
@@ -62,9 +84,10 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses")
       container.appendChild(div);
     });
   })
-  .catch(() => {
-    document.getElementById("coursesList").innerHTML =
-      "<p>Erreur de chargement des courses</p>";
+  .catch(err => {
+    document.getElementById("loader").innerHTML =
+      "❌ Impossible de charger les courses (serveur en veille ?)";
+    console.error(err);
   });
 </script>
 
