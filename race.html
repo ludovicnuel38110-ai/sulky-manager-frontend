@@ -15,7 +15,9 @@
       <p>Réunions disponibles</p>
     </div>
     <div class="header-actions">
-      <a href="dashboard.html"><button>⬅ Retour dashboard</button></a>
+      <a href="dashboard.html">
+        <button>⬅ Retour dashboard</button>
+      </a>
     </div>
   </div>
 </header>
@@ -42,14 +44,21 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses")
     const container = document.getElementById("reunionsList");
     container.innerHTML = "";
 
+    if (!reunions || reunions.length === 0) {
+      container.innerHTML = "<p>Aucune réunion disponible</p>";
+      return;
+    }
+
     reunions.forEach(reunion => {
+      if (!reunion._id) return;
+
       const div = document.createElement("div");
       div.className = "course";
 
       div.innerHTML = `
         <div>
           <strong>${reunion.reunion}</strong><br>
-          ${reunion.date}
+          ${reunion.date || ""}
         </div>
         <a href="meeting.html?id=${reunion._id}">
           <button class="bet-btn">Voir les courses</button>
@@ -58,7 +67,6 @@ fetch("https://sulky-manager-backend.onrender.com/api/courses")
 
       container.appendChild(div);
     });
-
   })
   .catch(() => {
     document.getElementById("reunionsList").innerHTML =
