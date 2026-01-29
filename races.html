@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses - Sulky-Bet</title>
+</head>
+<body>
+    <h1>Liste des chevaux</h1>
+    <div id="race-container">Chargement...</div>
+    <button id="back">Retour au dashboard</button>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        const raceId = 101; // Exemple de course
+        fetch(`https://sulky-manager-backend.onrender.com/api/races/${raceId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById('race-container');
+            let html = `<h2>${data.label}</h2><ul>`;
+            data.horses.forEach(h => {
+                html += `<li>${h.number} - ${h.name} (Driver: ${h.driver}, Odds: ${h.odds})</li>`;
+            });
+            html += `</ul>`;
+            container.innerHTML = html;
+        })
+        .catch(err => {
+            console.error('Erreur fetch:', err);
+            document.getElementById('race-container').innerText = 'Impossible de charger la course.';
+        });
+
+        document.getElementById('back').addEventListener('click', () => {
+            window.location.href = '/dashboard.html';
+        });
+    </script>
+</body>
+</html>
