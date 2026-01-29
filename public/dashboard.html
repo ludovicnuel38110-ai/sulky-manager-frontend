@@ -90,7 +90,7 @@ main h2 {
 </header>
 
 <nav>
-  <button onclick="goCourses()">Courses</button>
+  <button onclick="goRaces()">Courses</button>
   <button disabled>Résultats</button>
   <button disabled>Classement</button>
   <button disabled>Actualités</button>
@@ -101,7 +101,7 @@ main h2 {
   <h1 id="welcome">Bienvenue</h1>
   <h2 id="balance">Solde : ... €</h2>
 
-  <button class="action-btn" onclick="goCourses()">🏇 Voir les courses</button>
+  <button class="action-btn" onclick="goRaces()">🏇 Voir les courses</button>
 
   <!-- 🔐 PANEL ADMIN -->
   <div id="adminPanel">
@@ -116,7 +116,9 @@ main h2 {
 <script>
 /* 🔐 Sécurité */
 const token = localStorage.getItem("token");
-if (!token) window.location.href = "login.html";
+if (!token) {
+  window.location.href = "login.html";
+}
 
 /* 🔓 Lecture du token */
 const payload = JSON.parse(atob(token.split(".")[1]));
@@ -128,15 +130,19 @@ fetch("https://sulky-manager-backend.onrender.com/api/users/me", {
 .then(res => {
   if (res.status === 401) {
     localStorage.clear();
-    window.location.href = "courses.html";
+    window.location.href = "login.html";
     return;
   }
   return res.json();
 })
 .then(data => {
   if (!data) return;
-  document.getElementById("welcome").innerText = "Bienvenue " + data.pseudo;
-  document.getElementById("balance").innerText = "Solde : " + data.balance + " €";
+
+  document.getElementById("welcome").innerText =
+    "Bienvenue " + data.pseudo;
+
+  document.getElementById("balance").innerText =
+    "Solde : " + data.balance + " €";
 
   /* 👑 Admin uniquement */
   if (payload.isAdmin === true) {
@@ -169,9 +175,12 @@ function creditUser() {
   .then(r => r.json())
   .then(data => {
     msg.style.color = "#00ff88";
-    msg.innerText = data.message + " (nouveau solde: " + data.balance + " €)";
+    msg.innerText =
+      data.message + " (nouveau solde: " + data.balance + " €)";
   })
-  .catch(() => msg.innerText = "Erreur serveur");
+  .catch(() => {
+    msg.innerText = "Erreur serveur";
+  });
 }
 
 /* Actions */
@@ -180,12 +189,11 @@ function logout() {
   window.location.href = "index.html";
 }
 
-function goCourses() {
-  window.location.href = "courses.html";
+/* 🔥 SEULE NAVIGATION AUTORISÉE VERS LES COURSES */
+function goRaces() {
+  window.location.href = "races.html";
 }
 </script>
 
 </body>
 </html>
-
-
