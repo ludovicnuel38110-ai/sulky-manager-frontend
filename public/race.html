@@ -16,8 +16,8 @@
     </div>
 
     <div class="header-actions">
-      <a href="races.html">
-        <button>⬅ Retour réunions</button>
+      <a href="meeting.html">
+        <button>⬅ Retour courses</button>
       </a>
     </div>
   </div>
@@ -26,7 +26,7 @@
 <div class="section">
   <h2>🏇 Partants</h2>
 
-  <table id="partantsTable">
+  <table id="partantsTable" class="pmu-table">
     <thead>
       <tr>
         <th>#</th>
@@ -35,6 +35,7 @@
         <th>Propriétaire</th>
         <th>Musique</th>
         <th>Cote</th>
+        <th>Pari</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -42,19 +43,25 @@
 </div>
 
 <script>
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
+
 const params = new URLSearchParams(window.location.search);
 const raceId = params.get("id");
 
 if (!raceId) {
-  alert("ID de course manquant");
+  alert("ID course manquant");
   window.location.href = "races.html";
 }
 
-const API_URL = "https://sulky-manager-backend.onrender.com/api/courses/" + raceId;
+/* =========================
+   🔹 Charger la course
+========================= */
 
-fetch(API_URL)
+fetch("https://sulky-manager-backend.onrender.com/api/courses/" + raceId)
   .then(res => res.json())
   .then(race => {
+
     document.getElementById("raceTitle").innerText = race.label;
     document.getElementById("raceDate").innerText = race.date || "";
 
@@ -70,15 +77,58 @@ fetch(API_URL)
         <td>${p.proprietaire}</td>
         <td>${p.musique}</td>
         <td>${p.cote}</td>
+        <td>
+          <button class="bet-btn"
+            onclick="placeBet('${p.cheval}', ${p.cote})">
+            Parier
+          </button>
+        </td>
       `;
 
       tbody.appendChild(tr);
     });
+
   })
   .catch(() => {
     document.querySelector(".section").innerHTML =
       "<p>Erreur chargement partants</p>";
   });
+
+/* =========================
+   🔹 Placer un pari
+========================= */
+
+function placeBet(cheval, cote) {
+
+  const montant = prompt(`Montant du pari pour ${cheval} ?`);
+
+  if (!montant || montant <= 0) return;
+
+  fetch("https://sulky-manager-backend.onrender.com/api/bets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({
+      raceId: Number(raceId),
+      cheval,
+      cote,
+      montant: Number(montant)
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    if (data.message) {
+      alert("✅ Pari placé !\nNouveau solde : " + data.balance);
+
+      localStorage.setItem("balance", data.balance);
+    }
+
+  })
+  .catch(() => alert("Erreur lors du pari"));
+}
 </script>
 
 </body>
