@@ -16,6 +16,7 @@ body{
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
+  font-family:Segoe UI, sans-serif;
 }
 
 /* ================= LAYOUT ================= */
@@ -43,38 +44,29 @@ body{
 
 .top-bar h2{
   color:#00ff88;
-  font-size:28px;
-  text-shadow:0 0 10px #00ff88;
+  text-shadow:0 0 12px #00ff88;
 }
 
 /* ================= CARDS ================= */
 
 .admin-card{
   background:rgba(0,110,55,.55);
-  backdrop-filter:blur(14px);
-
+  backdrop-filter:blur(12px);
   border-radius:22px;
   padding:28px;
-
   border:1px solid rgba(0,255,136,.6);
-
-  box-shadow:
-    0 0 35px rgba(0,255,136,.25),
-    inset 0 0 20px rgba(0,0,0,.35);
-
+  box-shadow:0 0 35px rgba(0,255,136,.25);
   transition:.25s;
 }
 
 .admin-card:hover{
   transform:translateY(-4px);
-  box-shadow:0 0 45px rgba(0,255,136,.5);
+  box-shadow:0 0 45px rgba(0,255,136,.6);
 }
 
 .admin-card h3{
   color:#00ff88;
   margin-bottom:15px;
-  border-bottom:1px solid #00ff88;
-  padding-bottom:6px;
 }
 
 /* ================= INPUTS ================= */
@@ -87,12 +79,10 @@ input, textarea{
   border:none;
   background:rgba(0,0,0,.6);
   color:#fff;
-  font-size:14px;
 }
 
 textarea{
   height:170px;
-  resize:vertical;
 }
 
 /* ================= BUTTONS ================= */
@@ -101,24 +91,15 @@ button{
   width:100%;
   margin-top:15px;
   padding:14px;
-
-  border-radius:12px;
   border:none;
-
+  border-radius:12px;
   background:linear-gradient(135deg,#00ff88,#00cc66);
-  color:#001a0f;
-
   font-weight:bold;
   cursor:pointer;
-
-  box-shadow:0 0 15px rgba(0,255,136,.6);
-
-  transition:.2s;
 }
 
 button:hover{
   transform:scale(1.04);
-  box-shadow:0 0 30px #00ff88;
 }
 
 /* ================= MESSAGE ================= */
@@ -128,7 +109,6 @@ button:hover{
   text-align:center;
   font-weight:bold;
   color:#00ff88;
-  font-size:18px;
 }
 
 </style>
@@ -139,7 +119,6 @@ button:hover{
 
 <div class="admin-wrapper">
 
-  <!-- HEADER -->
   <div class="top-bar">
     <h2>🛠️ Gestion des courses</h2>
     <button onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
@@ -148,31 +127,27 @@ button:hover{
 
   <div class="admin-grid">
 
-    <!-- ================= REUNION ================= -->
+    <!-- REUNION -->
     <div class="admin-card">
       <h3>🏟️ Créer une réunion</h3>
-
       <input id="rName" placeholder="R1 – VINCENNES">
       <input id="rDate" placeholder="Dimanche 01 février 2026">
-
-      <button onclick="createReunion()">Créer la réunion</button>
+      <button id="btnReunion">Créer la réunion</button>
     </div>
 
 
-    <!-- ================= COURSE ================= -->
+    <!-- COURSE -->
     <div class="admin-card">
       <h3>🏇 Ajouter une course</h3>
-
       <input id="cReunion" placeholder="Reunion ID">
       <input id="cId" placeholder="ID course (101)">
       <input id="cLabel" placeholder="C1 – Prix du Test">
       <input id="cDate" placeholder="01/02/2026">
-
-      <button onclick="addCourse()">Ajouter la course</button>
+      <button id="btnCourse">Ajouter la course</button>
     </div>
 
 
-    <!-- ================= RUNNER ================= -->
+    <!-- RUNNER -->
     <div class="admin-card">
       <h3>🐎 Ajouter un cheval (manuel)</h3>
 
@@ -185,17 +160,14 @@ button:hover{
       <input id="pMusique" placeholder="Musique">
       <input id="pCote" placeholder="Cote ex: 3.5">
 
-      <button onclick="addRunner()">Ajouter le partant</button>
+      <button id="btnRunner">Ajouter le partant</button>
 
-
-      <!-- ================= BULK IMPORT ================= -->
-
-      <h3 style="margin-top:35px;">⚡ Import automatique PMU</h3>
+      <h3 style="margin-top:25px;">⚡ Import automatique</h3>
 
       <textarea id="bulkInput"
-        placeholder="Colle ici la liste complète copiée du site PMU"></textarea>
+        placeholder="Colle la liste PMU ici"></textarea>
 
-      <button onclick="importBulk()">Importer tous les chevaux</button>
+      <button id="btnBulk">Importer tous les chevaux</button>
     </div>
 
   </div>
@@ -205,12 +177,15 @@ button:hover{
 </div>
 
 
-<script>
+
+<!-- ================= JS ================= -->
+
+<script defer>
+
 const token = localStorage.getItem("token");
 if(!token) location.href="login.html";
 
 const API = "https://sulky-manager-backend.onrender.com/api/admin";
-
 const msg = document.getElementById("msg");
 
 function post(url, body){
@@ -225,74 +200,65 @@ function post(url, body){
 }
 
 
-/* ================= REUNION ================= */
+/* ================= BUTTON EVENTS ================= */
+
+document.getElementById("btnReunion").onclick = createReunion;
+document.getElementById("btnCourse").onclick = addCourse;
+document.getElementById("btnRunner").onclick = addRunner;
+document.getElementById("btnBulk").onclick = importBulk;
+
+
+/* ================= FUNCTIONS ================= */
 
 async function createReunion(){
 
-  const name = document.getElementById("rName").value;
+  const reunion = document.getElementById("rName").value;
   const date = document.getElementById("rDate").value;
 
-  if(!name || !date){
-    alert("Remplis les champs");
-    return;
-  }
-
-  const res = await post("/create-reunion",{
-    reunion: name,
-    date: date
-  });
+  const res = await post("/create-reunion",{ reunion, date });
 
   msg.innerText = res.message + " | ID: " + res.id;
 }
 
 
-/* ================= COURSE ================= */
-
 async function addCourse(){
-  const res = await post("/add-course",{
-    reunionId:cReunion.value,
-    id:Number(cId.value),
-    label:cLabel.value,
-    date:cDate.value
-  });
+
+  const reunionId = document.getElementById("cReunion").value;
+  const id = Number(document.getElementById("cId").value);
+  const label = document.getElementById("cLabel").value;
+  const date = document.getElementById("cDate").value;
+
+  const res = await post("/add-course",{ reunionId, id, label, date });
 
   msg.innerText = res.message;
 }
 
-
-/* ================= RUNNER MANUEL ================= */
 
 async function addRunner(){
 
+  const reunionId = document.getElementById("pReunion").value;
+  const raceId = Number(document.getElementById("pRace").value);
+
+  const cheval = document.getElementById("pCheval").value;
+  const driver = document.getElementById("pDriver").value;
+  const proprietaire = document.getElementById("pProp").value;
+  const musique = document.getElementById("pMusique").value;
+  const cote = Number(document.getElementById("pCote").value);
+
   const res = await post("/add-runner",{
-    reunionId:pReunion.value,
-    raceId:Number(pRace.value),
-    cheval:pCheval.value,
-    driver:pDriver.value,
-    proprietaire:pProp.value,
-    musique:pMusique.value,
-    cote:Number(pCote.value)
+    reunionId, raceId, cheval, driver, proprietaire, musique, cote
   });
 
   msg.innerText = res.message;
 }
 
 
-/* ================= BULK IMPORT AUTO ================= */
-
 async function importBulk(){
 
-  const reunionId = pReunion.value;
-  const raceId = Number(pRace.value);
+  const reunionId = document.getElementById("pReunion").value;
+  const raceId = Number(document.getElementById("pRace").value);
 
-  if(!reunionId || !raceId){
-    alert("Remplis Reunion ID et Race ID d'abord");
-    return;
-  }
-
-  const text = bulkInput.value.trim();
-  if(!text) return;
-
+  const text = document.getElementById("bulkInput").value.trim();
   const lines = text.split("\n").map(l=>l.trim()).filter(Boolean);
 
   let created = 0;
@@ -304,15 +270,11 @@ async function importBulk(){
       const cheval = lines[i+1];
       const driver = lines[i+2];
 
-      let coteLine = lines.slice(i).find(l=>/\d+\.\d+/.test(l));
-
+      let coteLine = lines.slice(i).find(l=>/\d+\.\d+/);
       const cote = parseFloat(coteLine?.match(/\d+\.\d+/)?.[0] || 3);
 
       await post("/add-runner",{
-        reunionId,
-        raceId,
-        cheval,
-        driver,
+        reunionId, raceId, cheval, driver,
         proprietaire:"-",
         musique:"-",
         cote
