@@ -419,3 +419,8 @@ tr:hover td {
   margin-top:10px;
   padding:10px;
 }
+.check-cell{
+  font-size:20px;
+  text-align:center;
+  width:40px;
+}
