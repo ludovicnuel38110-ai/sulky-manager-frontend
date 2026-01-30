@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Admin Courses</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ================= BACKGROUND ================= */
+
+body{
+  background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.85)),
+    url("images/bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+/* ================= LAYOUT ================= */
+
+.admin-wrapper{
+  max-width:1200px;
+  margin:80px auto;
+  padding:20px;
+}
+
+.admin-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  gap:30px;
+}
+
+/* ================= CARDS ================= */
+
+.admin-card{
+  background:rgba(0,110,55,.55);
+  backdrop-filter:blur(14px);
+
+  border-radius:20px;
+  padding:25px;
+
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:
+    0 0 35px rgba(0,255,136,.25),
+    inset 0 0 20px rgba(0,0,0,.35);
+}
+
+.admin-card h3{
+  color:#00ff88;
+  margin-bottom:15px;
+  border-bottom:1px solid #00ff88;
+  padding-bottom:6px;
+}
+
+/* ================= INPUTS ================= */
+
+.admin-card input{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+}
+
+.admin-card button{
+  width:100%;
+  margin-top:15px;
+}
+
+/* ================= HEADER ================= */
+
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.msg{
+  margin-top:15px;
+  color:#00ff88;
+  font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="admin-wrapper">
+
+  <div class="top-bar">
+    <h2>🛠️ Gestion des courses</h2>
+    <button onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
+  </div>
+
+
+  <div class="admin-grid">
+
+    <!-- ================= REUNION ================= -->
+    <div class="admin-card">
+      <h3>🏟️ Créer une réunion</h3>
+
+      <input id="rName" placeholder="R1 – VINCENNES">
+      <input id="rDate" placeholder="Dimanche 01 février 2026">
+
+      <button onclick="createReunion()">Créer la réunion</button>
+    </div>
+
+
+    <!-- ================= COURSE ================= -->
+    <div class="admin-card">
+      <h3>🏇 Ajouter une course</h3>
+
+      <input id="cReunion" placeholder="Reunion ID">
+      <input id="cId" placeholder="ID course (101)">
+      <input id="cLabel" placeholder="C1 – Prix du Test">
+      <input id="cDate" placeholder="01/02/2026">
+
+      <button onclick="addCourse()">Ajouter la course</button>
+    </div>
+
+
+    <!-- ================= RUNNER ================= -->
+    <div class="admin-card">
+      <h3>🐎 Ajouter un cheval</h3>
+
+      <input id="pReunion" placeholder="Reunion ID">
+      <input id="pRace" placeholder="Race ID">
+
+      <input id="pCheval" placeholder="Nom du cheval">
+      <input id="pDriver" placeholder="Driver">
+      <input id="pProp" placeholder="Propriétaire">
+      <input id="pMusique" placeholder="Musique ex: 1a2a3a">
+      <input id="pCote" placeholder="Cote ex: 3.5">
+
+      <button onclick="addRunner()">Ajouter le partant</button>
+    </div>
+
+  </div>
+
+  <p id="msg" class="msg"></p>
+
+</div>
+
+
+<script>
+const token = localStorage.getItem("token");
+if(!token) location.href="login.html";
+
+const API = "https://sulky-manager-backend.onrender.com/api/admin";
+
+function post(url, body){
+  return fetch(API+url,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+token
+    },
+    body:JSON.stringify(body)
+  }).then(r=>r.json());
+}
+
+/* ================= REUNION ================= */
+
+async function createReunion(){
+  const res = await post("/create-reunion",{
+    reunion:rName.value,
+    date:rDate.value
+  });
+
+  msg.innerText = res.message + " | ID: " + res.id;
+}
+
+/* ================= COURSE ================= */
+
+async function addCourse(){
+  const res = await post("/add-course",{
+    reunionId:cReunion.value,
+    id:Number(cId.value),
+    label:cLabel.value,
+    date:cDate.value
+  });
+
+  msg.innerText = res.message;
+}
+
+/* ================= RUNNER ================= */
+
+async function addRunner(){
+  const res = await post("/add-runner",{
+    reunionId:pReunion.value,
+    raceId:Number(pRace.value),
+    cheval:pCheval.value,
+    driver:pDriver.value,
+    proprietaire:pProp.value,
+    musique:pMusique.value,
+    cote:Number(pCote.value)
+  });
+
+  msg.innerText = res.message;
+}
+</script>
+
+</body>
+</html>
