@@ -394,3 +394,28 @@ td {
 tr:hover td {
   background: rgba(0,255,136,0.08);
 }
+.race-layout{
+  display:flex;
+  gap:30px;
+}
+
+.race-table{
+  flex:3;
+}
+
+.bet-slip{
+  flex:1;
+  background:#012;
+  padding:20px;
+  border-radius:15px;
+  border:2px solid #00ff88;
+  position:sticky;
+  top:20px;
+}
+
+.bet-slip select,
+.bet-slip input{
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+}
