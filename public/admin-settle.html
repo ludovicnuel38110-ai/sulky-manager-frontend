@@ -1,49 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<title>Règlement course</title>
+<meta charset="UTF-8">
+<title>Admin – Régler course</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+body{
+  background:#051;
+  color:white;
+  font-family:Arial;
+}
+
+.box{
+  max-width:500px;
+  margin:80px auto;
+  background:#022;
+  padding:30px;
+  border-radius:12px;
+  border:2px solid #00ff88;
+}
+
+input, button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:8px;
+}
+
+button{
+  background:#00ff88;
+  font-weight:bold;
+}
+</style>
 </head>
+
 <body>
 
-<div class="section">
+<div class="box">
 
-<h2>⚖️ Régler une course</h2>
+  <h2>⚙️ Régler une course</h2>
 
-<input id="raceId" placeholder="ID course">
-<input id="winner" placeholder="Cheval gagnant">
+  <input id="raceId" placeholder="Race ID (ex: 101)">
+  <input id="gagnant" placeholder="Nom du cheval gagnant">
+  <input id="cote" type="number" step="0.01" placeholder="Cote finale (ex: 3)">
 
-<button onclick="settle()">Valider résultat</button>
+  <button onclick="settle()">Valider résultat</button>
 
-<p id="msg"></p>
+  <p id="msg"></p>
 
 </div>
 
 <script>
 
 const token = localStorage.getItem("token");
+if(!token) window.location.href="login.html";
 
 function settle(){
+
+  const raceId = Number(document.getElementById("raceId").value);
+  const gagnant = document.getElementById("gagnant").value;
+  const cote = Number(document.getElementById("cote").value);
 
   fetch("https://sulky-manager-backend.onrender.com/api/admin/settle-race",{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
-      "Authorization":"Bearer "+token
+      "Authorization":"Bearer " + token
     },
-    body: JSON.stringify({
-      raceId: Number(document.getElementById("raceId").value),
-      gagnant: document.getElementById("winner").value
-    })
+    body: JSON.stringify({ raceId, gagnant, cote })
   })
   .then(r=>r.json())
   .then(data=>{
     document.getElementById("msg").innerText =
       data.message + " | gagnants: " + data.winners;
-  });
-
+  })
+  .catch(()=>alert("Erreur serveur"));
 }
-
 </script>
 
 </body>
