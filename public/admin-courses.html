@@ -228,9 +228,18 @@ function post(url, body){
 /* ================= REUNION ================= */
 
 async function createReunion(){
+
+  const name = document.getElementById("rName").value;
+  const date = document.getElementById("rDate").value;
+
+  if(!name || !date){
+    alert("Remplis les champs");
+    return;
+  }
+
   const res = await post("/create-reunion",{
-    reunion:rName.value,
-    date:rDate.value
+    reunion: name,
+    date: date
   });
 
   msg.innerText = res.message + " | ID: " + res.id;
