@@ -3,121 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <title>Connexion – Sulky-Bet</title>
+<link rel="stylesheet" href="style.css">
 
 <style>
-/* =========================
-   BACKGROUND IMMERSIF
-========================= */
+
+/* ================= BACKGROUND PREMIUM ================= */
 
 body{
-  margin:0;
-  height:100vh;
-  font-family:Arial, sans-serif;
-
-  /* 👉 mets ton image ici */
-  background:url("images/hippodrome.jpg") center/cover no-repeat fixed;
-
+  min-height:100vh;
   display:flex;
-  justify-content:center;
   align-items:center;
-  position:relative;
+  justify-content:center;
+
+  background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.85)),
+    url("images/bg.jpg");
+
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
 }
 
-/* assombrir le fond */
-body::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.65);
-  backdrop-filter: blur(4px);
-}
 
-
-/* =========================
-   CARD LOGIN
-========================= */
+/* ================= CARD ================= */
 
 .login-card{
-  position:relative;
-  z-index:2;
+  width:380px;
 
-  background:rgba(0,30,20,0.85);
-  padding:50px 40px;
+  background:rgba(0,110,55,.6);
+  backdrop-filter:blur(12px);
 
-  border-radius:18px;
-  width:320px;
+  padding:45px;
+
+  border-radius:20px;
+
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:
+    0 0 40px rgba(0,255,136,.25),
+    inset 0 0 20px rgba(0,0,0,.35);
 
   text-align:center;
-
-  border:2px solid #00ff88;
-  box-shadow:
-    0 0 25px #00ff88,
-    0 0 60px rgba(0,255,136,0.2);
-
-  animation:fadeIn .6s ease;
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px)}
-  to{opacity:1; transform:translateY(0)}
 }
 
 .login-card h1{
   color:#00ff88;
-  margin-bottom:30px;
+  margin-bottom:25px;
   text-shadow:0 0 12px #00ff88;
 }
 
 
-/* =========================
-   INPUTS
-========================= */
+/* ================= INPUTS ================= */
 
 input{
   width:100%;
   padding:12px;
-  margin:10px 0;
+  margin-top:12px;
 
   border-radius:10px;
-  border:none;
+  border:1px solid rgba(0,255,136,.5);
 
-  font-size:15px;
+  background:rgba(0,0,0,.6);
+  color:white;
 }
 
 
-/* =========================
-   BUTTON
-========================= */
+/* ================= BUTTON ================= */
 
 button{
   width:100%;
-  padding:12px;
-  margin-top:15px;
+  padding:14px;
+  margin-top:18px;
 
-  background:#00ff88;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
 
   font-weight:bold;
+
+  background:linear-gradient(135deg,#00ff88,#00cc66);
   cursor:pointer;
 
-  transition:.2s;
+  box-shadow:0 0 15px rgba(0,255,136,.7);
 }
 
 button:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 15px #00ff88;
+  transform:scale(1.03);
 }
 
 
-/* lien */
-a{
-  color:#00ff88;
-  font-size:13px;
-  display:block;
+/* ================= MESSAGE ================= */
+
+#msg{
+  margin-top:14px;
+  color:#ff6b6b;
+  font-weight:bold;
+}
+
+.link{
   margin-top:15px;
+  font-size:14px;
 }
+
+.link a{
+  color:#00ff88;
+}
+
 </style>
+
+
+<!-- 🔐 REDIRECT SI CONNECTÉ -->
+<script>
+if(localStorage.getItem("token")){
+  window.location.href="dashboard.html";
+}
+</script>
+
 </head>
 
 
@@ -125,44 +125,72 @@ a{
 
 <div class="login-card">
 
-  <h1>🏇 Sulky-Bet</h1>
+  <h1>🏇 Connexion</h1>
 
   <input id="pseudo" placeholder="Pseudo">
   <input id="password" type="password" placeholder="Mot de passe">
 
-  <button onclick="login()">Se connecter</button>
+  <button id="loginBtn">Se connecter</button>
 
-  <a href="register.html">Créer un compte</a>
+  <p id="msg"></p>
+
+  <div class="link">
+    Pas encore inscrit ? <a href="register.html">Créer un compte</a>
+  </div>
 
 </div>
 
 
+
 <script>
-function login(){
 
-  const pseudo = document.getElementById("pseudo").value;
-  const password = document.getElementById("password").value;
+const msg = document.getElementById("msg");
 
-  fetch("https://sulky-manager-backend.onrender.com/api/auth/login",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ pseudo, password })
-  })
-  .then(r=>r.json())
-  .then(data=>{
+document.getElementById("loginBtn").addEventListener("click", login);
 
-    if(data.token){
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("pseudo", data.pseudo);
-      localStorage.setItem("balance", data.balance);
-      window.location.href="dashboard.html";
-    }else{
-      alert("Identifiants incorrects");
+async function login(){
+
+  const pseudo = document.getElementById("pseudo").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  msg.innerText="";
+
+  if(!pseudo || !password){
+    msg.innerText="Champs requis";
+    return;
+  }
+
+  try{
+
+    const res = await fetch(
+      "https://sulky-manager-backend.onrender.com/api/auth/login",
+      {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ pseudo, password })
+      }
+    );
+
+    const data = await res.json();
+
+    if(!res.ok){
+      msg.innerText = data.message || "Identifiants incorrects";
+      return;
     }
 
-  })
-  .catch(()=>alert("Erreur serveur"));
+    /* stockage */
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("pseudo", data.pseudo);
+    localStorage.setItem("balance", data.balance);
+
+    window.location.href="dashboard.html";
+
+  }
+  catch{
+    msg.innerText="Serveur indisponible";
+  }
 }
+
 </script>
 
 </body>

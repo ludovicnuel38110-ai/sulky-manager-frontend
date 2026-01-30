@@ -2,136 +2,233 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Aide – SULKY-BET</title>
+<title>Aide – Sulky-Bet</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ================= BACKGROUND ================= */
+
+body{
+  background:
+    linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.85)),
+    url("images/bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+
+/* ================= LAYOUT ================= */
+
+.help-wrapper{
+  max-width:1100px;
+  margin:80px auto;
+  padding:25px;
+}
+
+.help-card{
+  background:rgba(0,110,55,.60);
+  backdrop-filter:blur(14px);
+
+  border-radius:25px;
+  padding:45px;
+
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:
+    0 0 40px rgba(0,255,136,.25),
+    inset 0 0 30px rgba(0,0,0,.45);
+}
+
+
+/* ================= TITRES ================= */
+
+h1{
+  text-align:center;
+  color:#00ff88;
+  margin-bottom:10px;
+}
+
+h2{
+  color:#00ff88;
+  margin-top:40px;
+  border-bottom:1px solid #00ff88;
+  padding-bottom:8px;
+}
+
+h3{
+  margin-top:25px;
+  color:#00ff88;
+}
+
+
+/* ================= BOXES ================= */
+
+.info-box{
+  background:rgba(0,0,0,.55);
+  border:1px solid #00ff88;
+  border-radius:14px;
+  padding:18px;
+  margin:18px 0;
+}
+
+
+/* ================= TABLE ================= */
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+th, td{
+  padding:12px;
+  border:1px solid rgba(0,255,136,.4);
+  text-align:center;
+}
+
+th{
+  background:#001a0f;
+  color:#00ff88;
+}
+
+
+/* ================= BUTTON ================= */
+
+.back-btn{
+  margin-top:35px;
+  width:100%;
+}
+
+</style>
 </head>
+
+
 
 <body>
 
-<header>
-    <h1>SULKY-BET</h1>
-    <p>Centre d’aide officiel</p>
-</header>
+<div class="help-wrapper">
 
-<nav>
-    <div class="bet-limit-banner">
-⚠ Mise maximale par course : 20 000 Sulky
-</div>
+  <div class="help-card">
 
-    <a href="index.html"><button>🏠 Accueil</button></a>
-</nav>
+    <h1>🏇 Centre d’aide Sulky-Bet</h1>
+    <p style="text-align:center;opacity:.85">
+      Tout comprendre pour parier rapidement et gagner des Sulky 💰
+    </p>
 
-<div class="section">
 
-<h2>🆘 Comment jouer sur SULKY-BET</h2>
-<p>
-<strong>SULKY-BET</strong> est le PMU officiel de <b>Sulkyland</b>.  
-Tu peux y parier sur les courses de chevaux et gagner des <b>Sulky</b>.
-</p>
+    <!-- ================= COMMENT JOUER ================= -->
 
-<hr>
+    <h2>🎯 Comment jouer ?</h2>
 
-<h3>💳 Règles de mise</h3>
-<p>
-Tu peux parier parmi plusieurs <b>types de paris</b> :  
-Gagnant, Placé, Couplé,d autres viendront après
-</p>
+    <ol>
+      <li>Va sur <b>Dashboard → Courses</b></li>
+      <li>Choisis une réunion puis une course</li>
+      <li>Sélectionne tes chevaux dans le tableau</li>
+      <li>Choisis ton type de pari</li>
+      <li>Entre ta mise → clique <b>Parier</b></li>
+    </ol>
 
-<p>
-Chaque type de pari possède une <b>mise maximale autorisée</b>.  
-Si la limite est dépassée, le pari peut être refusé ou ajusté.
-</p>
+    <div class="info-box">
+      ✅ Les paris sont <b>enregistrés automatiquement</b> sur ton compte.<br>
+      ❌ Plus besoin d’envoyer de message ou de don.
+    </div>
 
-<hr>
 
-<div class="info-box">
-    <strong>Exemple – Cheval non partant :</strong><br>
-    Tu mises <b>10 000 Sulky</b> sur un cheval non partant.<br>
-    Tu reçois <b>10 000 Sulky</b> sur ton compte.<br>
-    ➜ <b>Aucune perte</b>.
-</div>
+    <!-- ================= TYPES PARIS ================= -->
 
-<hr>
+    <h2>🎲 Types de paris disponibles</h2>
 
-<h3>🏆 Calcul des gains</h3>
-<p>
-Les gains sont calculés à partir des <b>cotes finales officielles de PMU.fr</b>,
-après l’arrivée de la course.
-</p>
+    <h3>🥇 Simple gagnant</h3>
+    <p>Tu gagnes si ton cheval finit <b>1er</b>.</p>
 
-<div class="info-box">
-<b>Formule :</b><br>
-Gains = <b>Mise × Cote finale PMU</b>
-</div>
+    <h3>🥈 Simple placé</h3>
+    <p>Tu gagnes si ton cheval finit <b>1er, 2e ou 3e</b>.</p>
 
-<h4>📌 Exemple – Simple Gagnant</h4>
-<ul>
-<li>Mise : <b>5 000 Sulky</b></li>
-<li>Cote finale : <b>3.80</b></li>
-</ul>
-<p><b>5 000 × 3.80 = 19 000 Sulky</b></p>
+    <h3>👥 Couplé gagnant</h3>
+    <p>Tu dois trouver <b>les 2 premiers chevaux</b>.</p>
 
-<h4>📌 Exemple – Couplé Gagnant</h4>
-<ul>
-<li>Mise : <b>2 000 Sulky</b></li>
-<li>Cote finale : <b>12.50</b></li>
-</ul>
-<p><b>2 000 × 12.50 = 25 000 Sulky</b></p>
+    <h3>👥 Couplé placé</h3>
+    <p>Le 1er + (2e ou 3e).</p>
 
-<hr>
+    <h3>🥉 Trio</h3>
+    <p>Tu dois trouver <b>les 3 premiers chevaux</b>.</p>
 
-<h3>📊 Tableau des mises autorisées</h3>
 
-<table style="width:100%;border-collapse:collapse;margin:20px 0;">
-<tr style="background:#003b1f;color:#00ff88;">
-<th style="padding:10px;border:1px solid #00ff88;">Type de pari</th>
-<th style="padding:10px;border:1px solid #00ff88;">Mise max</th>
-</tr>
+    <!-- ================= CALCUL ================= -->
 
-<tr><td style="padding:10px;border:1px solid #00ff88;">Simple Gagnant</td><td style="padding:10px;border:1px solid #00ff88;">20 000</td></tr>
-<tr><td style="padding:10px;border:1px solid #00ff88;">Simple Placé</td><td style="padding:10px;border:1px solid #00ff88;">20 000</td></tr>
-<tr><td style="padding:10px;border:1px solid #00ff88;">Couplé Gagnant</td><td style="padding:10px;border:1px solid #00ff88;">5 000</td></tr>
-<tr><td style="padding:10px;border:1px solid #00ff88;">Couplé Placé</td><td style="padding:10px;border:1px solid #00ff88;">10 000</td></tr>
-</table>
+    <h2>💰 Calcul des gains</h2>
 
-<div class="info-box">
-<ul>
-<li>💰 Mise minimum : <b>1 000 Sulky</b></li>
-<li>🏁 Mise maximum par course : <b>20 000 Sulky</b></li>
-</ul>
-</div>
+    <div class="info-box">
+      <b>Formule :</b><br><br>
+      Gain = Mise × Cote finale
+    </div>
 
-<hr>
+    <p>
+      Les gains sont versés <b>automatiquement</b> lorsque l’admin règle la course.
+      Ton solde est mis à jour instantanément sur le dashboard.
+    </p>
 
-<h3>📨 Comment envoyer un pari</h3>
 
-<ol>
-<li>Va sur la page <b>Courses</b></li>
-<li>Choisis la réunion et la course</li>
-<li>Sélectionne ton ou tes chevaux</li>
-<li>Envoie un <b>don</b> + un <b>message</b> via Sulkyland</li>
-</ol>
+    <!-- ================= EXEMPLES ================= -->
 
-<pre>
-PARI : R1 C3
-CHEVAL : 5
-MISE : 10000
-TYPE : GAGNANT
-</pre>
+    <h3>Exemples</h3>
 
-<pre>
-PARI : R1 C6
-CHEVAUX : 3-8
-MISE : 5000
-TYPE : COUPLÉ
-</pre>
+    <ul>
+      <li>1000 × cote 3.5 → <b>3500 Sulky</b></li>
+      <li>5000 × cote 8 → <b>40 000 Sulky</b></li>
+    </ul>
 
-<hr>
 
-<h3>🏁 Bon jeu !</h3>
-<p>
-Analyse les courses et tente de devenir le meilleur parieur de <b>Sulkyland</b> 🏆
-</p>
+    <!-- ================= LIMITES ================= -->
+
+    <h2>📊 Limites de mise</h2>
+
+    <table>
+      <tr>
+        <th>Type</th>
+        <th>Mise max</th>
+      </tr>
+      <tr><td>Simple gagnant</td><td>20 000</td></tr>
+      <tr><td>Simple placé</td><td>20 000</td></tr>
+      <tr><td>Couplé gagnant</td><td>5 000</td></tr>
+      <tr><td>Couplé placé</td><td>10 000</td></tr>
+      <tr><td>Trio</td><td>5 000</td></tr>
+    </table>
+
+    <div class="info-box">
+      💡 Mise minimum : <b>1000 Sulky</b>
+    </div>
+
+
+    <!-- ================= FAQ ================= -->
+
+    <h2>❓ Questions fréquentes</h2>
+
+    <div class="info-box">
+      <b>Mon cheval est non partant ?</b><br>
+      ➜ Ta mise est remboursée automatiquement.
+    </div>
+
+    <div class="info-box">
+      <b>Quand suis-je payé ?</b><br>
+      ➜ Dès que l’admin règle la course.
+    </div>
+
+    <div class="info-box">
+      <b>Où voir mes paris ?</b><br>
+      ➜ Dashboard → Mes paris.
+    </div>
+
+
+    <!-- ================= CTA ================= -->
+
+    <button class="bet-btn back-btn" onclick="location.href='dashboard.html'">
+      ⬅ Retour au dashboard
+    </button>
+
+  </div>
 
 </div>
 

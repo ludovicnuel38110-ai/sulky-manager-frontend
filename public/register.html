@@ -2,84 +2,193 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Créer un compte - Sulky Bet</title>
+<title>Créer un compte – Sulky-Bet</title>
+<link rel="stylesheet" href="style.css">
 
 <style>
-body {
-  background:#051;
-  color:white;
-  font-family:Arial;
+
+/* ================= BACKGROUND PREMIUM ================= */
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.85)),
+    url("images/bg.jpg");
+
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+
+/* ================= CARD ================= */
+
+.register-card{
+  width:380px;
+
+  background:rgba(0,110,55,.6);
+  backdrop-filter:blur(12px);
+
+  padding:40px;
+  border-radius:20px;
+
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:
+    0 0 40px rgba(0,255,136,.25),
+    inset 0 0 20px rgba(0,0,0,.35);
+
   text-align:center;
-  padding-top:100px;
 }
-input, button {
-  padding:10px;
-  margin:10px;
-  border-radius:5px;
+
+h1{
+  color:#00ff88;
+  margin-bottom:25px;
+  text-shadow:0 0 12px #00ff88;
+}
+
+
+/* ================= INPUTS ================= */
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+
+  border-radius:10px;
+  border:1px solid rgba(0,255,136,.5);
+
+  background:rgba(0,0,0,.6);
+  color:white;
+}
+
+
+/* ================= BUTTON ================= */
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:18px;
+
   border:none;
-}
-button {
-  background:#00ff88;
+  border-radius:12px;
+
   font-weight:bold;
+
+  background:linear-gradient(135deg,#00ff88,#00cc66);
   cursor:pointer;
+
+  box-shadow:0 0 15px rgba(0,255,136,.7);
 }
+
+button:hover{
+  transform:scale(1.03);
+}
+
+
+/* ================= MESSAGE ================= */
+
+#msg{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.link{
+  margin-top:15px;
+  font-size:14px;
+}
+
+.link a{
+  color:#00ff88;
+}
+
 </style>
+
+
+<!-- 🔐 REDIRECT SI DEJA CONNECTE -->
+<script>
+if(localStorage.getItem("token")){
+  window.location.href="dashboard.html";
+}
+</script>
+
 </head>
+
 
 <body>
 
-<h1>Créer un compte Sulky-Bet</h1>
+<div class="register-card">
 
-<input id="pseudo" placeholder="Pseudo"><br>
-<input id="password" type="password" placeholder="Mot de passe"><br>
-<button id="registerBtn">Créer</button>
+  <h1>Créer un compte</h1>
 
-<p id="msg"></p>
+  <input id="pseudo" placeholder="Pseudo">
+  <input id="password" type="password" placeholder="Mot de passe">
+
+  <button id="registerBtn">Créer mon compte</button>
+
+  <p id="msg"></p>
+
+  <div class="link">
+    Déjà inscrit ? <a href="login.html">Connexion</a>
+  </div>
+
+</div>
+
+
 
 <script>
-document.getElementById("registerBtn").addEventListener("click", async () => {
+
+const msg = document.getElementById("msg");
+
+document.getElementById("registerBtn").addEventListener("click", register);
+
+async function register(){
+
   const pseudo = document.getElementById("pseudo").value.trim();
   const password = document.getElementById("password").value.trim();
-  const msg = document.getElementById("msg");
 
-  msg.innerText = "";
-  msg.style.color = "red";
+  msg.innerText="";
+  msg.style.color="red";
 
-  if (!pseudo || !password) {
-    msg.innerText = "Pseudo et mot de passe requis";
+  if(!pseudo || !password){
+    msg.innerText="Pseudo et mot de passe requis";
     return;
   }
 
-  try {
-    const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        pseudo: pseudo,
-        password: password
-      })
-    });
+  try{
+
+    const res = await fetch(
+      "https://sulky-manager-backend.onrender.com/api/auth/register",
+      {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ pseudo, password })
+      }
+    );
 
     const data = await res.json();
 
-    if (!res.ok) {
+    if(!res.ok){
       msg.innerText = data.message || "Erreur inscription";
       return;
     }
 
-    msg.style.color = "#00ff88";
-    msg.innerText = "Compte créé avec succès !";
+    msg.style.color="#00ff88";
+    msg.innerText="Compte créé avec succès !";
 
-    setTimeout(() => {
-      window.location.href = "login.html";
-    }, 1000);
+    setTimeout(()=>{
+      window.location.href="login.html";
+    },1200);
 
-  } catch (err) {
-    msg.innerText = "Erreur serveur";
+  }catch(err){
+    msg.innerText="Serveur indisponible";
   }
-});
+}
+
 </script>
 
 </body>

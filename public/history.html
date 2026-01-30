@@ -139,7 +139,6 @@ tr.pending td{ background:rgba(255,200,0,.12); }
       <span id="balanceBox" class="balance">💰 0 €</span>
     </div>
 
-
     <!-- STATS -->
     <div class="stats-grid">
       <div class="stat">
@@ -160,7 +159,6 @@ tr.pending td{ background:rgba(255,200,0,.12); }
       </div>
     </div>
 
-
     <!-- FILTRES -->
     <div class="filters">
       <button onclick="filterBets('all')">Tous</button>
@@ -168,7 +166,6 @@ tr.pending td{ background:rgba(255,200,0,.12); }
       <button onclick="filterBets('lose')">Perdus</button>
       <button onclick="filterBets('pending')">En attente</button>
     </div>
-
 
     <!-- TABLE -->
     <table>
@@ -186,7 +183,6 @@ tr.pending td{ background:rgba(255,200,0,.12); }
       <tbody id="betsTable"></tbody>
     </table>
 
-
     <button class="bet-btn back-btn" onclick="window.location.href='dashboard.html'">
       ⬅ Retour dashboard
     </button>
@@ -196,14 +192,28 @@ tr.pending td{ background:rgba(255,200,0,.12); }
 </div>
 
 
+
+<!-- ================= JS SAFE ================= -->
+
 <script>
 const token = localStorage.getItem("token");
 if(!token) location.href="login.html";
+
+/* ===== FIX CRITIQUE : récupérer les éléments ===== */
+
+const balanceBox = document.getElementById("balanceBox");
+const betsTable = document.getElementById("betsTable");
+
+const statTotal = document.getElementById("statTotal");
+const statWin = document.getElementById("statWin");
+const statLose = document.getElementById("statLose");
+const statProfit = document.getElementById("statProfit");
 
 const balance = localStorage.getItem("balance") || 0;
 balanceBox.innerText = "💰 " + balance + " €";
 
 let allBets = [];
+
 
 /* ================= LOAD BETS ================= */
 
@@ -212,10 +222,11 @@ fetch("https://sulky-manager-backend.onrender.com/api/bets/me",{
 })
 .then(r=>r.json())
 .then(bets=>{
-  allBets = bets;
-  renderTable(bets);
-  computeStats(bets);
+  allBets = bets || [];
+  renderTable(allBets);
+  computeStats(allBets);
 });
+
 
 /* ================= RENDER ================= */
 
@@ -246,6 +257,7 @@ function renderTable(bets){
   });
 }
 
+
 /* ================= STATS ================= */
 
 function computeStats(bets){
@@ -262,6 +274,7 @@ function computeStats(bets){
   statProfit.innerText=profit+" €";
 }
 
+
 /* ================= FILTER ================= */
 
 function filterBets(type){
@@ -273,7 +286,6 @@ function filterBets(type){
 
   renderTable(allBets.filter(b=>b.status===type));
 }
-
 </script>
 
 </body>

@@ -2,103 +2,209 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Admin – Résultats course</title>
+<title>Sulky-Bet – Règlement course</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
+
+/* ================= BACKGROUND ================= */
+
 body{
-  background:#051;
-  color:white;
-  font-family:Arial;
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.80)),
+    url("images/bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+
+/* ================= CARD ================= */
+
+.wrapper{
+  max-width:650px;
+  margin:80px auto;
+  padding:25px;
 }
 
 .box{
-  max-width:600px;
-  margin:60px auto;
-  background:#022;
-  padding:30px;
-  border-radius:12px;
-  border:2px solid #00ff88;
+  background:rgba(0,110,55,.55);
+  backdrop-filter:blur(14px);
+
+  border-radius:22px;
+  padding:40px;
+
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:
+    0 0 40px rgba(0,255,136,.25),
+    inset 0 0 25px rgba(0,0,0,.45);
+
+  text-align:center;
 }
 
-input, button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border-radius:8px;
-}
 
-button{
-  background:#00ff88;
-  font-weight:bold;
-  cursor:pointer;
+/* ================= TITRES ================= */
+
+h2{
+  color:#00ff88;
+  margin-bottom:20px;
 }
 
 h3{
   margin-top:25px;
   color:#00ff88;
 }
+
+
+/* ================= INPUTS ================= */
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+
+  border-radius:10px;
+  border:none;
+
+  background:rgba(0,0,0,.6);
+  color:white;
+  font-size:15px;
+}
+
+
+/* ================= BUTTON ================= */
+
+button{
+  width:100%;
+  margin-top:20px;
+  padding:14px;
+
+  border:none;
+  border-radius:12px;
+
+  font-weight:bold;
+  font-size:16px;
+
+  background:linear-gradient(135deg,#00ff88,#00cc66);
+  color:#001a0f;
+
+  cursor:pointer;
+
+  box-shadow:0 0 20px rgba(0,255,136,.7);
+  transition:.2s;
+}
+
+button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 35px #00ff88;
+}
+
+
+/* ================= MESSAGE ================= */
+
+#msg{
+  margin-top:18px;
+  font-weight:bold;
+  color:#00ff88;
+}
+
+.back-btn{
+  margin-top:12px;
+  background:#001a0f;
+  color:#00ff88;
+  border:2px solid #00ff88;
+}
+
 </style>
 </head>
 
+
 <body>
 
-<div class="box">
+<div class="wrapper">
 
-  <h2>⚙️ Règlement automatique de la course</h2>
+  <div class="box">
 
-  <input id="raceId" placeholder="Race ID (ex: 101)">
+    <h2>⚙️ Règlement automatique de la course</h2>
 
-  <h3>🏁 Arrivée officielle</h3>
-  <input id="first" placeholder="🥇 1er">
-  <input id="second" placeholder="🥈 2e">
-  <input id="third" placeholder="🥉 3e">
+    <input id="raceId" placeholder="Race ID (ex: 101)">
 
-  <h3>💰 Cotes finales</h3>
-  <input id="coteWin" type="number" step="0.01" placeholder="Simple gagnant">
-  <input id="cotePlace" type="number" step="0.01" placeholder="Simple placé">
-  <input id="coteCouple" type="number" step="0.01" placeholder="Couplé">
-  <input id="coteTrio" type="number" step="0.01" placeholder="Trio">
+    <h3>🏁 Arrivée officielle</h3>
+    <input id="first" placeholder="🥇 1er">
+    <input id="second" placeholder="🥈 2e">
+    <input id="third" placeholder="🥉 3e">
 
-  <button onclick="settle()">Valider et payer automatiquement</button>
+    <h3>💰 Cotes finales</h3>
+    <input id="coteWin" type="number" step="0.01" placeholder="Simple gagnant">
+    <input id="cotePlace" type="number" step="0.01" placeholder="Simple placé">
+    <input id="coteCouple" type="number" step="0.01" placeholder="Couplé">
+    <input id="coteTrio" type="number" step="0.01" placeholder="Trio">
 
-  <p id="msg"></p>
+    <button id="btnSettle">Valider et payer automatiquement</button>
+    <button class="back-btn" onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
+
+    <p id="msg"></p>
+
+  </div>
 
 </div>
 
 
+
 <script>
+document.addEventListener("DOMContentLoaded", () => {
 
-const token = localStorage.getItem("token");
-if(!token) window.location.href="login.html";
+  const token = localStorage.getItem("token");
+  if(!token) return location.href="login.html";
 
-function settle(){
+  const msg = document.getElementById("msg");
 
-  const body = {
-    raceId: Number(raceId.value),
-    first: first.value,
-    second: second.value,
-    third: third.value,
-    coteWin: Number(coteWin.value),
-    cotePlace: Number(cotePlace.value),
-    coteCouple: Number(coteCouple.value),
-    coteTrio: Number(coteTrio.value)
-  };
+  const btn = document.getElementById("btnSettle");
 
-  fetch("https://sulky-manager-backend.onrender.com/api/admin/settle-results",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer "+token
-    },
-    body: JSON.stringify(body)
-  })
-  .then(r=>r.json())
-  .then(d=>{
-    msg.innerText = d.message + " | gagnants: " + d.winners;
-  })
-  .catch(()=>alert("Erreur serveur"));
-}
+  btn.onclick = settle;
+
+
+  async function settle(){
+
+    msg.innerText = "Traitement en cours...";
+
+    const body = {
+      raceId: Number(document.getElementById("raceId").value),
+      first: document.getElementById("first").value,
+      second: document.getElementById("second").value,
+      third: document.getElementById("third").value,
+      coteWin: Number(document.getElementById("coteWin").value || 1),
+      cotePlace: Number(document.getElementById("cotePlace").value || 1),
+      coteCouple: Number(document.getElementById("coteCouple").value || 1),
+      coteTrio: Number(document.getElementById("coteTrio").value || 1)
+    };
+
+    try{
+
+      const res = await fetch(
+        "https://sulky-manager-backend.onrender.com/api/admin/settle-results",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json",
+            Authorization:"Bearer "+token
+          },
+          body:JSON.stringify(body)
+        }
+      );
+
+      const data = await res.json();
+
+      msg.innerText =
+        `${data.message} | gagnants: ${data.winners}/${data.total}`;
+
+    }catch{
+      msg.innerText = "❌ Erreur serveur";
+    }
+  }
+
+});
 </script>
 
 </body>

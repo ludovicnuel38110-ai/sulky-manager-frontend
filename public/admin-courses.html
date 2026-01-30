@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
 <meta charset="UTF-8">
 <title>Sulky-Bet – Admin Courses</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
-
-/* ================= BACKGROUND ================= */
-
 body{
   background:
     linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.9)),
@@ -20,9 +16,6 @@ body{
   font-family:Segoe UI, sans-serif;
   color:white;
 }
-
-
-/* ================= LAYOUT ================= */
 
 .admin-wrapper{
   max-width:1300px;
@@ -36,9 +29,6 @@ body{
   gap:30px;
 }
 
-
-/* ================= HEADER ================= */
-
 .top-bar{
   display:flex;
   justify-content:space-between;
@@ -50,9 +40,6 @@ body{
   color:#00ff88;
   text-shadow:0 0 12px #00ff88;
 }
-
-
-/* ================= CARDS ================= */
 
 .admin-card{
   background:rgba(0,110,55,.6);
@@ -68,9 +55,6 @@ body{
   margin-bottom:15px;
 }
 
-
-/* ================= INPUTS ================= */
-
 input, textarea{
   width:100%;
   margin-top:10px;
@@ -81,12 +65,7 @@ input, textarea{
   color:#fff;
 }
 
-textarea{
-  height:170px;
-}
-
-
-/* ================= BUTTONS ================= */
+textarea{ height:170px; }
 
 button{
   width:100%;
@@ -97,16 +76,7 @@ button{
   background:linear-gradient(135deg,#00ff88,#00cc66);
   font-weight:bold;
   cursor:pointer;
-  transition:.2s;
 }
-
-button:hover{
-  transform:scale(1.03);
-  box-shadow:0 0 25px #00ff88;
-}
-
-
-/* ================= MESSAGE ================= */
 
 .msg{
   margin-top:25px;
@@ -115,10 +85,8 @@ button:hover{
   color:#00ff88;
   font-size:18px;
 }
-
 </style>
 </head>
-
 
 <body>
 
@@ -129,16 +97,14 @@ button:hover{
     <button onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
   </div>
 
-
   <div class="admin-grid">
 
-    <!-- ================= REUNION ================= -->
+    <!-- REUNION -->
     <div class="admin-card">
       <h3>🏟️ Réunion</h3>
 
       <input id="rName" placeholder="R1 – VINCENNES">
-      <input id="rDate" placeholder="Dimanche 01 février 2026">
-
+      <input id="rDate" placeholder="01/02/2026">
       <button id="btnReunion">Créer la réunion</button>
 
       <input id="delReunionId" placeholder="ID à supprimer">
@@ -146,198 +112,186 @@ button:hover{
     </div>
 
 
-    <!-- ================= COURSE ================= -->
+    <!-- COURSE -->
     <div class="admin-card">
       <h3>🏇 Course</h3>
 
       <input id="cReunion" placeholder="Reunion ID">
       <input id="cId" placeholder="ID course (101)">
-      <input id="cLabel" placeholder="C1 – Prix du Test">
+      <input id="cLabel" placeholder="C1 – Prix test">
       <input id="cDate" placeholder="01/02/2026">
 
       <button id="btnCourse">Ajouter la course</button>
-
       <button id="btnDeleteCourse">🗑 Supprimer course</button>
     </div>
 
 
-    <!-- ================= RUNNER ================= -->
+    <!-- RUNNERS -->
     <div class="admin-card">
       <h3>🐎 Chevaux</h3>
 
       <input id="pReunion" placeholder="Reunion ID">
       <input id="pRace" placeholder="Race ID">
-
       <input id="pCheval" placeholder="Nom du cheval">
       <input id="pDriver" placeholder="Driver">
       <input id="pProp" placeholder="Propriétaire">
       <input id="pMusique" placeholder="Musique">
-      <input id="pCote" placeholder="Cote ex: 3.5">
+      <input id="pCote" placeholder="Cote">
 
       <button id="btnRunner">Ajouter le partant</button>
 
-      <h3 style="margin-top:25px;">⚡ Import automatique PMU</h3>
+      <h3 style="margin-top:25px;">⚡ Import automatique</h3>
 
-      <textarea id="bulkInput" placeholder="Colle la liste complète ici"></textarea>
+      <textarea id="bulkInput" placeholder="Colle la liste PMU ici"></textarea>
       <button id="btnBulk">Importer tous les chevaux</button>
     </div>
 
   </div>
 
   <p id="msg" class="msg"></p>
-
 </div>
 
 
-
-<!-- ======================================================
-   JAVASCRIPT CLEAN & GLOBAL SAFE
-====================================================== -->
-
 <script>
 
-/* ================= GLOBALS ================= */
+/* ================= SAFE INIT ================= */
 
-const token = localStorage.getItem("token");
-if(!token) location.href="login.html";
+document.addEventListener("DOMContentLoaded", () => {
 
-const API = "https://sulky-manager-backend.onrender.com/api/admin";
-const msg = document.getElementById("msg");
+  const token = localStorage.getItem("token");
+  if(!token) location.href="login.html";
 
+  const API = "https://sulky-manager-backend.onrender.com/api/admin";
+  const msg = document.getElementById("msg");
 
-/* ================= FETCH HELPER ================= */
+  const $ = id => document.getElementById(id);
 
-async function post(url, body){
-  const res = await fetch(API+url,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer "+token
-    },
-    body:JSON.stringify(body)
-  });
-  return res.json();
-}
+  /* ================= FETCH HELPER ================= */
 
-
-/* ================= EVENTS ================= */
-
-btnReunion.onclick = createReunion;
-btnCourse.onclick = addCourse;
-btnRunner.onclick = addRunner;
-btnBulk.onclick = importBulk;
-btnDeleteReunion.onclick = deleteReunion;
-btnDeleteCourse.onclick = deleteCourse;
-
-
-/* ================= CREATE ================= */
-
-async function createReunion(){
-  const res = await post("/create-reunion",{
-    reunion:rName.value,
-    date:rDate.value
-  });
-  msg.innerText = res.message + " | ID: " + res.id;
-}
-
-
-async function addCourse(){
-  const res = await post("/add-course",{
-    reunionId:cReunion.value,
-    id:Number(cId.value),
-    label:cLabel.value,
-    date:cDate.value
-  });
-  msg.innerText = res.message;
-}
-
-
-async function addRunner(){
-  const res = await post("/add-runner",{
-    reunionId:pReunion.value,
-    raceId:Number(pRace.value),
-    cheval:pCheval.value,
-    driver:pDriver.value,
-    proprietaire:pProp.value,
-    musique:pMusique.value,
-    cote:Number(pCote.value)
-  });
-  msg.innerText = res.message;
-}
-
-
-/* ================= BULK IMPORT ================= */
-
-async function importBulk(){
-
-  const reunionId = pReunion.value;
-  const raceId = Number(pRace.value);
-
-  const lines = bulkInput.value.split("\n").map(l=>l.trim()).filter(Boolean);
-
-  let created = 0;
-
-  for(let i=0;i<lines.length;i++){
-
-    if(/^\d+$/.test(lines[i])){
-
-      const cheval = lines[i+1];
-      const driver = lines[i+2];
-
-      let coteLine = lines.slice(i).find(l=>/\d+\.\d+/);
-      const cote = parseFloat(coteLine?.match(/\d+\.\d+/)?.[0] || 3);
-
-      await post("/add-runner",{
-        reunionId, raceId, cheval, driver,
-        proprietaire:"-",
-        musique:"-",
-        cote
-      });
-
-      created++;
-    }
+  async function post(url, body){
+    const res = await fetch(API+url,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token
+      },
+      body:JSON.stringify(body)
+    });
+    return res.json();
   }
 
-  msg.innerText = created + " chevaux importés automatiquement ✅";
-}
+  /* ================= EVENTS ================= */
+
+  $("btnReunion").onclick = createReunion;
+  $("btnCourse").onclick = addCourse;
+  $("btnRunner").onclick = addRunner;
+  $("btnBulk").onclick = importBulk;
+  $("btnDeleteReunion").onclick = deleteReunion;
+  $("btnDeleteCourse").onclick = deleteCourse;
 
 
-/* ================= DELETE ================= */
+  /* ================= CREATE ================= */
 
-async function deleteReunion(){
+  async function createReunion(){
+    const res = await post("/create-reunion",{
+      reunion:$("rName").value,
+      date:$("rDate").value
+    });
+    msg.innerText = res.message + " | ID: " + res.id;
+  }
 
-  const id = delReunionId.value;
+  async function addCourse(){
+    const res = await post("/add-course",{
+      reunionId:$("cReunion").value,
+      id:Number($("cId").value),
+      label:$("cLabel").value,
+      date:$("cDate").value
+    });
+    msg.innerText = res.message;
+  }
 
-  if(!confirm("Supprimer la réunion ?")) return;
+  async function addRunner(){
+    const res = await post("/add-runner",{
+      reunionId:$("pReunion").value,
+      raceId:Number($("pRace").value),
+      cheval:$("pCheval").value,
+      driver:$("pDriver").value,
+      proprietaire:$("pProp").value,
+      musique:$("pMusique").value,
+      cote:Number($("pCote").value)
+    });
+    msg.innerText = res.message;
+  }
 
-  const res = await fetch(API+"/delete-reunion/"+id,{
-    method:"DELETE",
-    headers:{ Authorization:"Bearer "+token }
-  }).then(r=>r.json());
+  /* ================= BULK ================= */
 
-  msg.innerText = res.message;
-}
+  async function importBulk(){
 
+    const reunionId = $("pReunion").value;
+    const raceId = Number($("pRace").value);
 
-async function deleteCourse(){
+    const lines = $("bulkInput").value
+      .split("\n")
+      .map(l=>l.trim())
+      .filter(Boolean);
 
-  if(!confirm("Supprimer la course ?")) return;
+    let created = 0;
 
-  const res = await fetch(API+"/delete-course",{
-    method:"DELETE",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer "+token
-    },
-    body:JSON.stringify({
-      reunionId:cReunion.value,
-      raceId:Number(cId.value)
-    })
-  }).then(r=>r.json());
+    for(let i=0;i<lines.length;i++){
+      if(/^\d+$/.test(lines[i])){
 
-  msg.innerText = res.message;
-}
+        const cheval = lines[i+1];
+        const driver = lines[i+2];
 
+        await post("/add-runner",{
+          reunionId, raceId, cheval, driver,
+          proprietaire:"-",
+          musique:"-",
+          cote:3
+        });
+
+        created++;
+      }
+    }
+
+    msg.innerText = created + " chevaux importés ✅";
+  }
+
+  /* ================= DELETE ================= */
+
+  async function deleteReunion(){
+
+    const id = $("delReunionId").value;
+    if(!confirm("Supprimer la réunion ?")) return;
+
+    const res = await fetch(API+"/delete-reunion/"+id,{
+      method:"DELETE",
+      headers:{ Authorization:"Bearer "+token }
+    }).then(r=>r.json());
+
+    msg.innerText = res.message;
+  }
+
+  async function deleteCourse(){
+
+    if(!confirm("Supprimer la course ?")) return;
+
+    const res = await fetch(API+"/delete-course",{
+      method:"DELETE",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token
+      },
+      body:JSON.stringify({
+        reunionId:$("cReunion").value,
+        raceId:Number($("cId").value)
+      })
+    }).then(r=>r.json());
+
+    msg.innerText = res.message;
+  }
+
+});
 </script>
 
 </body>

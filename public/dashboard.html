@@ -7,7 +7,7 @@
 
 <style>
 
-/* ================= BACKGROUND PHOTO ================= */
+/* ================= BACKGROUND ================= */
 
 body{
   background:
@@ -18,6 +18,7 @@ body{
   background-attachment:fixed;
 }
 
+
 /* ================= LAYOUT ================= */
 
 .dashboard-wrapper{
@@ -26,11 +27,13 @@ body{
   padding:25px;
 }
 
+
 /* ================= CARD ================= */
 
 .dashboard-card{
   background:rgba(0,110,55,.55);
   backdrop-filter:blur(14px);
+
   border-radius:26px;
   padding:60px;
 
@@ -42,6 +45,7 @@ body{
 
   text-align:center;
 }
+
 
 /* ================= TITRES ================= */
 
@@ -60,6 +64,7 @@ body{
     0 0 35px rgba(0,255,136,1);
 }
 
+
 /* ================= GRID ================= */
 
 .actions-grid{
@@ -68,7 +73,8 @@ body{
   gap:25px;
 }
 
-/* ================= GROS BOUTONS ================= */
+
+/* ================= BOUTONS ================= */
 
 .big-btn{
   padding:26px;
@@ -92,6 +98,7 @@ body{
   box-shadow:0 0 45px #00ff88;
 }
 
+
 /* ================= HEADER ================= */
 
 header{
@@ -107,6 +114,7 @@ header{
   right:20px;
   top:20px;
 }
+
 
 /* ================= ADMIN PANEL ================= */
 
@@ -140,14 +148,20 @@ header{
   margin-top:12px;
 }
 
+#adminMsg{
+  margin-top:12px;
+  font-weight:bold;
+}
+
 </style>
 </head>
+
 
 <body>
 
 <header>
   <h1>🏇 SULKY-BET</h1>
-  <button class="big-btn logout-btn" onclick="logout()">🚪 Déconnexion</button>
+  <button id="logoutBtn" class="big-btn logout-btn">🚪 Déconnexion</button>
 </header>
 
 
@@ -161,21 +175,10 @@ header{
     <!-- ACTIONS -->
     <div class="actions-grid">
 
-      <button class="big-btn" onclick="goRaces()">
-        🏇 Courses
-      </button>
-
-      <button class="big-btn" onclick="goHistory()">
-        📜 Mes paris
-      </button>
-
-      <button class="big-btn" onclick="goResults()">
-        🏁 Résultats
-      </button>
-
-      <button class="big-btn" onclick="window.location.href='index.html'">
-        🏠 Accueil
-      </button>
+      <button class="big-btn" id="btnRaces">🏇 Courses</button>
+      <button class="big-btn" id="btnHistory">📜 Mes paris</button>
+      <button class="big-btn" id="btnResults">🏁 Résultats</button>
+      <button class="big-btn" id="btnHome">🏠 Accueil</button>
 
     </div>
 
@@ -187,15 +190,10 @@ header{
 
       <input id="creditPseudo" placeholder="Pseudo joueur">
       <input id="creditAmount" type="number" placeholder="Montant">
-<button onclick="window.location.href='admin-courses.html'">
-🏗️ Gérer les courses
-</button>
 
-      <button class="big-btn admin-btn" onclick="creditUser()">💰 Créditer</button>
-
-      <button class="big-btn admin-btn" onclick="goSettle()">
-        🏁 Régler une course
-      </button>
+      <button class="big-btn admin-btn" id="btnCourses">🏗️ Gérer les courses</button>
+      <button class="big-btn admin-btn" id="btnCredit">💰 Créditer</button>
+      <button class="big-btn admin-btn" id="btnSettle">🏁 Régler une course</button>
 
       <p id="adminMsg"></p>
 
@@ -206,53 +204,83 @@ header{
 </div>
 
 
+
 <script>
-const token = localStorage.getItem("token");
-if(!token) window.location.href="login.html";
+document.addEventListener("DOMContentLoaded", async () => {
 
-const payload = JSON.parse(atob(token.split(".")[1]));
+  const token = localStorage.getItem("token");
+  if(!token) return location.href="login.html";
 
-/* USER */
-fetch("https://sulky-manager-backend.onrender.com/api/users/me",{
-  headers:{ Authorization:"Bearer "+token }
-})
-.then(r=>r.json())
-.then(data=>{
-  welcome.innerText="Bienvenue "+data.pseudo;
-  balance.innerText="Solde : "+data.balance+" €";
-  localStorage.setItem("balance",data.balance);
+  const welcome = document.getElementById("welcome");
+  const balanceBox = document.getElementById("balance");
+  const adminPanel = document.getElementById("adminPanel");
+  const adminMsg = document.getElementById("adminMsg");
 
-  if(payload.isAdmin){
-    adminPanel.style.display="block";
+  /* ================= USER INFO ================= */
+
+  try{
+    const res = await fetch(
+      "https://sulky-manager-backend.onrender.com/api/users/me",
+      { headers:{ Authorization:"Bearer "+token } }
+    );
+
+    const user = await res.json();
+
+    welcome.innerText = "Bienvenue " + user.pseudo;
+    balanceBox.innerText = "Solde : " + user.balance + " €";
+
+    localStorage.setItem("balance", user.balance);
+
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    if(payload.isAdmin) adminPanel.style.display="block";
+
+  }catch{
+    localStorage.clear();
+    location.href="login.html";
   }
+
+
+  /* ================= NAVIGATION ================= */
+
+  btnRaces.onclick = ()=>location.href="races.html";
+  btnHistory.onclick = ()=>location.href="history.html";
+  btnResults.onclick = ()=>location.href="results.html";
+  btnHome.onclick = ()=>location.href="index.html";
+  btnSettle.onclick = ()=>location.href="admin-settle.html";
+  btnCourses.onclick = ()=>location.href="admin-courses.html";
+
+  logoutBtn.onclick = ()=>{
+    localStorage.clear();
+    location.href="index.html";
+  };
+
+
+  /* ================= CREDIT USER ================= */
+
+  btnCredit.onclick = async ()=>{
+
+    const pseudo = creditPseudo.value;
+    const amount = creditAmount.value;
+
+    if(!pseudo || !amount) return;
+
+    const res = await fetch(
+      "https://sulky-manager-backend.onrender.com/api/admin/add-balance",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer "+token
+        },
+        body:JSON.stringify({pseudo,amount})
+      }
+    );
+
+    const data = await res.json();
+    adminMsg.innerText = data.message;
+  };
+
 });
-
-/* ACTIONS */
-function logout(){
-  localStorage.clear();
-  location.href="index.html";
-}
-
-function goRaces(){ location.href="races.html"; }
-function goHistory(){ location.href="history.html"; }
-function goResults(){ location.href="results.html"; }
-function goSettle(){ location.href="admin-settle.html"; }
-
-function creditUser(){
-  const pseudo=creditPseudo.value;
-  const amount=creditAmount.value;
-
-  fetch("https://sulky-manager-backend.onrender.com/api/admin/add-balance",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer "+token
-    },
-    body:JSON.stringify({pseudo,amount})
-  })
-  .then(r=>r.json())
-  .then(d=>adminMsg.innerText=d.message);
-}
 </script>
 
 </body>
