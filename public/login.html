@@ -1,89 +1,169 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Connexion - Sulky Bet</title>
+<meta charset="UTF-8">
+<title>Connexion – Sulky-Bet</title>
 
-  <style>
-    body {
-      background: #051;
-      color: white;
-      font-family: Arial;
-      text-align: center;
-      padding-top: 100px;
-    }
+<style>
+/* =========================
+   BACKGROUND IMMERSIF
+========================= */
 
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      border-radius: 5px;
-      border: none;
-    }
+body{
+  margin:0;
+  height:100vh;
+  font-family:Arial, sans-serif;
 
-    button {
-      background: #00ff88;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
+  /* 👉 mets ton image ici */
+  background:url("images/hippodrome.jpg") center/cover no-repeat fixed;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+/* assombrir le fond */
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+}
+
+
+/* =========================
+   CARD LOGIN
+========================= */
+
+.login-card{
+  position:relative;
+  z-index:2;
+
+  background:rgba(0,30,20,0.85);
+  padding:50px 40px;
+
+  border-radius:18px;
+  width:320px;
+
+  text-align:center;
+
+  border:2px solid #00ff88;
+  box-shadow:
+    0 0 25px #00ff88,
+    0 0 60px rgba(0,255,136,0.2);
+
+  animation:fadeIn .6s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+.login-card h1{
+  color:#00ff88;
+  margin-bottom:30px;
+  text-shadow:0 0 12px #00ff88;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+
+  border-radius:10px;
+  border:none;
+
+  font-size:15px;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+
+  background:#00ff88;
+  border:none;
+  border-radius:10px;
+
+  font-weight:bold;
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px #00ff88;
+}
+
+
+/* lien */
+a{
+  color:#00ff88;
+  font-size:13px;
+  display:block;
+  margin-top:15px;
+}
+</style>
 </head>
+
 
 <body>
 
-  <h1>Connexion Sulky-Bet</h1>
+<div class="login-card">
 
-  <input id="pseudo" placeholder="Pseudo"><br>
-  <input id="password" type="password" placeholder="Mot de passe"><br>
-  <button id="loginBtn">Se connecter</button>
+  <h1>🏇 Sulky-Bet</h1>
 
-  <p id="msg"></p>
+  <input id="pseudo" placeholder="Pseudo">
+  <input id="password" type="password" placeholder="Mot de passe">
 
-  <script>
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      const pseudo = document.getElementById("pseudo").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const msg = document.getElementById("msg");
+  <button onclick="login()">Se connecter</button>
 
-      msg.innerText = "";
-      msg.style.color = "red";
+  <a href="register.html">Créer un compte</a>
 
-      if (!pseudo || !password) {
-        msg.innerText = "Pseudo et mot de passe requis";
-        return;
-      }
+</div>
 
-      try {
-        const res = await fetch("https://sulky-manager-backend.onrender.com/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            pseudo: pseudo,
-            password: password
-          })
-        });
 
-        const data = await res.json();
+<script>
+function login(){
 
-        if (!res.ok) {
-          msg.innerText = data.message || "Erreur de connexion";
-          return;
-        }
+  const pseudo = document.getElementById("pseudo").value;
+  const password = document.getElementById("password").value;
 
-        // Stockage sécurisé
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("pseudo", data.pseudo);
-        localStorage.setItem("balance", data.balance);
+  fetch("https://sulky-manager-backend.onrender.com/api/auth/login",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ pseudo, password })
+  })
+  .then(r=>r.json())
+  .then(data=>{
 
-        // Redirection vers le dashboard
-        window.location.href = "dashboard.html";
+    if(data.token){
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("pseudo", data.pseudo);
+      localStorage.setItem("balance", data.balance);
+      window.location.href="dashboard.html";
+    }else{
+      alert("Identifiants incorrects");
+    }
 
-      } catch (err) {
-        msg.innerText = "Erreur serveur";
-      }
-    });
-  </script>
+  })
+  .catch(()=>alert("Erreur serveur"));
+}
+</script>
 
 </body>
 </html>
