@@ -11,6 +11,7 @@ app.use(express.json());
 app.use("/api/races", require("./routes/races"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/admin", require("./routes/admin"));
+app.use("/api/results", require("./routes/results"));
 
 app.get("/", (req, res) => {
   res.send("Sulky-Bet Backend OK");

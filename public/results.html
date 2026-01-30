@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Résultats</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.results-grid{
+  display:grid;
+  gap:20px;
+}
+
+.result-card{
+  background:rgba(0,0,0,0.7);
+  border:2px solid #00ff88;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 0 20px rgba(0,255,136,0.25);
+  transition:0.25s;
+}
+
+.result-card:hover{
+  transform:scale(1.02);
+  box-shadow:0 0 35px #00ff88;
+}
+
+.podium{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:15px;
+}
+
+.place{
+  padding:15px 20px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.first{ background:gold; color:black; }
+.second{ background:silver; color:black; }
+.third{ background:#cd7f32; color:black; }
+
+.cotes{
+  margin-top:15px;
+  font-size:14px;
+  opacity:0.9;
+}
+</style>
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="header-content">
+    <div class="header-text">
+      <h1>🏁 Résultats officiels</h1>
+      <p>Courses réglées automatiquement</p>
+    </div>
+
+    <div class="header-actions">
+      <a href="dashboard.html">
+        <button>⬅ Dashboard</button>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="section">
+
+  <div id="resultsList" class="results-grid">
+    Chargement...
+  </div>
+
+</div>
+
+
+<script>
+const API = "https://sulky-manager-backend.onrender.com/api/results";
+
+fetch(API)
+  .then(r=>r.json())
+  .then(results=>{
+
+    const box = document.getElementById("resultsList");
+    box.innerHTML="";
+
+    if(!results.length){
+      box.innerHTML="<p>Aucun résultat pour le moment</p>";
+      return;
+    }
+
+    results.forEach(r=>{
+
+      const div = document.createElement("div");
+      div.className="result-card";
+
+      div.innerHTML = `
+        <h3>🏇 Course ${r.raceId}</h3>
+
+        <div class="podium">
+          <div class="place first">🥇 ${r.first}</div>
+          <div class="place second">🥈 ${r.second}</div>
+          <div class="place third">🥉 ${r.third}</div>
+        </div>
+
+        <div class="cotes">
+          Gagnant: x${r.coteWin} |
+          Placé: x${r.cotePlace} |
+          Couplé: x${r.coteCouple} |
+          Trio: x${r.coteTrio}
+        </div>
+      `;
+
+      box.appendChild(div);
+    });
+
+  })
+  .catch(()=>document.getElementById("resultsList").innerText="Erreur chargement");
+</script>
+
+</body>
+</html>

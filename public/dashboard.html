@@ -7,101 +7,121 @@
 
 <style>
 
+/* ================= BACKGROUND PHOTO ================= */
+
+body{
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
+    url("images/bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
 /* ================= LAYOUT ================= */
 
 .dashboard-wrapper{
-  max-width:1100px;
-  margin:90px auto;
-  padding:20px;
+  max-width:1200px;
+  margin:100px auto;
+  padding:25px;
 }
 
-/* ================= CARD PRINCIPALE ================= */
+/* ================= CARD ================= */
 
 .dashboard-card{
-  background:rgba(0,110,55,.65);
-  backdrop-filter:blur(10px);
-  border-radius:22px;
-  padding:50px;
-  text-align:center;
+  background:rgba(0,110,55,.55);
+  backdrop-filter:blur(14px);
+  border-radius:26px;
+  padding:60px;
 
   border:1px solid rgba(0,255,136,.6);
 
   box-shadow:
-    0 0 40px rgba(0,255,136,.25),
-    inset 0 0 25px rgba(0,0,0,.35);
+    0 0 45px rgba(0,255,136,.25),
+    inset 0 0 35px rgba(0,0,0,.45);
+
+  text-align:center;
 }
 
 /* ================= TITRES ================= */
 
 #welcome{
-  font-size:38px;
-  margin-bottom:8px;
+  font-size:40px;
+  margin-bottom:10px;
 }
 
 #balance{
-  font-size:30px;
-  margin-bottom:40px;
-
+  font-size:32px;
+  margin-bottom:45px;
   color:#00ff88;
 
   text-shadow:
     0 0 12px #00ff88,
-    0 0 30px rgba(0,255,136,1);
+    0 0 35px rgba(0,255,136,1);
 }
 
-/* ================= BOUTONS PRINCIPAUX ================= */
+/* ================= GRID ================= */
 
 .actions-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:25px;
-  margin-top:30px;
 }
 
+/* ================= GROS BOUTONS ================= */
+
 .big-btn{
-  padding:22px;
+  padding:26px;
   font-size:18px;
-  font-weight:bold;
-  border-radius:14px;
+  font-weight:700;
+
+  border-radius:18px;
 
   background:linear-gradient(135deg,#00ff88,#00cc66);
   color:#001a0f;
 
   cursor:pointer;
 
-  box-shadow:0 0 20px rgba(0,255,136,.6);
+  box-shadow:0 0 25px rgba(0,255,136,.6);
 
   transition:.25s;
 }
 
 .big-btn:hover{
-  transform:translateY(-4px) scale(1.04);
-  box-shadow:0 0 40px #00ff88;
+  transform:translateY(-6px) scale(1.05);
+  box-shadow:0 0 45px #00ff88;
 }
 
-/* ================= HEADER PREMIUM ================= */
+/* ================= HEADER ================= */
 
 header{
   background:linear-gradient(to bottom,#001a0f,#000);
   border-bottom:2px solid #00ff88;
+  text-align:center;
+  padding:25px;
+  position:relative;
+}
+
+.logout-btn{
+  position:absolute;
+  right:20px;
+  top:20px;
 }
 
 /* ================= ADMIN PANEL ================= */
 
 #adminPanel{
   margin-top:55px;
+  padding:30px;
 
-  padding:25px;
-
-  background:rgba(0,0,0,.55);
-
-  border-radius:16px;
+  background:rgba(0,0,0,.6);
+  border-radius:18px;
 
   border:2px solid #00ff88;
 
   display:none;
 
-  box-shadow:0 0 25px rgba(0,255,136,.35);
+  box-shadow:0 0 30px rgba(0,255,136,.35);
 }
 
 #adminPanel h3{
@@ -120,19 +140,13 @@ header{
   margin-top:12px;
 }
 
-.logout-btn{
-  position:absolute;
-  right:20px;
-  top:20px;
-}
-
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>SULKY-BET</h1>
+  <h1>🏇 SULKY-BET</h1>
   <button class="big-btn logout-btn" onclick="logout()">🚪 Déconnexion</button>
 </header>
 
@@ -144,15 +158,19 @@ header{
     <h1 id="welcome">Bienvenue</h1>
     <h2 id="balance">Solde : ... €</h2>
 
-    <!-- ACTIONS JOUEUR -->
+    <!-- ACTIONS -->
     <div class="actions-grid">
 
       <button class="big-btn" onclick="goRaces()">
-        🏇 Voir les courses
+        🏇 Courses
       </button>
 
       <button class="big-btn" onclick="goHistory()">
         📜 Mes paris
+      </button>
+
+      <button class="big-btn" onclick="goResults()">
+        🏁 Résultats
       </button>
 
       <button class="big-btn" onclick="window.location.href='index.html'">
@@ -165,7 +183,7 @@ header{
     <!-- ADMIN -->
     <div id="adminPanel">
 
-      <h3>🛠️ Administration</h3>
+      <h3>⚙️ Administration</h3>
 
       <input id="creditPseudo" placeholder="Pseudo joueur">
       <input id="creditAmount" type="number" placeholder="Montant">
@@ -173,7 +191,7 @@ header{
       <button class="big-btn admin-btn" onclick="creditUser()">💰 Créditer</button>
 
       <button class="big-btn admin-btn" onclick="goSettle()">
-        ⚙️ Régler une course
+        🏁 Régler une course
       </button>
 
       <p id="adminMsg"></p>
@@ -187,48 +205,39 @@ header{
 
 <script>
 const token = localStorage.getItem("token");
-if (!token) window.location.href = "login.html";
+if(!token) window.location.href="login.html";
 
 const payload = JSON.parse(atob(token.split(".")[1]));
 
-/* USER INFO */
-fetch("https://sulky-manager-backend.onrender.com/api/users/me", {
+/* USER */
+fetch("https://sulky-manager-backend.onrender.com/api/users/me",{
   headers:{ Authorization:"Bearer "+token }
 })
-.then(res=>res.json())
+.then(r=>r.json())
 .then(data=>{
-  document.getElementById("welcome").innerText="Bienvenue "+data.pseudo;
-  document.getElementById("balance").innerText="Solde : "+data.balance+" €";
+  welcome.innerText="Bienvenue "+data.pseudo;
+  balance.innerText="Solde : "+data.balance+" €";
   localStorage.setItem("balance",data.balance);
 
   if(payload.isAdmin){
-    document.getElementById("adminPanel").style.display="block";
+    adminPanel.style.display="block";
   }
 });
-
 
 /* ACTIONS */
 function logout(){
   localStorage.clear();
-  window.location.href="index.html";
+  location.href="index.html";
 }
 
-function goRaces(){
-  window.location.href="races.html";
-}
+function goRaces(){ location.href="races.html"; }
+function goHistory(){ location.href="history.html"; }
+function goResults(){ location.href="results.html"; }
+function goSettle(){ location.href="admin-settle.html"; }
 
-function goHistory(){
-  window.location.href="history.html";
-}
-
-function goSettle(){
-  window.location.href="admin-settle.html";
-}
-
-/* CREDIT */
 function creditUser(){
-  const pseudo=document.getElementById("creditPseudo").value;
-  const amount=document.getElementById("creditAmount").value;
+  const pseudo=creditPseudo.value;
+  const amount=creditAmount.value;
 
   fetch("https://sulky-manager-backend.onrender.com/api/admin/add-balance",{
     method:"POST",
@@ -239,9 +248,7 @@ function creditUser(){
     body:JSON.stringify({pseudo,amount})
   })
   .then(r=>r.json())
-  .then(d=>{
-    document.getElementById("adminMsg").innerText=d.message;
-  });
+  .then(d=>adminMsg.innerText=d.message);
 }
 </script>
 
