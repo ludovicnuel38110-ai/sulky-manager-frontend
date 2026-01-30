@@ -348,3 +348,11 @@ tr:hover td{
     flex-direction:column;
   }
 }
+.admin-wrapper,
+.admin-card,
+button,
+input,
+textarea {
+  position: relative;
+  z-index: 10;
+}
