@@ -74,8 +74,8 @@ fetch(API_URL)
         <div>
           <strong>${course.label}</strong>
         </div>
-        <a href="race.html?id=${encodeURIComponent(course.id)}">
-          <button class="bet-btn">Voir les partants</button>
+        <a href="race.html?id=${course.id}&reunion=${reunionId}">
+        <button class="bet-btn">Voir les partants</button>
         </a>
       `;
 
