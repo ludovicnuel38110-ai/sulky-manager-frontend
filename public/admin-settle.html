@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Règlement course</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="section">
+
+<h2>⚖️ Régler une course</h2>
+
+<input id="raceId" placeholder="ID course">
+<input id="winner" placeholder="Cheval gagnant">
+
+<button onclick="settle()">Valider résultat</button>
+
+<p id="msg"></p>
+
+</div>
+
+<script>
+
+const token = localStorage.getItem("token");
+
+function settle(){
+
+  fetch("https://sulky-manager-backend.onrender.com/api/admin/settle-race",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+token
+    },
+    body: JSON.stringify({
+      raceId: Number(document.getElementById("raceId").value),
+      gagnant: document.getElementById("winner").value
+    })
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    document.getElementById("msg").innerText =
+      data.message + " | gagnants: " + data.winners;
+  });
+
+}
+
+</script>
+
+</body>
+</html>
