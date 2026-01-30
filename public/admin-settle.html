@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Admin – Régler course</title>
+<title>Admin – Résultats course</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -13,8 +13,8 @@ body{
 }
 
 .box{
-  max-width:500px;
-  margin:80px auto;
+  max-width:600px;
+  margin:60px auto;
   background:#022;
   padding:30px;
   border-radius:12px;
@@ -31,6 +31,12 @@ input, button{
 button{
   background:#00ff88;
   font-weight:bold;
+  cursor:pointer;
+}
+
+h3{
+  margin-top:25px;
+  color:#00ff88;
 }
 </style>
 </head>
@@ -39,17 +45,27 @@ button{
 
 <div class="box">
 
-  <h2>⚙️ Régler une course</h2>
+  <h2>⚙️ Règlement automatique de la course</h2>
 
   <input id="raceId" placeholder="Race ID (ex: 101)">
-  <input id="gagnant" placeholder="Nom du cheval gagnant">
-  <input id="cote" type="number" step="0.01" placeholder="Cote finale (ex: 3)">
 
-  <button onclick="settle()">Valider résultat</button>
+  <h3>🏁 Arrivée officielle</h3>
+  <input id="first" placeholder="🥇 1er">
+  <input id="second" placeholder="🥈 2e">
+  <input id="third" placeholder="🥉 3e">
+
+  <h3>💰 Cotes finales</h3>
+  <input id="coteWin" type="number" step="0.01" placeholder="Simple gagnant">
+  <input id="cotePlace" type="number" step="0.01" placeholder="Simple placé">
+  <input id="coteCouple" type="number" step="0.01" placeholder="Couplé">
+  <input id="coteTrio" type="number" step="0.01" placeholder="Trio">
+
+  <button onclick="settle()">Valider et payer automatiquement</button>
 
   <p id="msg"></p>
 
 </div>
+
 
 <script>
 
@@ -58,22 +74,28 @@ if(!token) window.location.href="login.html";
 
 function settle(){
 
-  const raceId = Number(document.getElementById("raceId").value);
-  const gagnant = document.getElementById("gagnant").value;
-  const cote = Number(document.getElementById("cote").value);
+  const body = {
+    raceId: Number(raceId.value),
+    first: first.value,
+    second: second.value,
+    third: third.value,
+    coteWin: Number(coteWin.value),
+    cotePlace: Number(cotePlace.value),
+    coteCouple: Number(coteCouple.value),
+    coteTrio: Number(coteTrio.value)
+  };
 
-  fetch("https://sulky-manager-backend.onrender.com/api/admin/settle-race",{
+  fetch("https://sulky-manager-backend.onrender.com/api/admin/settle-results",{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
-      "Authorization":"Bearer " + token
+      "Authorization":"Bearer "+token
     },
-    body: JSON.stringify({ raceId, gagnant, cote })
+    body: JSON.stringify(body)
   })
   .then(r=>r.json())
-  .then(data=>{
-    document.getElementById("msg").innerText =
-      data.message + " | gagnants: " + data.winners;
+  .then(d=>{
+    msg.innerText = d.message + " | gagnants: " + d.winners;
   })
   .catch(()=>alert("Erreur serveur"));
 }
