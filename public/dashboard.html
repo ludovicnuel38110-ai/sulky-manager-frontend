@@ -3,85 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <title>Sulky-Bet – Dashboard</title>
+<link rel="stylesheet" href="style.css">
 
 <style>
-body{
-  margin:0;
-  background:#051;
-  color:white;
-  font-family:Arial, sans-serif;
-}
 
-/* HEADER */
-header{
-  background:#022;
+/* ================= LAYOUT ================= */
+
+.dashboard-wrapper{
+  max-width:1100px;
+  margin:90px auto;
   padding:20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
 }
 
-header h1{
-  color:#00ff88;
-  margin:0;
-}
+/* ================= CARD PRINCIPALE ================= */
 
-/* MENU */
-nav{
-  background:#00a84a;
-  padding:15px;
-  display:flex;
-  justify-content:center;
-  gap:20px;
-}
-
-nav button{
-  background:#001;
-  color:#00ff88;
-  border:2px solid #00ff88;
-  padding:10px 20px;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-/* DASHBOARD */
-main{
+.dashboard-card{
+  background:rgba(0,110,55,.65);
+  backdrop-filter:blur(10px);
+  border-radius:22px;
+  padding:50px;
   text-align:center;
-  padding:80px 20px;
+
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:
+    0 0 40px rgba(0,255,136,.25),
+    inset 0 0 25px rgba(0,0,0,.35);
 }
 
-.action-btn{
-  padding:12px 25px;
-  margin:15px;
-  border:none;
-  border-radius:6px;
-  background:#00ff88;
+/* ================= TITRES ================= */
+
+#welcome{
+  font-size:38px;
+  margin-bottom:8px;
+}
+
+#balance{
+  font-size:30px;
+  margin-bottom:40px;
+
+  color:#00ff88;
+
+  text-shadow:
+    0 0 12px #00ff88,
+    0 0 30px rgba(0,255,136,1);
+}
+
+/* ================= BOUTONS PRINCIPAUX ================= */
+
+.actions-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:25px;
+  margin-top:30px;
+}
+
+.big-btn{
+  padding:22px;
+  font-size:18px;
   font-weight:bold;
+  border-radius:14px;
+
+  background:linear-gradient(135deg,#00ff88,#00cc66);
+  color:#001a0f;
+
   cursor:pointer;
-  transition:0.2s;
+
+  box-shadow:0 0 20px rgba(0,255,136,.6);
+
+  transition:.25s;
 }
 
-.action-btn:hover{
-  transform:scale(1.05);
+.big-btn:hover{
+  transform:translateY(-4px) scale(1.04);
+  box-shadow:0 0 40px #00ff88;
 }
 
-/* ADMIN */
+/* ================= HEADER PREMIUM ================= */
+
+header{
+  background:linear-gradient(to bottom,#001a0f,#000);
+  border-bottom:2px solid #00ff88;
+}
+
+/* ================= ADMIN PANEL ================= */
+
 #adminPanel{
-  margin-top:50px;
+  margin-top:55px;
+
   padding:25px;
+
+  background:rgba(0,0,0,.55);
+
+  border-radius:16px;
+
   border:2px solid #00ff88;
-  border-radius:10px;
+
   display:none;
+
+  box-shadow:0 0 25px rgba(0,255,136,.35);
+}
+
+#adminPanel h3{
+  color:#00ff88;
+  margin-bottom:15px;
 }
 
 #adminPanel input{
-  padding:10px;
-  margin:8px;
-  border-radius:5px;
-  border:none;
-  width:200px;
+  width:100%;
+  padding:12px;
+  margin-top:10px;
 }
+
+.admin-btn{
+  width:100%;
+  margin-top:12px;
+}
+
+.logout-btn{
+  position:absolute;
+  right:20px;
+  top:20px;
+}
+
 </style>
 </head>
 
@@ -89,49 +133,56 @@ main{
 
 <header>
   <h1>SULKY-BET</h1>
-  <button class="action-btn" onclick="logout()">🚪 Déconnexion</button>
+  <button class="big-btn logout-btn" onclick="logout()">🚪 Déconnexion</button>
 </header>
 
-<nav>
-  <button onclick="goRaces()">Courses</button>
-  <button disabled>Résultats</button>
-  <button disabled>Classement</button>
-  <button disabled>Actualités</button>
-  <button disabled>Aide</button>
-</nav>
 
-<main>
+<div class="dashboard-wrapper">
 
-  <h1 id="welcome">Bienvenue</h1>
-  <h2 id="balance">Solde : ... €</h2>
+  <div class="dashboard-card">
 
-  <!-- 🔥 BOUTONS JOUEUR -->
-  <button class="action-btn" onclick="goRaces()">🏇 Voir les courses</button>
+    <h1 id="welcome">Bienvenue</h1>
+    <h2 id="balance">Solde : ... €</h2>
 
-  <button class="action-btn" onclick="goHistory()">📜 Mes paris</button>
+    <!-- ACTIONS JOUEUR -->
+    <div class="actions-grid">
+
+      <button class="big-btn" onclick="goRaces()">
+        🏇 Voir les courses
+      </button>
+
+      <button class="big-btn" onclick="goHistory()">
+        📜 Mes paris
+      </button>
+
+      <button class="big-btn" onclick="window.location.href='index.html'">
+        🏠 Accueil
+      </button>
+
+    </div>
 
 
-  <!-- 🔐 ADMIN -->
-  <div id="adminPanel">
+    <!-- ADMIN -->
+    <div id="adminPanel">
 
-    <h3>🛠️ Administration</h3>
+      <h3>🛠️ Administration</h3>
 
-    <input id="creditPseudo" placeholder="Pseudo joueur"><br>
-    <input id="creditAmount" type="number" placeholder="Montant"><br>
+      <input id="creditPseudo" placeholder="Pseudo joueur">
+      <input id="creditAmount" type="number" placeholder="Montant">
 
-    <button class="action-btn" onclick="creditUser()">💰 Créditer</button>
+      <button class="big-btn admin-btn" onclick="creditUser()">💰 Créditer</button>
 
-    <br><br>
+      <button class="big-btn admin-btn" onclick="goSettle()">
+        ⚙️ Régler une course
+      </button>
 
-    <button class="action-btn" onclick="goSettle()">
-      ⚙️ Régler une course
-    </button>
+      <p id="adminMsg"></p>
 
-    <p id="adminMsg"></p>
+    </div>
 
   </div>
 
-</main>
+</div>
 
 
 <script>
@@ -140,48 +191,57 @@ if (!token) window.location.href = "login.html";
 
 const payload = JSON.parse(atob(token.split(".")[1]));
 
-/* =====================
-   USER INFO
-===================== */
+/* USER INFO */
 fetch("https://sulky-manager-backend.onrender.com/api/users/me", {
-  headers: { "Authorization": "Bearer " + token }
+  headers:{ Authorization:"Bearer "+token }
 })
-.then(res => res.json())
-.then(data => {
+.then(res=>res.json())
+.then(data=>{
+  document.getElementById("welcome").innerText="Bienvenue "+data.pseudo;
+  document.getElementById("balance").innerText="Solde : "+data.balance+" €";
+  localStorage.setItem("balance",data.balance);
 
-  document.getElementById("welcome").innerText =
-    "Bienvenue " + data.pseudo;
-
-  document.getElementById("balance").innerText =
-    "Solde : " + data.balance + " €";
-
-  localStorage.setItem("balance", data.balance);
-
-  if(payload.isAdmin === true){
-    document.getElementById("adminPanel").style.display = "block";
+  if(payload.isAdmin){
+    document.getElementById("adminPanel").style.display="block";
   }
 });
 
 
-/* =====================
-   ACTIONS
-===================== */
-
+/* ACTIONS */
 function logout(){
   localStorage.clear();
-  window.location.href = "index.html";
+  window.location.href="index.html";
 }
 
 function goRaces(){
-  window.location.href = "races.html";
+  window.location.href="races.html";
 }
 
 function goHistory(){
-  window.location.href = "history.html";
+  window.location.href="history.html";
 }
 
 function goSettle(){
-  window.location.href = "admin-settle.html";
+  window.location.href="admin-settle.html";
+}
+
+/* CREDIT */
+function creditUser(){
+  const pseudo=document.getElementById("creditPseudo").value;
+  const amount=document.getElementById("creditAmount").value;
+
+  fetch("https://sulky-manager-backend.onrender.com/api/admin/add-balance",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+token
+    },
+    body:JSON.stringify({pseudo,amount})
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    document.getElementById("adminMsg").innerText=d.message;
+  });
 }
 </script>
 
