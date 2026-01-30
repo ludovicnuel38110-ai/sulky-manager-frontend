@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Historique</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.history-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.history-table th,
+.history-table td{
+  padding:10px;
+  border-bottom:1px solid #044;
+  text-align:center;
+}
+
+.win{ color:#00ff88; font-weight:bold; }
+.lose{ color:#ff5252; font-weight:bold; }
+.pending{ color:#ffc107; font-weight:bold; }
+</style>
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="header-content">
+    <h1>📜 Mes paris</h1>
+
+    <div>
+      <span id="balanceBox"></span>
+      <a href="dashboard.html">
+        <button>⬅ Retour dashboard</button>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="section">
+
+<table class="history-table">
+<thead>
+<tr>
+<th>Date</th>
+<th>Course</th>
+<th>Type</th>
+<th>Chevaux</th>
+<th>Mise</th>
+<th>Gain</th>
+<th>Statut</th>
+</tr>
+</thead>
+
+<tbody id="historyBody">
+<tr><td colspan="7">Chargement...</td></tr>
+</tbody>
+</table>
+
+</div>
+
+
+<script>
+const token = localStorage.getItem("token");
+if(!token) window.location.href="login.html";
+
+document.getElementById("balanceBox").innerText =
+"💰 " + (localStorage.getItem("balance")||0) + " €";
+
+
+fetch("https://sulky-manager-backend.onrender.com/api/bets/me",{
+  headers:{
+    "Authorization":"Bearer "+token
+  }
+})
+.then(r=>r.json())
+.then(bets=>{
+
+  const body = document.getElementById("historyBody");
+  body.innerHTML="";
+
+  if(!bets.length){
+    body.innerHTML="<tr><td colspan='7'>Aucun pari</td></tr>";
+    return;
+  }
+
+  bets.forEach(b=>{
+
+    const tr = document.createElement("tr");
+
+    const chevaux = Array.isArray(b.chevaux)
+      ? b.chevaux.map(c=>c.cheval).join(", ")
+      : b.cheval;
+
+    let statusClass="pending";
+    if(b.status==="win") statusClass="win";
+    if(b.status==="lose") statusClass="lose";
+
+    tr.innerHTML = `
+      <td>${new Date(b.createdAt).toLocaleString()}</td>
+      <td>${b.raceLabel || "-"}</td>
+      <td>${b.type}</td>
+      <td>${chevaux}</td>
+      <td>${b.montant}€</td>
+      <td>${b.gain || 0}€</td>
+      <td class="${statusClass}">${b.status || "pending"}</td>
+    `;
+
+    body.appendChild(tr);
+  });
+
+});
+</script>
+
+</body>
+</html>
