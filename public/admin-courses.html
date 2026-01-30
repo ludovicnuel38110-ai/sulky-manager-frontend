@@ -11,7 +11,7 @@
 
 body{
   background:
-    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.85)),
+    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.9)),
     url("images/bg.jpg");
   background-size:cover;
   background-position:center;
@@ -21,15 +21,30 @@ body{
 /* ================= LAYOUT ================= */
 
 .admin-wrapper{
-  max-width:1200px;
+  max-width:1300px;
   margin:80px auto;
   padding:20px;
 }
 
 .admin-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
   gap:30px;
+}
+
+/* ================= HEADER ================= */
+
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:40px;
+}
+
+.top-bar h2{
+  color:#00ff88;
+  font-size:28px;
+  text-shadow:0 0 10px #00ff88;
 }
 
 /* ================= CARDS ================= */
@@ -38,14 +53,21 @@ body{
   background:rgba(0,110,55,.55);
   backdrop-filter:blur(14px);
 
-  border-radius:20px;
-  padding:25px;
+  border-radius:22px;
+  padding:28px;
 
   border:1px solid rgba(0,255,136,.6);
 
   box-shadow:
     0 0 35px rgba(0,255,136,.25),
     inset 0 0 20px rgba(0,0,0,.35);
+
+  transition:.25s;
+}
+
+.admin-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 45px rgba(0,255,136,.5);
 }
 
 .admin-card h3{
@@ -57,39 +79,67 @@ body{
 
 /* ================= INPUTS ================= */
 
-.admin-card input{
+input, textarea{
   width:100%;
   margin-top:10px;
   padding:12px;
+  border-radius:10px;
+  border:none;
+  background:rgba(0,0,0,.6);
+  color:#fff;
+  font-size:14px;
 }
 
-.admin-card button{
+textarea{
+  height:170px;
+  resize:vertical;
+}
+
+/* ================= BUTTONS ================= */
+
+button{
   width:100%;
   margin-top:15px;
+  padding:14px;
+
+  border-radius:12px;
+  border:none;
+
+  background:linear-gradient(135deg,#00ff88,#00cc66);
+  color:#001a0f;
+
+  font-weight:bold;
+  cursor:pointer;
+
+  box-shadow:0 0 15px rgba(0,255,136,.6);
+
+  transition:.2s;
 }
 
-/* ================= HEADER ================= */
-
-.top-bar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
+button:hover{
+  transform:scale(1.04);
+  box-shadow:0 0 30px #00ff88;
 }
+
+/* ================= MESSAGE ================= */
 
 .msg{
-  margin-top:15px;
-  color:#00ff88;
+  margin-top:25px;
+  text-align:center;
   font-weight:bold;
+  color:#00ff88;
+  font-size:18px;
 }
 
 </style>
 </head>
 
+
 <body>
 
 <div class="admin-wrapper">
 
+  <!-- HEADER -->
   <div class="top-bar">
     <h2>🛠️ Gestion des courses</h2>
     <button onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
@@ -124,7 +174,7 @@ body{
 
     <!-- ================= RUNNER ================= -->
     <div class="admin-card">
-      <h3>🐎 Ajouter un cheval</h3>
+      <h3>🐎 Ajouter un cheval (manuel)</h3>
 
       <input id="pReunion" placeholder="Reunion ID">
       <input id="pRace" placeholder="Race ID">
@@ -132,10 +182,20 @@ body{
       <input id="pCheval" placeholder="Nom du cheval">
       <input id="pDriver" placeholder="Driver">
       <input id="pProp" placeholder="Propriétaire">
-      <input id="pMusique" placeholder="Musique ex: 1a2a3a">
+      <input id="pMusique" placeholder="Musique">
       <input id="pCote" placeholder="Cote ex: 3.5">
 
       <button onclick="addRunner()">Ajouter le partant</button>
+
+
+      <!-- ================= BULK IMPORT ================= -->
+
+      <h3 style="margin-top:35px;">⚡ Import automatique PMU</h3>
+
+      <textarea id="bulkInput"
+        placeholder="Colle ici la liste complète copiée du site PMU"></textarea>
+
+      <button onclick="importBulk()">Importer tous les chevaux</button>
     </div>
 
   </div>
@@ -151,6 +211,8 @@ if(!token) location.href="login.html";
 
 const API = "https://sulky-manager-backend.onrender.com/api/admin";
 
+const msg = document.getElementById("msg");
+
 function post(url, body){
   return fetch(API+url,{
     method:"POST",
@@ -162,6 +224,7 @@ function post(url, body){
   }).then(r=>r.json());
 }
 
+
 /* ================= REUNION ================= */
 
 async function createReunion(){
@@ -172,6 +235,7 @@ async function createReunion(){
 
   msg.innerText = res.message + " | ID: " + res.id;
 }
+
 
 /* ================= COURSE ================= */
 
@@ -186,9 +250,11 @@ async function addCourse(){
   msg.innerText = res.message;
 }
 
-/* ================= RUNNER ================= */
+
+/* ================= RUNNER MANUEL ================= */
 
 async function addRunner(){
+
   const res = await post("/add-runner",{
     reunionId:pReunion.value,
     raceId:Number(pRace.value),
@@ -201,6 +267,55 @@ async function addRunner(){
 
   msg.innerText = res.message;
 }
+
+
+/* ================= BULK IMPORT AUTO ================= */
+
+async function importBulk(){
+
+  const reunionId = pReunion.value;
+  const raceId = Number(pRace.value);
+
+  if(!reunionId || !raceId){
+    alert("Remplis Reunion ID et Race ID d'abord");
+    return;
+  }
+
+  const text = bulkInput.value.trim();
+  if(!text) return;
+
+  const lines = text.split("\n").map(l=>l.trim()).filter(Boolean);
+
+  let created = 0;
+
+  for(let i=0;i<lines.length;i++){
+
+    if(/^\d+$/.test(lines[i])){
+
+      const cheval = lines[i+1];
+      const driver = lines[i+2];
+
+      let coteLine = lines.slice(i).find(l=>/\d+\.\d+/.test(l));
+
+      const cote = parseFloat(coteLine?.match(/\d+\.\d+/)?.[0] || 3);
+
+      await post("/add-runner",{
+        reunionId,
+        raceId,
+        cheval,
+        driver,
+        proprietaire:"-",
+        musique:"-",
+        cote
+      });
+
+      created++;
+    }
+  }
+
+  msg.innerText = created + " chevaux importés automatiquement ✅";
+}
+
 </script>
 
 </body>
