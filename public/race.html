@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-/* ===== LAYOUT COURSE ===== */
-
 .section{
   max-width:1300px;
   margin:auto;
@@ -19,9 +17,7 @@
   align-items:flex-start;
 }
 
-.race-table{
-  flex:3;
-}
+.race-table{ flex:3; }
 
 .bet-slip{
   flex:1;
@@ -34,7 +30,6 @@
   height:fit-content;
 }
 
-/* Countdown style */
 #countdownBox{
   display:block;
   margin-top:6px;
@@ -42,14 +37,10 @@
   color:#00ff88;
 }
 
-/* Mobile */
 @media(max-width:900px){
-  .race-layout{
-    flex-direction:column;
-  }
+  .race-layout{ flex-direction:column; }
 }
 </style>
-
 </head>
 
 <body>
@@ -62,12 +53,10 @@
       <p id="raceDate"></p>
     </div>
 
-    <!-- 💰 SOLDE + ⏳ COUNTDOWN -->
     <div>
       <span id="balanceBox">💰 0 €</span><br>
       <span id="countdownBox">⏳ --:--</span><br>
-     <button onclick="goBack()">⬅ Retour</button>
-
+      <button id="backBtn">⬅ Retour</button>
     </div>
 
   </div>
@@ -75,12 +64,9 @@
 
 
 <div class="section">
-
   <div class="race-layout">
 
-    <!-- ================= TABLE ================= -->
     <div class="race-table">
-
       <table id="partantsTable" class="pmu-table">
         <thead>
           <tr>
@@ -95,13 +81,9 @@
         </thead>
         <tbody></tbody>
       </table>
-
     </div>
 
-
-    <!-- ================= BET SLIP ================= -->
     <div class="bet-slip">
-
       <h3>🧾 Mon pari</h3>
 
       <div id="selectedList">Aucun cheval sélectionné</div>
@@ -116,25 +98,24 @@
 
       <input id="stakeInput" type="number" placeholder="Mise €">
 
-      <button id="betBtn" onclick="confirmBet()">Parier</button>
-
+      <button id="betBtn">Parier</button>
     </div>
 
   </div>
-
 </div>
 
 
-
 <script>
+document.addEventListener("DOMContentLoaded", init);
 
-/* =================================================
-   INIT
-================================================= */
+let selectedHorses = [];
 
-init();
+/* ================= INIT ================= */
 
 async function init(){
+
+  document.getElementById("backBtn").onclick = () => history.back();
+  document.getElementById("betBtn").onclick = confirmBet;
 
   const token = localStorage.getItem("token");
   if(!token) return location.href="login.html";
@@ -147,9 +128,7 @@ async function init(){
 }
 
 
-/* =================================================
-   BALANCE
-================================================= */
+/* ================= BALANCE ================= */
 
 async function loadBalance(token){
   try{
@@ -159,16 +138,12 @@ async function loadBalance(token){
     );
 
     const u = await r.json();
-
-    balanceBox.innerText = "💰 " + u.balance + " €";
-  }
-  catch{}
+    document.getElementById("balanceBox").innerText = "💰 " + u.balance + " €";
+  }catch{}
 }
 
 
-/* =================================================
-   COUNTDOWN + LOCK PARIS
-================================================= */
+/* ================= COUNTDOWN ================= */
 
 function startCountdown(dateStr){
 
@@ -178,28 +153,22 @@ function startCountdown(dateStr){
 
   setInterval(()=>{
 
-    const now = Date.now();
-    const diff = raceTime - now;
+    const diff = raceTime - Date.now();
 
-    /* Course partie */
     if(diff <= 0){
       box.innerText = "🔴 Course partie";
       btn.disabled = true;
-      btn.style.opacity = 0.5;
       return;
     }
 
-    const minutesLeft = diff / 60000;
+    const minutesLeft = diff/60000;
 
-    /* Fermeture 30min */
     if(minutesLeft <= 30){
       box.innerText = "🔴 Paris fermés";
       btn.disabled = true;
-      btn.style.opacity = 0.5;
       return;
     }
 
-    /* Countdown */
     const m = Math.floor(diff/60000);
     const s = Math.floor((diff%60000)/1000);
 
@@ -209,11 +178,7 @@ function startCountdown(dateStr){
 }
 
 
-/* =================================================
-   LOAD COURSE
-================================================= */
-
-let selectedHorses=[];
+/* ================= LOAD COURSE ================= */
 
 async function loadRace(id){
 
@@ -223,10 +188,9 @@ async function loadRace(id){
 
   const race = await r.json();
 
-  raceTitle.innerText = race.label;
-  raceDate.innerText  = race.date;
+  document.getElementById("raceTitle").innerText = race.label;
+  document.getElementById("raceDate").innerText  = race.date;
 
-  /* 🔥 démarre l'horloge */
   startCountdown(race.date);
 
   const tbody = document.querySelector("#partantsTable tbody");
@@ -234,7 +198,7 @@ async function loadRace(id){
 
   race.partants.forEach((p,i)=>{
 
-    const tr=document.createElement("tr");
+    const tr = document.createElement("tr");
 
     tr.innerHTML=`
       <td>${i+1}</td>
@@ -246,33 +210,28 @@ async function loadRace(id){
       <td>⬜</td>
     `;
 
-    tr.onclick=()=>toggleHorse(p,tr);
+    tr.onclick = ()=>toggleHorse(p,tr);
 
     tbody.appendChild(tr);
   });
 }
 
 
-/* =================================================
-   SELECTION
-================================================= */
+/* ================= SELECTION ================= */
 
 function requiredCount(t){
-
-  if(t === "trio")
-    return 3;
-
-  if(t === "couple_win" || t === "couple_place")
-    return 2;
-
+  if(t==="trio") return 3;
+  if(t==="couple_win" || t==="couple_place") return 2;
   return 1;
 }
 
-
 function toggleHorse(h,row){
 
-  const btn = document.getElementById("betBtn");
-  if(btn.disabled) return; // 🔴 bloqué si paris fermés
+  const betBtn = document.getElementById("betBtn");
+  if(betBtn.disabled) return;
+
+  const betType = document.getElementById("betType");
+  const selectedList = document.getElementById("selectedList");
 
   const max = requiredCount(betType.value);
 
@@ -294,17 +253,19 @@ function toggleHorse(h,row){
 }
 
 
-/* =================================================
-   BET
-================================================= */
+/* ================= BET ================= */
 
 async function confirmBet(){
 
+  const betBtn = document.getElementById("betBtn");
   if(betBtn.disabled) return;
+
+  const betType = document.getElementById("betType");
+  const stakeInput = document.getElementById("stakeInput");
 
   const need = requiredCount(betType.value);
 
-  if(selectedHorses.length!==need)
+  if(selectedHorses.length !== need)
     return alert("Mauvais nombre de chevaux");
 
   const token = localStorage.getItem("token");
@@ -328,7 +289,6 @@ async function confirmBet(){
 
   location.reload();
 }
-
 </script>
 
 </body>
