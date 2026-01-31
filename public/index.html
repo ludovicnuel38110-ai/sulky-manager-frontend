@@ -24,86 +24,96 @@ if (tokenCheck) {
 
 <body>
 
-<!-- LOADER -->
+<!-- ================= LOADER ================= -->
 <div id="loader">
   <div class="spinner"></div>
   <p>Connexion au serveur Sulky-Bet...</p>
 </div>
 
+
 <header class="main-header">
-    <div class="header-content">
+  <div class="header-content">
 
-        <div class="header-text">
-            <h1>SULKY-BET</h1>
-            <p>Le PMU officiel de Sulkyland</p>
-        </div>
-
-        <!-- ZONE CONNEXION / USER -->
-        <div id="authZone" class="header-actions"></div>
-
+    <div class="header-text">
+      <h1>SULKY-BET</h1>
+      <p>Le PMU officiel de Sulkyland</p>
     </div>
+
+    <div id="authZone" class="header-actions"></div>
+
+  </div>
 </header>
 
+
 <nav>
-    <button onclick="scrollToSection('courses')">Courses</button>
-    <button onclick="scrollToSection('results')">Résultats</button>
-    <button onclick="scrollToSection('ranking')">Classement</button>
-    <button onclick="scrollToSection('news')">Actualités</button>
-    <a href="aide.html"><button>Aide</button></a>
+  <button onclick="scrollToSection('courses')">Courses</button>
+  <button onclick="scrollToSection('results')">Résultats</button>
+  <button onclick="scrollToSection('ranking')">Classement</button>
+  <button onclick="scrollToSection('news')">Actualités</button>
+  <a href="aide.html"><button>Aide</button></a>
 </nav>
 
-<!-- PRESENTATION -->
+
+<!-- ================= PRESENTATION ================= -->
 <div class="section intro-section">
-    <h2>Bienvenue sur Sulky-Bet</h2>
+  <h2>Bienvenue sur Sulky-Bet</h2>
 
-    <p class="intro-text">
-        Sulky-Bet est la plateforme officielle de paris hippiques de <b>Sulkyland</b>.
-        Pariez sur les plus grandes courses, suivez vos gains en temps réel
-        et devenez l’un des meilleurs turfistes du jeu.
-    </p>
+  <p class="intro-text">
+    Sulky-Bet est la plateforme officielle de paris hippiques de <b>Sulkyland</b>.
+    Pariez sur les plus grandes courses, suivez vos gains en temps réel
+    et devenez l’un des meilleurs turfistes du jeu.
+  </p>
 
-    <div class="intro-features">
-        <div class="intro-box">
-            🏇 <b>Pariez sur les courses</b><br>
-            Accédez aux programmes officiels et placez vos paris stratégiques.
-        </div>
-
-        <div class="intro-box">
-            💰 <b>Gérez votre solde</b><br>
-            Dépôts manuels, gains instantanés et suivi précis de vos Sulky.
-        </div>
-
-        <div class="intro-box">
-            🏆 <b>Classement des joueurs</b><br>
-            Grimpez dans le classement et imposez-vous comme un turfiste d’élite.
-        </div>
+  <div class="intro-features">
+    <div class="intro-box">
+      🏇 <b>Pariez sur les courses</b><br>
+      Accédez aux programmes officiels et placez vos paris stratégiques.
     </div>
 
-    <div class="intro-cta">
-        <a href="register.html">
-            <button class="cta-btn">🚀 S’inscrire maintenant</button>
-        </a>
+    <div class="intro-box">
+      💰 <b>Gérez votre solde</b><br>
+      Dépôts manuels, gains instantanés et suivi précis de vos Sulky.
     </div>
+
+    <div class="intro-box">
+      🏆 <b>Classement des joueurs</b><br>
+      Grimpez dans le classement et imposez-vous comme un turfiste d’élite.
+    </div>
+  </div>
+
+  <div class="intro-cta">
+    <a href="register.html">
+      <button class="cta-btn">🚀 S’inscrire maintenant</button>
+    </a>
+  </div>
 </div>
 
-<!-- COURSES (exemple vitrine publique) -->
+
+<!-- ================= COURSES DEMO ================= -->
 <div class="section" id="courses">
-    <h2>🟢 Courses disponibles</h2>
-    <div class="course">
-        <div>
-            <strong>R1 – VINCENNES</strong><br>
-            Dimanche 01 février 2026
-        </div>
-        <a href="login.html">
-            <button class="bet-btn">Se connecter pour parier</button>
-        </a>
+  <h2>🟢 Courses disponibles</h2>
+
+  <div class="course">
+    <div>
+      <strong>R1 – VINCENNES</strong><br>
+      Dimanche 01 février 2026
     </div>
+    <a href="login.html">
+      <button class="bet-btn">Se connecter pour parier</button>
+    </a>
+  </div>
 </div>
 
+
+
+<!-- ================= SCRIPT ================= -->
 <script>
-function scrollToSection(id) {
-    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+
+/* SCROLL */
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({ behavior:"smooth" });
 }
+
 
 /* AUTH HEADER */
 const authZone = document.getElementById("authZone");
@@ -111,34 +121,43 @@ const token = localStorage.getItem("token");
 const pseudo = localStorage.getItem("pseudo");
 const balance = localStorage.getItem("balance") || 0;
 
-
 if (!token) {
-    authZone.innerHTML = `
-        <a href="login.html"><button>Connexion</button></a>
-        <a href="register.html"><button>Créer un compte</button></a>
-    `;
+  authZone.innerHTML = `
+    <a href="login.html"><button>Connexion</button></a>
+    <a href="register.html"><button>Créer un compte</button></a>
+  `;
 } else {
-    authZone.innerHTML = `
-        <span>👤 <b>${pseudo}</b></span>
-        <span>💰 <b>${balance} Sulky</b></span>
-        <button id="logoutBtn">Déconnexion</button>
-    `;
+  authZone.innerHTML = `
+    <span>👤 <b>${pseudo}</b></span>
+    <span>💰 <b>${balance} Sulky</b></span>
+    <button id="logoutBtn">Déconnexion</button>
+  `;
 
-    document.getElementById("logoutBtn").onclick = () => {
-        localStorage.clear();
-        window.location.href = "index.html";
-    };
+  document.getElementById("logoutBtn").onclick = () => {
+    localStorage.clear();
+    location.href="index.html";
+  };
 }
 
-/* WAKE UP RENDER */
+
+/* ================= LOADER SAFE (FIX MOBILE BUG) ================= */
+
+const loader = document.getElementById("loader");
+
+/* sécurité : jamais bloquer plus de 3s */
+setTimeout(()=>{
+  loader.style.display="none";
+},3000);
+
+/* réveil backend */
 fetch("https://sulky-manager-backend.onrender.com/")
-  .then(() => {
-    document.getElementById("loader").style.display = "none";
+  .then(()=>{
+    loader.style.display="none";
   })
-  .catch(() => {
-    document.querySelector("#loader p").innerText =
-      "Réveil du serveur... merci de patienter ⏳";
+  .catch(()=>{
+    loader.style.display="none"; // IMPORTANT
   });
+
 </script>
 
 </body>
