@@ -102,12 +102,12 @@ button{
 
   <div class="admin-grid">
 
-    <!-- REUNION -->
+    <!-- ================= REUNION ================= -->
     <div class="admin-card">
       <h3>🏟️ Réunion</h3>
 
       <input id="rName" placeholder="R1 – VINCENNES">
-      <input id="rDate" placeholder="01/02/2026">
+      <input id="rDate" type="date">
       <button id="btnReunion">Créer la réunion</button>
 
       <input id="delReunionId" placeholder="ID à supprimer">
@@ -115,21 +115,27 @@ button{
     </div>
 
 
-    <!-- COURSE -->
+    <!-- ================= COURSE ================= -->
     <div class="admin-card">
       <h3>🏇 Course</h3>
 
       <input id="cReunion" placeholder="Reunion ID">
       <input id="cId" placeholder="ID course (101)">
       <input id="cLabel" placeholder="C1 – Prix test">
-      <input id="cDate" placeholder="01/02/2026">
+
+      <!-- 🔥 NOUVEAU -->
+      <label style="margin-top:10px;">Date</label>
+      <input id="cDate" type="date">
+
+      <label>Heure départ</label>
+      <input id="cTime" type="time">
 
       <button id="btnCourse">Ajouter la course</button>
       <button id="btnDeleteCourse">🗑 Supprimer course</button>
     </div>
 
 
-    <!-- RUNNERS -->
+    <!-- ================= RUNNERS ================= -->
     <div class="admin-card">
       <h3>🐎 Chevaux</h3>
 
@@ -146,7 +152,7 @@ button{
       <h3 style="margin-top:25px;">⚡ Import automatique (CSV ; )</h3>
 
       <textarea id="bulkInput"
-placeholder="Format : cheval;driver;proprietaire;entraineur;musique;cote"></textarea>
+placeholder="cheval;driver;proprietaire;entraineur;musique;cote"></textarea>
 
       <button id="btnBulk">Importer tous les chevaux</button>
     </div>
@@ -157,8 +163,14 @@ placeholder="Format : cheval;driver;proprietaire;entraineur;musique;cote"></text
 </div>
 
 
+
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+
+/* ================= INIT DIRECT ================= */
+
+init();
+
+function init(){
 
   const token = localStorage.getItem("token");
   if(!token) location.href="login.html";
@@ -180,6 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return res.json();
   }
 
+  /* ================= EVENTS ================= */
+
   $("btnReunion").onclick = createReunion;
   $("btnCourse").onclick = addCourse;
   $("btnRunner").onclick = addRunner;
@@ -188,23 +202,39 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnDeleteCourse").onclick = deleteCourse;
 
 
+  /* ================= CREATE REUNION ================= */
+
   async function createReunion(){
     const res = await post("/create-reunion",{
       reunion:$("rName").value,
       date:$("rDate").value
     });
+
     msg.innerText = res.message + " | ID: " + res.id;
   }
 
+
+  /* ================= CREATE COURSE (DATE + HEURE ISO) ================= */
+
   async function addCourse(){
+
+    const date = $("cDate").value;
+    const time = $("cTime").value || "00:00";
+
+    const iso = date + "T" + time; // ⭐ ISO propre
+
     const res = await post("/add-course",{
       reunionId:$("cReunion").value,
       id:Number($("cId").value),
       label:$("cLabel").value,
-      date:$("cDate").value
+      date: iso
     });
-    msg.innerText = res.message;
+
+    msg.innerText = res.message + " (" + iso + ")";
   }
+
+
+  /* ================= RUNNER ================= */
 
   async function addRunner(){
     const res = await post("/add-runner",{
@@ -216,11 +246,12 @@ document.addEventListener("DOMContentLoaded", () => {
       musique:$("pMusique").value,
       cote:Number($("pCote").value)
     });
+
     msg.innerText = res.message;
   }
 
 
-  /* ================= BULK CSV PRO ================= */
+  /* ================= BULK CSV ================= */
 
   async function importBulk(){
 
@@ -259,6 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  /* ================= DELETE ================= */
+
   async function deleteReunion(){
     const id = $("delReunionId").value;
 
@@ -286,7 +319,8 @@ document.addEventListener("DOMContentLoaded", () => {
     msg.innerText = res.message;
   }
 
-});
+}
+
 </script>
 
 </body>
