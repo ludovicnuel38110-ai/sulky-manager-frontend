@@ -4,6 +4,44 @@
 <meta charset="UTF-8">
 <title>Sulky-Bet – Course</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* ===== LAYOUT COURSE ===== */
+
+.section{
+  max-width:1300px;
+  margin:auto;
+}
+
+.race-layout{
+  display:flex;
+  gap:30px;
+  align-items:flex-start;
+}
+
+.race-table{
+  flex:3;
+}
+
+.bet-slip{
+  flex:1;
+  background:#021;
+  padding:20px;
+  border-radius:15px;
+  border:2px solid #00ff88;
+  position:sticky;
+  top:20px;
+  height:fit-content;
+}
+
+/* Mobile */
+@media(max-width:900px){
+  .race-layout{
+    flex-direction:column;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -22,38 +60,54 @@
   </div>
 </header>
 
+
 <div class="section">
 
-  <table id="partantsTable" class="pmu-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Cheval</th>
-        <th>Driver</th>
-        <th>Propriétaire</th>
-        <th>Musique</th>
-        <th>Cote</th>
-        <th>✔</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="race-layout">
 
-  <div class="bet-slip">
-    <h3>Mon pari</h3>
+    <!-- ================= TABLE ================= -->
+    <div class="race-table">
 
-    <div id="selectedList">Aucun cheval sélectionné</div>
+      <table id="partantsTable" class="pmu-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cheval</th>
+            <th>Driver</th>
+            <th>Propriétaire</th>
+            <th>Musique</th>
+            <th>Cote</th>
+            <th>✔</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-    <select id="betType">
-      <option value="simple_win">Simple gagnant</option>
-      <option value="simple_place">Simple placé</option>
-      <option value="couple">Couplé</option>
-      <option value="trio">Trio</option>
-    </select>
+    </div>
 
-    <input id="stakeInput" type="number" placeholder="Mise €">
 
-    <button onclick="confirmBet()">Parier</button>
+    <!-- ================= BET SLIP ================= -->
+    <div class="bet-slip">
+
+      <h3>🧾 Mon pari</h3>
+
+      <div id="selectedList">
+        Aucun cheval sélectionné
+      </div>
+
+      <select id="betType">
+        <option value="simple_win">Simple gagnant</option>
+        <option value="simple_place">Simple placé</option>
+        <option value="couple">Couplé</option>
+        <option value="trio">Trio</option>
+      </select>
+
+      <input id="stakeInput" type="number" placeholder="Mise €">
+
+      <button onclick="confirmBet()">Parier</button>
+
+    </div>
+
   </div>
 
 </div>
@@ -79,7 +133,7 @@ async function init(){
 }
 
 
-/* ================= BALANCE ================= */
+/ հասց BALANCE */
 
 async function loadBalance(token){
   try{
@@ -109,6 +163,7 @@ async function loadRace(id){
   raceDate.innerText  = race.date;
 
   const tbody = document.querySelector("#partantsTable tbody");
+  tbody.innerHTML = "";
 
   race.partants.forEach((p,i)=>{
 

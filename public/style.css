@@ -251,3 +251,37 @@ td{
   nav{ flex-direction:column; }
   .section{ margin:20px; }
 }
+/* ===== LAYOUT COURSE ===== */
+
+.section{
+  max-width:1200px;
+  margin:auto;
+}
+
+.race-layout{
+  display:flex;
+  gap:30px;
+  align-items:flex-start;
+}
+
+.race-table{
+  flex:3;
+}
+
+.bet-slip{
+  flex:1;
+  background:#021;
+  padding:20px;
+  border-radius:15px;
+  border:2px solid #00ff88;
+  position:sticky;
+  top:20px;
+  height:fit-content;
+}
+
+/* mobile */
+@media(max-width:900px){
+  .race-layout{
+    flex-direction:column;
+  }
+}
