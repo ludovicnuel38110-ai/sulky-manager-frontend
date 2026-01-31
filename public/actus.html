@@ -7,7 +7,9 @@
 
 <style>
 
-/* ===== Layout ===== */
+/* =========================
+   LAYOUT
+========================= */
 
 .news-wrapper{
   max-width:1100px;
@@ -20,15 +22,23 @@
   gap:25px;
 }
 
-/* ===== Cards ===== */
+/* =========================
+   CARDS
+========================= */
 
 .news-card{
   background:rgba(0,110,55,.65);
   border-radius:18px;
-  padding:20px;
+  padding:22px;
   border:1px solid rgba(0,255,136,.4);
   backdrop-filter:blur(10px);
   box-shadow:0 0 20px rgba(0,255,136,.15);
+  transition:.2s;
+}
+
+.news-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 35px rgba(0,255,136,.35);
 }
 
 .news-card h3{
@@ -39,20 +49,45 @@
 .news-date{
   font-size:13px;
   opacity:.7;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
 .news-card p{
-  line-height:1.5;
+  line-height:1.6;
+  white-space:pre-line;
 }
 
-/* ===== Title ===== */
+/* =========================
+   IMAGE ARTICLE
+========================= */
+
+.news-img{
+  width:100%;
+  border-radius:14px;
+  margin-bottom:15px;
+  object-fit:cover;
+  max-height:320px;
+}
+
+/* =========================
+   TITLE
+========================= */
 
 .page-title{
   text-align:center;
   color:#00ff88;
   text-shadow:0 0 12px #00ff88;
   margin-bottom:40px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+  .news-wrapper{
+    margin:20px;
+  }
 }
 
 </style>
@@ -62,6 +97,7 @@
 
 <header class="main-header">
   <div class="header-content">
+
     <div class="header-text">
       <h1>SULKY-BET</h1>
       <p>Actualités hippiques</p>
@@ -71,6 +107,7 @@
       <a href="index.html"><button>Accueil</button></a>
       <a href="dashboard.html"><button>Dashboard</button></a>
     </div>
+
   </div>
 </header>
 
@@ -87,46 +124,70 @@
 
 <script>
 
-/* =========================
-   NEWS DATA (modifiable)
-========================= */
+/* =================================================
+   NEWS DATA
+   👉 pour ajouter un article, copie un bloc
+================================================= */
 
 const NEWS = [
+
+/* ================= QUINTE DU JOUR ================= */
+
+{
+  title:"🏆 Quinté+ du jour – Vincennes | Prix de l’Île-de-France (Gr.1)",
+  date:"Dimanche 1er février 2026",
+
+  image:"images/quinte-vincennes.jpg",   // 👉 mets ta photo ici
+
+  text:`
+Deux semaines après le Cornulier, les meilleurs spécialistes du trot monté se retrouvent sur la grande piste de Vincennes pour une nouvelle bataille au sommet.
+
+Sur les 2 175 mètres de ce parcours de vitesse, le rythme devrait être soutenu et les chevaux capables d’imprimer leur train dès le départ seront avantagés.
+
+IT’S A DOLLARMAKER (11) apparaît comme une base solide. Très performant lorsqu’il prend les commandes, il possède la tenue et la pointe de vitesse nécessaires pour aller au bout.
+
+JEROBOAM D’ERABLE (9), courageux et régulier, reste une valeur sûre à ce niveau. Malgré un parcours compliqué dernièrement, il a encore montré toute sa combativité et peut cette fois viser la victoire.
+
+La tenante du titre INA DU RIB (14) répond toujours présente dans les grands rendez-vous. Sa constance et son expérience en font une priorité pour les places.
+
+Derrière ces trois appuis principaux, IDEALE DU CHENE (15) et JEAN BALTHAZAR (12) possèdent la classe pour accrocher une belle allocation. JE M’ENVOLE (4), à racheter, peut surprendre, tandis que JEEGHA PRIDE (3) et KEENGAME (6) profiteront de la moindre défaillance.
+
+🎯 Tendance Sulky-Bet :
+Bases : 11 – 9 – 14
+Outsiders : 15 – 12 – 4 – 3 – 6
+`
+},
+
+/* ================= AUTRES NEWS ================= */
 
 {
   title:"Préparatifs Prix d'Amérique",
   date:"02/02/2026",
-  text:"Plusieurs favoris ont été confirmés au départ. Les premières cotes placent KIROYAL DU VINOIS parmi les outsiders intéressants."
+  text:"Plusieurs favoris ont confirmé leur participation. Les premières tendances de cotes placent certains outsiders en embuscade."
 },
 
 {
-  title:"Réunion Vincennes – Analyse C1",
-  date:"01/02/2026",
-  text:"Course très ouverte. Attention aux chevaux réguliers sur longue distance. Les drivers Raffestin et Abrivard en forme cette semaine."
-},
-
-{
-  title:"Conseil trio du jour",
+  title:"Conseil Trio du jour",
   date:"31/01/2026",
-  text:"Base solide : KALISCO PLANCHETTE. Associer avec KOMAN et KARMEN DE MONTCEAU pour un trio spéculatif."
+  text:"Base intéressante : KALISCO PLANCHETTE. Associer avec KOMAN et KARMEN DE MONTCEAU pour une combinaison spéculative."
 }
 
 ];
 
 
-/* =========================
+/* =================================================
    RENDER
-========================= */
+================================================= */
 
 const container = document.getElementById("newsList");
 
 NEWS.reverse().forEach(n => {
 
   const div = document.createElement("div");
-
   div.className = "news-card";
 
   div.innerHTML = `
+    ${n.image ? `<img src="${n.image}" class="news-img">` : ""}
     <h3>${n.title}</h3>
     <div class="news-date">${n.date}</div>
     <p>${n.text}</p>
