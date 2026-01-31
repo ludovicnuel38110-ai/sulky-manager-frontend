@@ -35,28 +35,18 @@ header{
   top:20px;
 }
 
-
-/* ================= ACTU BUTTON ================= */
-
 .news-bar{
-  text-align:center;
-  margin-top:15px;
+  margin-top:10px;
 }
 
 .news-btn{
-  padding:12px 28px;
-  font-weight:bold;
-  border-radius:12px;
+  padding:10px 26px;
+  border-radius:10px;
   border:none;
   background:linear-gradient(135deg,#00ff88,#00cc66);
-  color:#001a0f;
+  font-weight:bold;
   cursor:pointer;
-  box-shadow:0 0 20px rgba(0,255,136,.6);
-  transition:.25s;
-}
-
-.news-btn:hover{
-  transform:scale(1.05);
+  box-shadow:0 0 18px rgba(0,255,136,.6);
 }
 
 
@@ -74,16 +64,12 @@ header{
 .dashboard-card{
   background:rgba(0,110,55,.55);
   backdrop-filter:blur(14px);
-
   border-radius:26px;
   padding:60px;
-
   border:1px solid rgba(0,255,136,.6);
-
   box-shadow:
     0 0 45px rgba(0,255,136,.25),
     inset 0 0 35px rgba(0,0,0,.45);
-
   text-align:center;
 }
 
@@ -91,28 +77,15 @@ header{
 /* ================= TITRES ================= */
 
 #welcome{
-  font-size:40px;
-  margin-bottom:20px;
+  font-size:38px;
+  margin-bottom:35px;
 }
 
 #balance{
-  font-size:32px;
-  margin-bottom:45px;
+  font-size:34px;
+  margin-top:35px;
   color:#00ff88;
-  text-shadow:
-    0 0 12px #00ff88,
-    0 0 35px rgba(0,255,136,1);
-}
-
-
-/* ================= MESSAGE ACCUEIL ================= */
-
-.welcome-msg{
-  max-width:850px;
-  margin:0 auto 35px auto;
-  font-size:15px;
-  line-height:1.6;
-  opacity:.95;
+  text-shadow:0 0 12px #00ff88;
 }
 
 
@@ -122,6 +95,7 @@ header{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:25px;
+  margin-bottom:40px;
 }
 
 
@@ -145,16 +119,26 @@ header{
 }
 
 
-/* ================= ADMIN PANEL ================= */
+/* ================= MESSAGE ACCUEIL ================= */
+
+.welcome-msg{
+  max-width:850px;
+  margin:0 auto;
+  font-size:15px;
+  line-height:1.7;
+  opacity:.95;
+}
+
+
+/* ================= ADMIN ================= */
 
 #adminPanel{
-  margin-top:55px;
+  margin-top:50px;
   padding:30px;
   background:rgba(0,0,0,.6);
   border-radius:18px;
   border:2px solid #00ff88;
   display:none;
-  box-shadow:0 0 30px rgba(0,255,136,.35);
 }
 
 #adminPanel input{
@@ -168,11 +152,6 @@ header{
   margin-top:12px;
 }
 
-#adminMsg{
-  margin-top:12px;
-  font-weight:bold;
-}
-
 </style>
 </head>
 
@@ -181,11 +160,11 @@ header{
 
 <header>
   <h1>SULKY-BET</h1>
+
   <button id="logoutBtn" class="big-btn logout-btn">Déconnexion</button>
 
-  <!-- BOUTON ACTUS PLUS VISIBLE -->
   <div class="news-bar">
-    <button class="news-btn" onclick="location.href='actus.html'">📰 Actualités hippiques</button>
+    <button class="news-btn" onclick="location.href='actus.html'">📰 Actualités</button>
   </div>
 </header>
 
@@ -196,26 +175,8 @@ header{
 
     <h1 id="welcome">Bienvenue</h1>
 
-    <!-- MESSAGE ACCUEIL -->
-    <div class="welcome-msg">
-      👋 Bienvenue sur <b>Sulky-Bet</b> !<br><br>
 
-      Parie simplement sur les courses disponibles dans la rubrique <b>Courses</b> et suis tes paris en toute tranquillité.<br><br>
-
-      Pour le moment, seules quelques combinaisons de paris sont proposées, mais la plateforme évoluera progressivement avec de nouvelles fonctionnalités.<br><br>
-
-      💬 Pour créditer ton compte, contacte-moi sur <b>Sulkyland</b> au pseudo <b>Turfiste83</b>.  
-      Je reverserai les fonds le plus rapidement possible sur ton solde afin que tu puisses jouer.<br><br>
-
-      🔐 Pense bien à conserver ton pseudo et ton mot de passe.<br><br>
-
-      Merci pour ta confiance et bons paris 🏇
-    </div>
-
-    <h2 id="balance">Solde : ... €</h2>
-
-
-    <!-- ACTIONS -->
+    <!-- ================= BOUTONS EN PREMIER ================= -->
     <div class="actions-grid">
 
       <button class="big-btn" id="btnRaces">🏇 Courses</button>
@@ -226,20 +187,35 @@ header{
     </div>
 
 
+    <!-- ================= MESSAGE ACCUEIL ================= -->
+    <div class="welcome-msg">
+
+      👋 Bienvenue sur <b>Sulky-Bet</b> !<br><br>
+
+      Parie simplement sur les courses disponibles dans la rubrique <b>Courses</b> et suis tes paris en toute tranquillité.<br><br>
+
+      Pour le moment, seules quelques combinaisons de paris sont proposées, mais la plateforme évoluera progressivement avec de nouvelles fonctionnalités.<br><br>
+
+      💬 Pour créditer ton compte, contacte-moi sur <b>Sulkyland</b> au pseudo <b>Turfiste83</b>.  
+      Je reverserai les fonds le plus rapidement possible afin que tu puisses jouer.<br><br>
+
+      🔐 Pense bien à conserver ton pseudo et ton mot de passe.<br><br>
+
+      Merci pour ta confiance et bons paris 🏇
+
+    </div>
+
+
+    <!-- ================= SOLDE ================= -->
+    <h2 id="balance">Solde : ... €</h2>
+
+
     <!-- ADMIN -->
     <div id="adminPanel">
-
       <h3>⚙️ Administration</h3>
-
       <input id="creditPseudo" placeholder="Pseudo joueur">
       <input id="creditAmount" type="number" placeholder="Montant">
-
-      <button class="big-btn admin-btn" id="btnCourses">🏗️ Gérer les courses</button>
-      <button class="big-btn admin-btn" id="btnCredit">💰 Créditer</button>
-      <button class="big-btn admin-btn" id="btnSettle">🏁 Régler une course</button>
-
-      <p id="adminMsg"></p>
-
+      <button class="big-btn admin-btn" id="btnCourses">Gérer les courses</button>
     </div>
 
   </div>
@@ -256,10 +232,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const welcome = document.getElementById("welcome");
   const balanceBox = document.getElementById("balance");
-  const adminPanel = document.getElementById("adminPanel");
-  const adminMsg = document.getElementById("adminMsg");
-
-  /* ================= USER INFO ================= */
 
   try{
     const res = await fetch(
@@ -272,25 +244,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     welcome.innerText = "Bienvenue " + user.pseudo;
     balanceBox.innerText = "Solde : " + user.balance + " €";
 
-    localStorage.setItem("balance", user.balance);
-
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    if(payload.isAdmin) adminPanel.style.display="block";
-
   }catch{
     localStorage.clear();
     location.href="login.html";
   }
 
-
-  /* ================= NAVIGATION ================= */
-
   btnRaces.onclick = ()=>location.href="races.html";
   btnHistory.onclick = ()=>location.href="history.html";
   btnResults.onclick = ()=>location.href="results.html";
   btnHome.onclick = ()=>location.href="index.html";
-  btnSettle.onclick = ()=>location.href="admin-settle.html";
-  btnCourses.onclick = ()=>location.href="admin-courses.html";
 
   logoutBtn.onclick = ()=>{
     localStorage.clear();
