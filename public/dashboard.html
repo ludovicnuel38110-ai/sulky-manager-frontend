@@ -43,22 +43,16 @@ body{
 
 /* image cheval */
 .logo-img{
-  height:70px;              /* taille parfaite */
+  height:70px;      /* taille parfaite */
   width:auto;
   object-fit:contain;
 
-  filter:
-    drop-shadow(0 0 8px #00ff88)
-    drop-shadow(0 0 20px #00ff88)
-    drop-shadow(0 0 40px #00ff88);
+  /* ❌ supprime totalement le néon */
+  filter:none;
+  animation:none;
 
-  animation: neonPulse 1.8s ease-in-out infinite alternate;
-}
-
-/* effet néon */
-@keyframes neonPulse{
-  from{ filter: drop-shadow(0 0 8px #00ff88); }
-  to{   filter: drop-shadow(0 0 45px #00ff88); }
+  /* rendu plus naturel dans la bande noire */
+  opacity:0.95;
 }
 
 /* texte logo */
