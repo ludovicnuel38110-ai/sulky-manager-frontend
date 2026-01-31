@@ -1,256 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Course</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="header-content">
+    <div class="header-text">
+      <h1 id="raceTitle">Course</h1>
+      <p id="raceDate"></p>
+    </div>
+
+    <div>
+      <span id="balanceBox">💰 0 €</span>
+      <a href="meeting.html"><button>⬅ Retour</button></a>
+    </div>
+  </div>
+</header>
+
+<div class="section">
+
+  <table id="partantsTable" class="pmu-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Cheval</th>
+        <th>Driver</th>
+        <th>Propriétaire</th>
+        <th>Musique</th>
+        <th>Cote</th>
+        <th>✔</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="bet-slip">
+    <h3>Mon pari</h3>
+
+    <div id="selectedList">Aucun cheval sélectionné</div>
+
+    <select id="betType">
+      <option value="simple_win">Simple gagnant</option>
+      <option value="simple_place">Simple placé</option>
+      <option value="couple">Couplé</option>
+      <option value="trio">Trio</option>
+    </select>
+
+    <input id="stakeInput" type="number" placeholder="Mise €">
+
+    <button onclick="confirmBet()">Parier</button>
+  </div>
+
+</div>
+
+
+
 <script>
 
-/* =================================================
-   ✅ INIT DIRECT (PAS DOMContentLoaded !!!)
-================================================= */
+/* ================= INIT DIRECT ================= */
 
 init();
 
 async function init(){
 
   const token = localStorage.getItem("token");
-  if(!token){
-    window.location.href = "login.html";
-    return;
-  }
+  if(!token) return location.href="login.html";
 
-  const params = new URLSearchParams(window.location.search);
-  const raceId = params.get("id");
-
-  if(!raceId){
-    window.location.href = "races.html";
-    return;
-  }
+  const raceId = new URLSearchParams(location.search).get("id");
+  if(!raceId) return location.href="races.html";
 
   await loadBalance(token);
   await loadRace(raceId);
 }
 
 
-
-/* =================================================
-   🔹 SOLDE UTILISATEUR (API SAFE)
-================================================= */
+/* ================= BALANCE ================= */
 
 async function loadBalance(token){
-
   try{
-
-    const res = await fetch(
+    const r = await fetch(
       "https://sulky-manager-backend.onrender.com/api/users/me",
-      {
-        headers:{ Authorization:"Bearer "+token }
-      }
+      { headers:{ Authorization:"Bearer "+token }}
     );
-
-    const user = await res.json();
-
-    const box = document.getElementById("balanceBox");
-    if(box) box.innerText = "💰 " + user.balance + " €";
-
-    localStorage.setItem("balance", user.balance);
-
-  }
-  catch(err){
-    console.error("Balance error:", err);
-  }
+    const u = await r.json();
+    document.getElementById("balanceBox").innerText="💰 "+u.balance+" €";
+  }catch{}
 }
 
 
+/* ================= LOAD COURSE ================= */
 
-/* =================================================
-   🔹 VARIABLES
-================================================= */
+let selectedHorses=[];
 
-let selectedHorses = [];
+async function loadRace(id){
 
+  const r = await fetch(
+    "https://sulky-manager-backend.onrender.com/api/races/"+id
+  );
 
+  const race = await r.json();
 
-/* =================================================
-   🔹 LOAD COURSE
-================================================= */
+  raceTitle.innerText = race.label;
+  raceDate.innerText  = race.date;
 
-async function loadRace(raceId){
+  const tbody = document.querySelector("#partantsTable tbody");
 
-  const url =
-    "https://sulky-manager-backend.onrender.com/api/races/" + raceId;
+  race.partants.forEach((p,i)=>{
 
-  try{
+    const tr=document.createElement("tr");
 
-    const res = await fetch(url);
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${p.cheval}</td>
+      <td>${p.driver}</td>
+      <td>${p.proprietaire}</td>
+      <td>${p.musique}</td>
+      <td>${p.cote}</td>
+      <td>⬜</td>
+    `;
 
-    if(!res.ok)
-      throw new Error("API error");
+    tr.onclick=()=>toggleHorse(p,tr);
 
-    const race = await res.json();
-
-    const title = document.getElementById("raceTitle");
-    const date  = document.getElementById("raceDate");
-
-    if(title) title.innerText = race.label;
-    if(date)  date.innerText  = race.date || "";
-
-    const tbody = document.querySelector("#partantsTable tbody");
-    if(!tbody) return;
-
-    tbody.innerHTML = "";
-
-    race.partants.forEach((p, index) => {
-
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
-        <td>${index+1}</td>
-        <td>${p.cheval}</td>
-        <td>${p.driver}</td>
-        <td>${p.proprietaire}</td>
-        <td>${p.musique}</td>
-        <td>${p.cote}</td>
-        <td class="check-cell">⬜</td>
-      `;
-
-      tr.addEventListener("click", () => toggleHorse(p, tr));
-
-      tbody.appendChild(tr);
-    });
-
-  }
-  catch(err){
-    console.error("Race load error:", err);
-    alert("Erreur chargement course");
-  }
+    tbody.appendChild(tr);
+  });
 }
 
 
+/* ================= SELECTION ================= */
 
-/* =================================================
-   🔹 HELPERS
-================================================= */
-
-function requiredCount(type){
-  switch(type){
-    case "simple_win":
-    case "simple_place": return 1;
-    case "couple": return 2;
-    case "trio": return 3;
-    default: return 1;
-  }
+function requiredCount(t){
+  return t==="trio"?3:t==="couple"?2:1;
 }
 
+function toggleHorse(h,row){
 
+  const max = requiredCount(betType.value);
 
-/* =================================================
-   🔹 SELECTION CHEVAUX
-================================================= */
+  const idx = selectedHorses.findIndex(x=>x.cheval===h.cheval);
 
-function toggleHorse(horse, row){
-
-  const type = document.getElementById("betType").value;
-  const max = requiredCount(type);
-
-  const index = selectedHorses.findIndex(h => h.cheval === horse.cheval);
-  const checkCell = row.querySelector(".check-cell");
-
-  /* décocher */
-  if(index >= 0){
-    selectedHorses.splice(index,1);
-    row.classList.remove("selected-row");
-    checkCell.innerText = "⬜";
+  if(idx>=0){
+    selectedHorses.splice(idx,1);
+    row.lastElementChild.innerText="⬜";
   }
-
-  /* cocher */
   else{
-
-    if(selectedHorses.length >= max){
-      alert(`Maximum ${max} cheval(x)`);
-      return;
-    }
-
-    selectedHorses.push(horse);
-    row.classList.add("selected-row");
-    checkCell.innerText = "✅";
+    if(selectedHorses.length>=max) return;
+    selectedHorses.push(h);
+    row.lastElementChild.innerText="✅";
   }
 
-  updateSlip();
+  selectedList.innerHTML =
+    selectedHorses.map(x=>x.cheval).join("<br>") ||
+    "Aucun cheval sélectionné";
 }
 
 
-
-function updateSlip(){
-
-  const box = document.getElementById("selectedList");
-
-  if(!box) return;
-
-  if(!selectedHorses.length){
-    box.innerText = "Aucun cheval sélectionné";
-    return;
-  }
-
-  box.innerHTML = selectedHorses
-    .map(h => `• ${h.cheval} (${h.cote})`)
-    .join("<br>");
-}
-
-
-
-/* =================================================
-   🔹 CONFIRMER PARI
-================================================= */
+/* ================= BET ================= */
 
 async function confirmBet(){
 
+  const need = requiredCount(betType.value);
+
+  if(selectedHorses.length!==need)
+    return alert("Mauvais nombre de chevaux");
+
   const token = localStorage.getItem("token");
 
-  const stake = Number(document.getElementById("stakeInput").value);
-  const type = document.getElementById("betType").value;
+  await fetch(
+    "https://sulky-manager-backend.onrender.com/api/bets",
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:"Bearer "+token
+      },
+      body:JSON.stringify({
+        raceId:+new URLSearchParams(location.search).get("id"),
+        chevaux:selectedHorses,
+        type:betType.value,
+        montant:+stakeInput.value
+      })
+    }
+  );
 
-  const params = new URLSearchParams(window.location.search);
-  const raceId = params.get("id");
-
-  const needed = requiredCount(type);
-
-  if(selectedHorses.length !== needed){
-    alert(`Ce pari nécessite ${needed} cheval(x)`);
-    return;
-  }
-
-  if(!stake || stake <= 0){
-    alert("Mise invalide");
-    return;
-  }
-
-  try{
-
-    const res = await fetch(
-      "https://sulky-manager-backend.onrender.com/api/bets",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":"Bearer "+token
-        },
-        body: JSON.stringify({
-          raceId:Number(raceId),
-          chevaux:selectedHorses,
-          type,
-          montant:stake
-        })
-      }
-    );
-
-    const data = await res.json();
-
-    alert("✅ Pari enregistré !");
-    localStorage.setItem("balance", data.balance);
-
-    location.reload();
-
-  }
-  catch(err){
-    console.error(err);
-    alert("Erreur pari");
-  }
+  location.reload();
 }
 
 </script>
+
+</body>
+</html>
