@@ -264,16 +264,34 @@ function updateSlip(){
    🔹 Confirmer pari
 ========================= */
 
-function confirmBet(){
-
-  if(selectedHorses.length === 0){
-    alert("Sélectionne au moins un cheval");
-    return;
+function requiredCount(type){
+  switch(type){
+    case "simple_win":
+    case "simple_place":
+      return 1;
+    case "couple":
+      return 2;
+    case "trio":
+      return 3;
+    default:
+      return 1;
   }
+}
+
+function confirmBet(){
 
   const stake = Number(document.getElementById("stakeInput").value);
   const type = document.getElementById("betType").value;
 
+  const needed = requiredCount(type);
+
+  /* ✅ Validation nombre chevaux */
+  if(selectedHorses.length !== needed){
+    alert(`Ce pari "${type}" nécessite ${needed} cheval(x)`);
+    return;
+  }
+
+  /* ✅ Validation mise */
   if(!stake || stake <= 0){
     alert("Mise invalide");
     return;
@@ -300,7 +318,4 @@ function confirmBet(){
   })
   .catch(()=>alert("Erreur pari"));
 }
-</script>
 
-</body>
-</html>
