@@ -1,74 +1,98 @@
 <script>
 
-/* =========================
-   🔹 INIT APP
-========================= */
+/* =================================================
+   ✅ INIT DIRECT (PAS DOMContentLoaded !!!)
+================================================= */
 
-document.addEventListener("DOMContentLoaded", init);
+init();
 
 async function init(){
 
   const token = localStorage.getItem("token");
-  if (!token) window.location.href = "login.html";
+  if(!token){
+    window.location.href = "login.html";
+    return;
+  }
 
   const params = new URLSearchParams(window.location.search);
   const raceId = params.get("id");
-  if (!raceId) window.location.href = "races.html";
+
+  if(!raceId){
+    window.location.href = "races.html";
+    return;
+  }
 
   await loadBalance(token);
   await loadRace(raceId);
 }
 
 
-/* =========================
-   🔹 SOLDE (API SAFE)
-========================= */
+
+/* =================================================
+   🔹 SOLDE UTILISATEUR (API SAFE)
+================================================= */
 
 async function loadBalance(token){
+
   try{
+
     const res = await fetch(
       "https://sulky-manager-backend.onrender.com/api/users/me",
-      { headers:{ Authorization:"Bearer "+token }}
+      {
+        headers:{ Authorization:"Bearer "+token }
+      }
     );
 
     const user = await res.json();
 
-    document.getElementById("balanceBox").innerText =
-      "💰 " + user.balance + " €";
+    const box = document.getElementById("balanceBox");
+    if(box) box.innerText = "💰 " + user.balance + " €";
 
     localStorage.setItem("balance", user.balance);
 
-  }catch(err){
+  }
+  catch(err){
     console.error("Balance error:", err);
   }
 }
 
 
-/* =========================
+
+/* =================================================
    🔹 VARIABLES
-========================= */
+================================================= */
 
 let selectedHorses = [];
 
 
-/* =========================
+
+/* =================================================
    🔹 LOAD COURSE
-========================= */
+================================================= */
 
 async function loadRace(raceId){
 
+  const url =
+    "https://sulky-manager-backend.onrender.com/api/races/" + raceId;
+
   try{
 
-    const res = await fetch(
-      "https://sulky-manager-backend.onrender.com/api/races/" + raceId
-    );
+    const res = await fetch(url);
+
+    if(!res.ok)
+      throw new Error("API error");
 
     const race = await res.json();
 
-    document.getElementById("raceTitle").innerText = race.label;
-    document.getElementById("raceDate").innerText = race.date || "";
+    const title = document.getElementById("raceTitle");
+    const date  = document.getElementById("raceDate");
+
+    if(title) title.innerText = race.label;
+    if(date)  date.innerText  = race.date || "";
 
     const tbody = document.querySelector("#partantsTable tbody");
+    if(!tbody) return;
+
     tbody.innerHTML = "";
 
     race.partants.forEach((p, index) => {
@@ -86,19 +110,22 @@ async function loadRace(raceId){
       `;
 
       tr.addEventListener("click", () => toggleHorse(p, tr));
+
       tbody.appendChild(tr);
     });
 
-  }catch(err){
+  }
+  catch(err){
     console.error("Race load error:", err);
     alert("Erreur chargement course");
   }
 }
 
 
-/* =========================
+
+/* =================================================
    🔹 HELPERS
-========================= */
+================================================= */
 
 function requiredCount(type){
   switch(type){
@@ -111,9 +138,10 @@ function requiredCount(type){
 }
 
 
-/* =========================
-   🔹 SELECTION
-========================= */
+
+/* =================================================
+   🔹 SELECTION CHEVAUX
+================================================= */
 
 function toggleHorse(horse, row){
 
@@ -123,11 +151,14 @@ function toggleHorse(horse, row){
   const index = selectedHorses.findIndex(h => h.cheval === horse.cheval);
   const checkCell = row.querySelector(".check-cell");
 
+  /* décocher */
   if(index >= 0){
     selectedHorses.splice(index,1);
     row.classList.remove("selected-row");
     checkCell.innerText = "⬜";
   }
+
+  /* cocher */
   else{
 
     if(selectedHorses.length >= max){
@@ -144,9 +175,12 @@ function toggleHorse(horse, row){
 }
 
 
+
 function updateSlip(){
 
   const box = document.getElementById("selectedList");
+
+  if(!box) return;
 
   if(!selectedHorses.length){
     box.innerText = "Aucun cheval sélectionné";
@@ -159,9 +193,10 @@ function updateSlip(){
 }
 
 
-/* =========================
-   🔹 PARI
-========================= */
+
+/* =================================================
+   🔹 CONFIRMER PARI
+================================================= */
 
 async function confirmBet(){
 
@@ -169,7 +204,9 @@ async function confirmBet(){
 
   const stake = Number(document.getElementById("stakeInput").value);
   const type = document.getElementById("betType").value;
-  const raceId = new URLSearchParams(window.location.search).get("id");
+
+  const params = new URLSearchParams(window.location.search);
+  const raceId = params.get("id");
 
   const needed = requiredCount(type);
 
@@ -206,9 +243,11 @@ async function confirmBet(){
 
     alert("✅ Pari enregistré !");
     localStorage.setItem("balance", data.balance);
+
     location.reload();
 
-  }catch(err){
+  }
+  catch(err){
     console.error(err);
     alert("Erreur pari");
   }
