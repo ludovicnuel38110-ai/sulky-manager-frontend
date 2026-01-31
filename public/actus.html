@@ -2,82 +2,75 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Sulky-Bet – Actualités hippiques</title>
+<title>Sulky-Bet – Actualité hippique</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
 
 /* =========================
-   LAYOUT
+   PAGE LAYOUT
 ========================= */
 
-.news-wrapper{
-  max-width:1100px;
+.actu-wrapper{
+  max-width:1000px;
   margin:60px auto;
   padding:20px;
 }
 
-.news-grid{
-  display:grid;
-  gap:25px;
+/* =========================
+   HERO IMAGE
+========================= */
+
+.actu-hero{
+  width:100%;
+  height:380px;
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 0 35px rgba(0,255,136,.35);
+  margin-bottom:30px;
 }
 
 /* =========================
-   CARDS
+   ARTICLE CARD
 ========================= */
 
-.news-card{
+.actu-card{
   background:rgba(0,110,55,.65);
-  border-radius:18px;
-  padding:22px;
+  padding:30px;
+  border-radius:20px;
   border:1px solid rgba(0,255,136,.4);
-  backdrop-filter:blur(10px);
-  box-shadow:0 0 20px rgba(0,255,136,.15);
-  transition:.2s;
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 30px rgba(0,255,136,.25);
 }
 
-.news-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 0 35px rgba(0,255,136,.35);
-}
-
-.news-card h3{
+.actu-title{
   color:#00ff88;
+  font-size:26px;
   margin-bottom:6px;
 }
 
-.news-date{
-  font-size:13px;
+.actu-date{
   opacity:.7;
-  margin-bottom:12px;
+  margin-bottom:20px;
 }
 
-.news-card p{
-  line-height:1.6;
+.actu-text{
+  line-height:1.7;
   white-space:pre-line;
+  font-size:16px;
 }
 
 /* =========================
-   IMAGE ARTICLE
+   PRONOSTIC BOX
 ========================= */
 
-.news-img{
-  width:100%;
-  border-radius:14px;
-  margin-bottom:15px;
-  object-fit:cover;
-  max-height:320px;
-}
-
-/* =========================
-   TITLE
-========================= */
-
-.page-title{
-  text-align:center;
-  color:#00ff88;
-  text-shadow:0 0 12px #00ff88;
-  margin-bottom:40px;
+.prono-box{
+  margin-top:25px;
+  padding:15px;
+  border-radius:12px;
+  background:#002d1f;
+  border:1px solid #00ff88;
+  font-weight:bold;
 }
 
 /* =========================
@@ -85,8 +78,8 @@
 ========================= */
 
 @media(max-width:700px){
-  .news-wrapper{
-    margin:20px;
+  .actu-hero{
+    height:220px;
   }
 }
 
@@ -100,7 +93,7 @@
 
     <div class="header-text">
       <h1>SULKY-BET</h1>
-      <p>Actualités hippiques</p>
+      <p>Actualité hippique du jour</p>
     </div>
 
     <div>
@@ -112,91 +105,48 @@
 </header>
 
 
-<div class="news-wrapper">
+<div class="actu-wrapper">
 
-  <h2 class="page-title">📰 Dernières informations</h2>
+  <!-- ================= IMAGE ================= -->
+  <!-- Mets ta photo ici : public/images/quinte.jpg -->
+  <img src="images/quinte.jpg" class="actu-hero">
 
-  <div id="newsList" class="news-grid"></div>
+
+  <!-- ================= ARTICLE ================= -->
+  <div class="actu-card">
+
+    <h2 class="actu-title">
+      🏆 Quinté+ – Vincennes | Prix de l’Île-de-France (Gr.1)
+    </h2>
+
+    <div class="actu-date">
+      Dimanche 1er février 2026 – 2 175m – Grande piste
+    </div>
+
+    <div class="actu-text">
+
+Deux semaines après le Cornulier, les meilleurs spécialistes du trot monté se retrouvent sur la grande piste de Vincennes pour une nouvelle explication au sommet. Cette épreuve rapide devrait offrir un train soutenu, favorisant les chevaux capables de prendre rapidement la tête.
+
+IT’S A DOLLARMAKER (11) présente un profil très séduisant. Lorsqu’il peut imposer son rythme, il se montre redoutable et semble capable d’aller très loin dans ce lot.
+
+JEROBOAM D’ERABLE (9) reste une valeur sûre à ce niveau. Courageux et constant, il mérite un large crédit pour jouer la victoire.
+
+La tenante du titre INA DU RIB (14) répond toujours présente dans les grands rendez-vous et conserve logiquement sa place parmi les priorités.
+
+Derrière ces bases solides, IDEALE DU CHENE (15), JEAN BALTHAZAR (12) ou encore JE M’ENVOLE (4) peuvent venir brouiller les cartes. JEEGHA PRIDE (3) et KEENGAME (6) tenteront de profiter de la moindre défaillance.
+
+    </div>
+
+
+    <div class="prono-box">
+      🎯 Tendance Sulky-Bet<br>
+      Bases : 11 – 9 – 14<br>
+      Outsiders : 15 – 12 – 4 – 3 – 6
+    </div>
+
+  </div>
 
 </div>
-
-
-
-<script>
-
-/* =================================================
-   NEWS DATA
-   👉 pour ajouter un article, copie un bloc
-================================================= */
-
-const NEWS = [
-
-/* ================= QUINTE DU JOUR ================= */
-
-{
-  title:"🏆 Quinté+ du jour – Vincennes | Prix de l’Île-de-France (Gr.1)",
-  date:"Dimanche 1er février 2026",
-
-  image:"images/quinte-vincennes.jpg",   // 👉 mets ta photo ici
-
-  text:`
-Deux semaines après le Cornulier, les meilleurs spécialistes du trot monté se retrouvent sur la grande piste de Vincennes pour une nouvelle bataille au sommet.
-
-Sur les 2 175 mètres de ce parcours de vitesse, le rythme devrait être soutenu et les chevaux capables d’imprimer leur train dès le départ seront avantagés.
-
-IT’S A DOLLARMAKER (11) apparaît comme une base solide. Très performant lorsqu’il prend les commandes, il possède la tenue et la pointe de vitesse nécessaires pour aller au bout.
-
-JEROBOAM D’ERABLE (9), courageux et régulier, reste une valeur sûre à ce niveau. Malgré un parcours compliqué dernièrement, il a encore montré toute sa combativité et peut cette fois viser la victoire.
-
-La tenante du titre INA DU RIB (14) répond toujours présente dans les grands rendez-vous. Sa constance et son expérience en font une priorité pour les places.
-
-Derrière ces trois appuis principaux, IDEALE DU CHENE (15) et JEAN BALTHAZAR (12) possèdent la classe pour accrocher une belle allocation. JE M’ENVOLE (4), à racheter, peut surprendre, tandis que JEEGHA PRIDE (3) et KEENGAME (6) profiteront de la moindre défaillance.
-
-🎯 Tendance Sulky-Bet :
-Bases : 11 – 9 – 14
-Outsiders : 15 – 12 – 4 – 3 – 6
-`
-},
-
-/* ================= AUTRES NEWS ================= */
-
-{
-  title:"Préparatifs Prix d'Amérique",
-  date:"02/02/2026",
-  text:"Plusieurs favoris ont confirmé leur participation. Les premières tendances de cotes placent certains outsiders en embuscade."
-},
-
-{
-  title:"Conseil Trio du jour",
-  date:"31/01/2026",
-  text:"Base intéressante : KALISCO PLANCHETTE. Associer avec KOMAN et KARMEN DE MONTCEAU pour une combinaison spéculative."
-}
-
-];
-
-
-/* =================================================
-   RENDER
-================================================= */
-
-const container = document.getElementById("newsList");
-
-NEWS.reverse().forEach(n => {
-
-  const div = document.createElement("div");
-  div.className = "news-card";
-
-  div.innerHTML = `
-    ${n.image ? `<img src="${n.image}" class="news-img">` : ""}
-    <h3>${n.title}</h3>
-    <div class="news-date">${n.date}</div>
-    <p>${n.text}</p>
-  `;
-
-  container.appendChild(div);
-});
-
-</script>
 
 </body>
 </html>
