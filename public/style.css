@@ -294,17 +294,12 @@ td{
   width:55px;
   height:55px;
 
-  filter:
-    drop-shadow(0 0 6px #00ff88)
-    drop-shadow(0 0 12px #00ff88)
-    drop-shadow(0 0 22px #00ff88);
+  /* ❌ plus aucun effet lumineux */
+  filter:none;
+  animation:none;
 
-  animation: glow 1.8s ease-in-out infinite alternate;
-}
-
-@keyframes glow{
-  from{ filter: drop-shadow(0 0 6px #00ff88); }
-  to{ filter: drop-shadow(0 0 26px #00ff88); }
+  /* rendu plus naturel */
+  opacity:0.9;
 }
 
 
