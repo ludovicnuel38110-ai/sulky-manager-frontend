@@ -43,16 +43,12 @@ body{
 
 /* image cheval */
 .logo-img{
-  height:70px;      /* taille parfaite */
+  height:70px;
   width:auto;
   object-fit:contain;
-
-  /* ❌ supprime totalement le néon */
   filter:none;
   animation:none;
-
-  /* rendu plus naturel dans la bande noire */
-  opacity:0.95;
+  opacity:.95;
 }
 
 /* texte logo */
@@ -68,7 +64,6 @@ body{
     0 0 60px rgba(0,255,136,.8);
 }
 
-/* boutons header */
 .header-actions{
   display:flex;
   gap:12px;
@@ -112,19 +107,19 @@ body{
 
 #balance{
   font-size:34px;
-  margin-bottom:40px;
+  margin:40px 0;
   color:#00ff88;
   text-shadow:0 0 20px #00ff88;
 }
 
 
-/* ================= GRID BOUTONS ================= */
+/* ================= GRID ================= */
 
 .actions-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:25px;
-  margin-bottom:40px;
+  margin-bottom:35px;
 }
 
 
@@ -153,7 +148,7 @@ body{
 }
 
 
-/* ================= MESSAGE ACCUEIL ================= */
+/* ================= MESSAGE ================= */
 
 .welcome-box{
   margin-top:25px;
@@ -165,30 +160,30 @@ body{
   font-size:16px;
 }
 
-.welcome-box p{
-  margin-bottom:10px;
+
+/* ================= ADMIN PANEL ================= */
+
+#adminPanel{
+  display:none;
+  margin-top:40px;
 }
 
 
 /* ================= MOBILE ================= */
 
 @media(max-width:800px){
-
   .logo-img{ height:55px; }
   .logo-text{ font-size:30px; }
-
 }
 
 </style>
 </head>
 
 
+
 <body>
 
-<!-- =====================================================
-   HEADER
-===================================================== -->
-
+<!-- HEADER -->
 <header class="main-header">
 
   <div class="logo-wrap">
@@ -205,36 +200,47 @@ body{
 
 
 
-<!-- =====================================================
-   DASHBOARD
-===================================================== -->
-
+<!-- DASHBOARD -->
 <div class="dashboard-wrapper">
 
   <div class="dashboard-card">
 
     <h1 id="welcome">Bienvenue</h1>
 
-    <!-- BOUTONS D'ABORD -->
+    <!-- ACTIONS -->
     <div class="actions-grid">
       <button class="big-btn" id="btnRaces">🏇 Courses</button>
       <button class="big-btn" id="btnHistory">📜 Mes paris</button>
       <button class="big-btn" id="btnResults">🏁 Résultats</button>
       <button class="big-btn" id="btnAide">❓ Aide</button>
-
-
     </div>
 
-    <!-- MESSAGE ENSUITE -->
+
+    <!-- MESSAGE -->
     <div class="welcome-box">
-      <p>👋 Bienvenue sur <strong>Sulky-Bet</strong> !</p>
-      <p>Parie simplement sur les courses disponibles dans la rubrique <strong>Courses</strong> et suis tes paris en toute tranquillité.</p>
-      <p>Pour créditer ton compte, contacte-moi sur <strong>Sulkyland</strong> au pseudo <strong>Turfiste83</strong>. Je reverserai les fonds le plus rapidement possible.</p>
-      <p>🔒 Pense à conserver ton pseudo et ton mot de passe.</p>
-      <p>Merci pour ta confiance et bons paris 🐎</p>
+      👋 Bienvenue sur <strong>Sulky-Bet</strong> !<br><br>
+      Parie facilement sur les courses proposées dans l’onglet <strong>Courses</strong> et suis tes paris en toute tranquillité.<br><br>
+      Pour créditer ton compte, contacte-moi sur <strong>Sulkyland</strong> au pseudo <strong>Turfiste83</strong>.  
+      Je reverserai les fonds le plus rapidement possible.<br><br>
+      🔒 Pense à conserver ton pseudo et ton mot de passe.<br><br>
+      Merci pour ta confiance et bons paris 🐎
     </div>
 
     <h2 id="balance">Solde : ... €</h2>
+
+
+    <!-- ADMIN PANEL (VISIBLE UNIQUEMENT ADMIN) -->
+    <div id="adminPanel">
+
+      <h3 style="color:#00ff88;margin-bottom:20px;">⚙️ Administration</h3>
+
+      <div class="actions-grid">
+        <button class="big-btn" onclick="location.href='admin-courses.html'">🏗️ Gérer les courses</button>
+        <button class="big-btn" onclick="location.href='admin-settle.html'">🏁 Régler une course</button>
+        <button class="big-btn" onclick="location.href='admin-balance.html'">💰 Créditer joueur</button>
+      </div>
+
+    </div>
 
   </div>
 
@@ -250,6 +256,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const welcome = document.getElementById("welcome");
   const balanceBox = document.getElementById("balance");
+  const adminPanel = document.getElementById("adminPanel");
 
   const res = await fetch(
     "https://sulky-manager-backend.onrender.com/api/users/me",
@@ -261,11 +268,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   welcome.innerText = "Bienvenue " + user.pseudo;
   balanceBox.innerText = "Solde : " + user.balance + " €";
 
+  /* 🔥 ADMIN DETECTION */
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  if(payload.isAdmin) adminPanel.style.display = "block";
+
+
+  /* NAVIGATION */
   btnRaces.onclick   = ()=>location.href="races.html";
   btnHistory.onclick = ()=>location.href="history.html";
   btnResults.onclick = ()=>location.href="results.html";
-  btnAide.onclick = ()=>location.href="aide.html";
-
+  btnAide.onclick    = ()=>location.href="aide.html";
 
   logoutBtn.onclick = ()=>{
     localStorage.clear();
