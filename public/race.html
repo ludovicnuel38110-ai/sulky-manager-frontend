@@ -108,7 +108,8 @@
       <select id="betType">
         <option value="simple_win">Simple gagnant</option>
         <option value="simple_place">Simple placé</option>
-        <option value="couple">Couplé</option>
+        <option value="couple_win">Couplé gagnant</option>
+        <option value="couple_place">Couplé placé</option>
         <option value="trio">Trio</option>
       </select>
 
@@ -256,8 +257,16 @@ async function loadRace(id){
 ================================================= */
 
 function requiredCount(t){
-  return t==="trio"?3:t==="couple"?2:1;
+
+  if(t === "trio")
+    return 3;
+
+  if(t === "couple_win" || t === "couple_place")
+    return 2;
+
+  return 1;
 }
+
 
 function toggleHorse(h,row){
 
