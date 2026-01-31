@@ -220,7 +220,9 @@ body{
       <button class="big-btn" id="btnRaces">🏇 Courses</button>
       <button class="big-btn" id="btnHistory">📜 Mes paris</button>
       <button class="big-btn" id="btnResults">🏁 Résultats</button>
-      <button class="big-btn" id="btnHome">🏠 Accueil</button>
+      <button class="big-btn" id="btnAide">❓ Aide</button>
+
+
     </div>
 
     <!-- MESSAGE ENSUITE -->
@@ -262,7 +264,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   btnRaces.onclick   = ()=>location.href="races.html";
   btnHistory.onclick = ()=>location.href="history.html";
   btnResults.onclick = ()=>location.href="results.html";
-  btnHome.onclick    = ()=>location.href="index.html";
+  btnAide.onclick = ()=>location.href="aide.html";
+
 
   logoutBtn.onclick = ()=>{
     localStorage.clear();
