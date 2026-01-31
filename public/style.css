@@ -20,6 +20,7 @@ html, body{
 /* ================= BACKGROUND CINEMA ================= */
 
 body{
+  position:relative; /* 🔥 sécurité z-index */
   min-height:100vh;
   color:#e8fff5;
   overflow-x:hidden;
@@ -43,7 +44,6 @@ body{
 
 
 /* ================= HALO BACKGROUND SAFE ================= */
-/* 🔥 IMPORTANT : z-index NEGATIF = jamais au dessus du contenu */
 
 body::before{
   content:"";
@@ -56,7 +56,7 @@ body::before{
       transparent 65%);
 
   pointer-events:none;
-  z-index:-1; /* 🔥 FIX DEFINITIF */
+  z-index:-1;
 }
 
 
@@ -127,7 +127,6 @@ nav button:hover{
 
 
 /* ================= GLASS CONTAINERS ================= */
-/* 🔥 z-index élevé pour être TOUJOURS cliquable */
 
 .section,
 .form-container,
@@ -139,7 +138,7 @@ form{
   position:relative;
   z-index:30;
 
-  max-width:1100px;
+  max-width:1200px;
   margin:45px auto;
   padding:35px;
 
@@ -161,7 +160,7 @@ input,
 textarea,
 select{
   position:relative;
-  z-index:40; /* 🔥 cliquable garanti */
+  z-index:40;
 
   width:100%;
   padding:12px;
@@ -184,7 +183,7 @@ input:focus{
 
 button{
   position:relative;
-  z-index:40; /* 🔥 cliquable garanti */
+  z-index:40;
 
   background:linear-gradient(135deg,#00ff88,#00cc66);
   color:#001a0f;
@@ -231,32 +230,7 @@ td{
 }
 
 
-/* ================= LOADER ================= */
-
-#loader{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:#000;
-  z-index:9999;
-}
-
-
-/* ================= MOBILE ================= */
-
-@media(max-width:768px){
-  nav{ flex-direction:column; }
-  .section{ margin:20px; }
-}
-/* ===== LAYOUT COURSE ===== */
-
-.section{
-  max-width:1200px;
-  margin:auto;
-}
+/* ================= COURSE LAYOUT ================= */
 
 .race-layout{
   display:flex;
@@ -279,17 +253,14 @@ td{
   height:fit-content;
 }
 
-/* mobile */
-@media(max-width:900px){
-  .race-layout{
-    flex-direction:column;
-  }
-}
+
 /* ================= ACTUALITES BUTTON ================= */
 
 .actu-btn-wrap{
+  position:relative;
+  z-index:40;
   text-align:center;
-  margin-top:-25px; /* colle au bloc dessous */
+  margin-top:-25px;
   margin-bottom:20px;
 }
 
@@ -307,4 +278,54 @@ td{
 
 .actu-btn:hover{
   transform:scale(1.05);
+}
+
+
+/* ================= LOGO HORSE ================= */
+
+.logo-title{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
+
+.logo-horse{
+  width:55px;
+  height:55px;
+
+  filter:
+    drop-shadow(0 0 6px #00ff88)
+    drop-shadow(0 0 12px #00ff88)
+    drop-shadow(0 0 22px #00ff88);
+
+  animation: glow 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes glow{
+  from{ filter: drop-shadow(0 0 6px #00ff88); }
+  to{ filter: drop-shadow(0 0 26px #00ff88); }
+}
+
+
+/* ================= LOADER ================= */
+
+#loader{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#000;
+  z-index:9999;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:900px){
+  nav{ flex-direction:column; }
+  .race-layout{ flex-direction:column; }
+  .section{ margin:20px; }
 }
