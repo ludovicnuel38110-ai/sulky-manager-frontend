@@ -2,11 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<div class="logo-title">
-  <img src="images/horse-logo.svg" class="logo-horse">
-  <h1>SULKY-BET</h1>
-</div>
-
+<title>Sulky-Bet – Dashboard</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -23,34 +19,65 @@ body{
 }
 
 
-/* ================= HEADER ================= */
+/* =====================================================
+   HEADER NOIR AVEC LOGO IMAGE + TEXTE NEON
+===================================================== */
 
-header{
-  background:linear-gradient(to bottom,#001a0f,#000);
+.main-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  background:#000;
   border-bottom:2px solid #00ff88;
-  text-align:center;
-  padding:25px;
-  position:relative;
+
+  padding:12px 35px;
 }
 
-.logout-btn{
-  position:absolute;
-  right:20px;
-  top:20px;
+/* bloc logo */
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:18px;
 }
 
-.news-bar{
-  margin-top:10px;
+/* image cheval */
+.logo-img{
+  height:70px;              /* taille parfaite */
+  width:auto;
+  object-fit:contain;
+
+  filter:
+    drop-shadow(0 0 8px #00ff88)
+    drop-shadow(0 0 20px #00ff88)
+    drop-shadow(0 0 40px #00ff88);
+
+  animation: neonPulse 1.8s ease-in-out infinite alternate;
 }
 
-.news-btn{
-  padding:10px 26px;
-  border-radius:10px;
-  border:none;
-  background:linear-gradient(135deg,#00ff88,#00cc66);
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 0 18px rgba(0,255,136,.6);
+/* effet néon */
+@keyframes neonPulse{
+  from{ filter: drop-shadow(0 0 8px #00ff88); }
+  to{   filter: drop-shadow(0 0 45px #00ff88); }
+}
+
+/* texte logo */
+.logo-text{
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#00ff88;
+
+  text-shadow:
+    0 0 12px #00ff88,
+    0 0 35px #00ff88,
+    0 0 60px rgba(0,255,136,.8);
+}
+
+/* boutons header */
+.header-actions{
+  display:flex;
+  gap:12px;
 }
 
 
@@ -58,7 +85,7 @@ header{
 
 .dashboard-wrapper{
   max-width:1200px;
-  margin:70px auto;
+  margin:80px auto;
   padding:25px;
 }
 
@@ -68,12 +95,16 @@ header{
 .dashboard-card{
   background:rgba(0,110,55,.55);
   backdrop-filter:blur(14px);
+
   border-radius:26px;
   padding:60px;
+
   border:1px solid rgba(0,255,136,.6);
+
   box-shadow:
     0 0 45px rgba(0,255,136,.25),
     inset 0 0 35px rgba(0,0,0,.45);
+
   text-align:center;
 }
 
@@ -82,18 +113,18 @@ header{
 
 #welcome{
   font-size:38px;
-  margin-bottom:35px;
+  margin-bottom:25px;
 }
 
 #balance{
   font-size:34px;
-  margin-top:35px;
+  margin-bottom:40px;
   color:#00ff88;
-  text-shadow:0 0 12px #00ff88;
+  text-shadow:0 0 20px #00ff88;
 }
 
 
-/* ================= GRID ================= */
+/* ================= GRID BOUTONS ================= */
 
 .actions-grid{
   display:grid;
@@ -106,54 +137,52 @@ header{
 /* ================= BOUTONS ================= */
 
 .big-btn{
-  padding:26px;
+  padding:24px;
   font-size:18px;
   font-weight:700;
+
   border-radius:18px;
+  border:none;
+
   background:linear-gradient(135deg,#00ff88,#00cc66);
   color:#001a0f;
+
   cursor:pointer;
+
   box-shadow:0 0 25px rgba(0,255,136,.6);
   transition:.25s;
 }
 
 .big-btn:hover{
-  transform:translateY(-6px) scale(1.05);
+  transform:translateY(-5px) scale(1.05);
   box-shadow:0 0 45px #00ff88;
 }
 
 
 /* ================= MESSAGE ACCUEIL ================= */
 
-.welcome-msg{
-  max-width:850px;
-  margin:0 auto;
-  font-size:15px;
-  line-height:1.7;
-  opacity:.95;
-}
+.welcome-box{
+  margin-top:25px;
+  padding:28px;
 
-
-/* ================= ADMIN ================= */
-
-#adminPanel{
-  margin-top:50px;
-  padding:30px;
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.5);
   border-radius:18px;
-  border:2px solid #00ff88;
-  display:none;
+  line-height:1.7;
+  font-size:16px;
 }
 
-#adminPanel input{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
+.welcome-box p{
+  margin-bottom:10px;
 }
 
-.admin-btn{
-  width:100%;
-  margin-top:12px;
+
+/* ================= MOBILE ================= */
+
+@media(max-width:800px){
+
+  .logo-img{ height:55px; }
+  .logo-text{ font-size:30px; }
+
 }
 
 </style>
@@ -162,16 +191,29 @@ header{
 
 <body>
 
-<header>
-  <h1>SULKY-BET</h1>
+<!-- =====================================================
+   HEADER
+===================================================== -->
 
-  <button id="logoutBtn" class="big-btn logout-btn">Déconnexion</button>
+<header class="main-header">
 
-  <div class="news-bar">
-    <button class="news-btn" onclick="location.href='actus.html'">📰 Actualités</button>
+  <div class="logo-wrap">
+    <img src="images/horse-neon.png" class="logo-img">
+    <div class="logo-text">SULKY-BET</div>
   </div>
+
+  <div class="header-actions">
+    <button onclick="location.href='actus.html'" class="big-btn">📰 Actualités</button>
+    <button id="logoutBtn" class="big-btn">Déconnexion</button>
+  </div>
+
 </header>
 
+
+
+<!-- =====================================================
+   DASHBOARD
+===================================================== -->
 
 <div class="dashboard-wrapper">
 
@@ -179,48 +221,24 @@ header{
 
     <h1 id="welcome">Bienvenue</h1>
 
-
-    <!-- ================= BOUTONS EN PREMIER ================= -->
+    <!-- BOUTONS D'ABORD -->
     <div class="actions-grid">
-
       <button class="big-btn" id="btnRaces">🏇 Courses</button>
       <button class="big-btn" id="btnHistory">📜 Mes paris</button>
       <button class="big-btn" id="btnResults">🏁 Résultats</button>
       <button class="big-btn" id="btnHome">🏠 Accueil</button>
-
     </div>
 
-
-    <!-- ================= MESSAGE ACCUEIL ================= -->
-    <div class="welcome-msg">
-
-      👋 Bienvenue sur <b>Sulky-Bet</b> !<br><br>
-
-      Parie simplement sur les courses disponibles dans la rubrique <b>Courses</b> et suis tes paris en toute tranquillité.<br><br>
-
-      Pour le moment, seules quelques combinaisons de paris sont proposées, mais la plateforme évoluera progressivement avec de nouvelles fonctionnalités.<br><br>
-
-      💬 Pour créditer ton compte, contacte-moi sur <b>Sulkyland</b> au pseudo <b>Turfiste83</b>.  
-      Je reverserai les fonds le plus rapidement possible afin que tu puisses jouer.<br><br>
-
-      🔐 Pense bien à conserver ton pseudo et ton mot de passe.<br><br>
-
-      Merci pour ta confiance et bons paris 🏇
-
+    <!-- MESSAGE ENSUITE -->
+    <div class="welcome-box">
+      <p>👋 Bienvenue sur <strong>Sulky-Bet</strong> !</p>
+      <p>Parie simplement sur les courses disponibles dans la rubrique <strong>Courses</strong> et suis tes paris en toute tranquillité.</p>
+      <p>Pour créditer ton compte, contacte-moi sur <strong>Sulkyland</strong> au pseudo <strong>Turfiste83</strong>. Je reverserai les fonds le plus rapidement possible.</p>
+      <p>🔒 Pense à conserver ton pseudo et ton mot de passe.</p>
+      <p>Merci pour ta confiance et bons paris 🐎</p>
     </div>
 
-
-    <!-- ================= SOLDE ================= -->
     <h2 id="balance">Solde : ... €</h2>
-
-
-    <!-- ADMIN -->
-    <div id="adminPanel">
-      <h3>⚙️ Administration</h3>
-      <input id="creditPseudo" placeholder="Pseudo joueur">
-      <input id="creditAmount" type="number" placeholder="Montant">
-      <button class="big-btn admin-btn" id="btnCourses">Gérer les courses</button>
-    </div>
 
   </div>
 
@@ -237,26 +255,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const welcome = document.getElementById("welcome");
   const balanceBox = document.getElementById("balance");
 
-  try{
-    const res = await fetch(
-      "https://sulky-manager-backend.onrender.com/api/users/me",
-      { headers:{ Authorization:"Bearer "+token } }
-    );
+  const res = await fetch(
+    "https://sulky-manager-backend.onrender.com/api/users/me",
+    { headers:{ Authorization:"Bearer "+token } }
+  );
 
-    const user = await res.json();
+  const user = await res.json();
 
-    welcome.innerText = "Bienvenue " + user.pseudo;
-    balanceBox.innerText = "Solde : " + user.balance + " €";
+  welcome.innerText = "Bienvenue " + user.pseudo;
+  balanceBox.innerText = "Solde : " + user.balance + " €";
 
-  }catch{
-    localStorage.clear();
-    location.href="login.html";
-  }
-
-  btnRaces.onclick = ()=>location.href="races.html";
+  btnRaces.onclick   = ()=>location.href="races.html";
   btnHistory.onclick = ()=>location.href="history.html";
   btnResults.onclick = ()=>location.href="results.html";
-  btnHome.onclick = ()=>location.href="index.html";
+  btnHome.onclick    = ()=>location.href="index.html";
 
   logoutBtn.onclick = ()=>{
     localStorage.clear();
