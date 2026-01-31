@@ -65,7 +65,10 @@ input, textarea{
   color:#fff;
 }
 
-textarea{ height:170px; }
+textarea{
+  height:180px;
+  font-family:monospace;
+}
 
 button{
   width:100%;
@@ -140,9 +143,11 @@ button{
 
       <button id="btnRunner">Ajouter le partant</button>
 
-      <h3 style="margin-top:25px;">⚡ Import automatique</h3>
+      <h3 style="margin-top:25px;">⚡ Import automatique (CSV ; )</h3>
 
-      <textarea id="bulkInput" placeholder="Colle la liste PMU ici"></textarea>
+      <textarea id="bulkInput"
+placeholder="Format : cheval;driver;proprietaire;entraineur;musique;cote"></textarea>
+
       <button id="btnBulk">Importer tous les chevaux</button>
     </div>
 
@@ -153,9 +158,6 @@ button{
 
 
 <script>
-
-/* ================= SAFE INIT ================= */
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const token = localStorage.getItem("token");
@@ -165,8 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const msg = document.getElementById("msg");
 
   const $ = id => document.getElementById(id);
-
-  /* ================= FETCH HELPER ================= */
 
   async function post(url, body){
     const res = await fetch(API+url,{
@@ -180,8 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return res.json();
   }
 
-  /* ================= EVENTS ================= */
-
   $("btnReunion").onclick = createReunion;
   $("btnCourse").onclick = addCourse;
   $("btnRunner").onclick = addRunner;
@@ -189,8 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnDeleteReunion").onclick = deleteReunion;
   $("btnDeleteCourse").onclick = deleteCourse;
 
-
-  /* ================= CREATE ================= */
 
   async function createReunion(){
     const res = await post("/create-reunion",{
@@ -223,7 +219,8 @@ document.addEventListener("DOMContentLoaded", () => {
     msg.innerText = res.message;
   }
 
-  /* ================= BULK ================= */
+
+  /* ================= BULK CSV PRO ================= */
 
   async function importBulk(){
 
@@ -232,37 +229,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const lines = $("bulkInput").value
       .split("\n")
-      .map(l=>l.trim())
+      .map(l => l.trim())
       .filter(Boolean);
 
     let created = 0;
 
-    for(let i=0;i<lines.length;i++){
-      if(/^\d+$/.test(lines[i])){
+    for(const line of lines){
 
-        const cheval = lines[i+1];
-        const driver = lines[i+2];
+      const cols = line.split(";").map(v => v.trim());
 
-        await post("/add-runner",{
-          reunionId, raceId, cheval, driver,
-          proprietaire:"-",
-          musique:"-",
-          cote:3
-        });
+      if(cols.length !== 6) continue;
 
-        created++;
-      }
+      const [cheval, driver, proprietaire, entraineur, musique, cote] = cols;
+
+      await post("/add-runner",{
+        reunionId,
+        raceId,
+        cheval,
+        driver,
+        proprietaire,
+        musique,
+        cote:Number(cote)
+      });
+
+      created++;
     }
 
     msg.innerText = created + " chevaux importés ✅";
   }
 
-  /* ================= DELETE ================= */
 
   async function deleteReunion(){
-
     const id = $("delReunionId").value;
-    if(!confirm("Supprimer la réunion ?")) return;
 
     const res = await fetch(API+"/delete-reunion/"+id,{
       method:"DELETE",
@@ -273,9 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function deleteCourse(){
-
-    if(!confirm("Supprimer la course ?")) return;
-
     const res = await fetch(API+"/delete-course",{
       method:"DELETE",
       headers:{
