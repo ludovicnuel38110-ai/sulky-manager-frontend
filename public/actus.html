@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Actualités hippiques</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ===== Layout ===== */
+
+.news-wrapper{
+  max-width:1100px;
+  margin:60px auto;
+  padding:20px;
+}
+
+.news-grid{
+  display:grid;
+  gap:25px;
+}
+
+/* ===== Cards ===== */
+
+.news-card{
+  background:rgba(0,110,55,.65);
+  border-radius:18px;
+  padding:20px;
+  border:1px solid rgba(0,255,136,.4);
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 20px rgba(0,255,136,.15);
+}
+
+.news-card h3{
+  color:#00ff88;
+  margin-bottom:6px;
+}
+
+.news-date{
+  font-size:13px;
+  opacity:.7;
+  margin-bottom:10px;
+}
+
+.news-card p{
+  line-height:1.5;
+}
+
+/* ===== Title ===== */
+
+.page-title{
+  text-align:center;
+  color:#00ff88;
+  text-shadow:0 0 12px #00ff88;
+  margin-bottom:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="header-content">
+    <div class="header-text">
+      <h1>SULKY-BET</h1>
+      <p>Actualités hippiques</p>
+    </div>
+
+    <div>
+      <a href="index.html"><button>Accueil</button></a>
+      <a href="dashboard.html"><button>Dashboard</button></a>
+    </div>
+  </div>
+</header>
+
+
+<div class="news-wrapper">
+
+  <h2 class="page-title">📰 Dernières informations</h2>
+
+  <div id="newsList" class="news-grid"></div>
+
+</div>
+
+
+
+<script>
+
+/* =========================
+   NEWS DATA (modifiable)
+========================= */
+
+const NEWS = [
+
+{
+  title:"Préparatifs Prix d'Amérique",
+  date:"02/02/2026",
+  text:"Plusieurs favoris ont été confirmés au départ. Les premières cotes placent KIROYAL DU VINOIS parmi les outsiders intéressants."
+},
+
+{
+  title:"Réunion Vincennes – Analyse C1",
+  date:"01/02/2026",
+  text:"Course très ouverte. Attention aux chevaux réguliers sur longue distance. Les drivers Raffestin et Abrivard en forme cette semaine."
+},
+
+{
+  title:"Conseil trio du jour",
+  date:"31/01/2026",
+  text:"Base solide : KALISCO PLANCHETTE. Associer avec KOMAN et KARMEN DE MONTCEAU pour un trio spéculatif."
+}
+
+];
+
+
+/* =========================
+   RENDER
+========================= */
+
+const container = document.getElementById("newsList");
+
+NEWS.reverse().forEach(n => {
+
+  const div = document.createElement("div");
+
+  div.className = "news-card";
+
+  div.innerHTML = `
+    <h3>${n.title}</h3>
+    <div class="news-date">${n.date}</div>
+    <p>${n.text}</p>
+  `;
+
+  container.appendChild(div);
+});
+
+</script>
+
+</body>
+</html>
