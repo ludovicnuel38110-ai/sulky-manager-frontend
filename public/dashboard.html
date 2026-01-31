@@ -36,29 +36,27 @@ header{
 }
 
 
-/* ================= ACTUS BUTTON (NEW) ================= */
+/* ================= ACTU BUTTON ================= */
 
-.actu-wrap{
+.news-bar{
   text-align:center;
   margin-top:15px;
-  margin-bottom:-60px; /* colle au dashboard */
 }
 
-.actu-btn{
-  padding:14px 30px;
-  font-size:16px;
+.news-btn{
+  padding:12px 28px;
   font-weight:bold;
-  border-radius:14px;
+  border-radius:12px;
+  border:none;
   background:linear-gradient(135deg,#00ff88,#00cc66);
   color:#001a0f;
   cursor:pointer;
   box-shadow:0 0 20px rgba(0,255,136,.6);
-  transition:.2s;
+  transition:.25s;
 }
 
-.actu-btn:hover{
-  transform:scale(1.06);
-  box-shadow:0 0 40px #00ff88;
+.news-btn:hover{
+  transform:scale(1.05);
 }
 
 
@@ -66,7 +64,7 @@ header{
 
 .dashboard-wrapper{
   max-width:1200px;
-  margin:100px auto;
+  margin:70px auto;
   padding:25px;
 }
 
@@ -76,8 +74,10 @@ header{
 .dashboard-card{
   background:rgba(0,110,55,.55);
   backdrop-filter:blur(14px);
+
   border-radius:26px;
   padding:60px;
+
   border:1px solid rgba(0,255,136,.6);
 
   box-shadow:
@@ -92,7 +92,7 @@ header{
 
 #welcome{
   font-size:40px;
-  margin-bottom:10px;
+  margin-bottom:20px;
 }
 
 #balance{
@@ -102,6 +102,17 @@ header{
   text-shadow:
     0 0 12px #00ff88,
     0 0 35px rgba(0,255,136,1);
+}
+
+
+/* ================= MESSAGE ACCUEIL ================= */
+
+.welcome-msg{
+  max-width:850px;
+  margin:0 auto 35px auto;
+  font-size:15px;
+  line-height:1.6;
+  opacity:.95;
 }
 
 
@@ -146,11 +157,6 @@ header{
   box-shadow:0 0 30px rgba(0,255,136,.35);
 }
 
-#adminPanel h3{
-  color:#00ff88;
-  margin-bottom:15px;
-}
-
 #adminPanel input{
   width:100%;
   padding:12px;
@@ -171,21 +177,17 @@ header{
 </head>
 
 
-
 <body>
 
 <header>
   <h1>SULKY-BET</h1>
   <button id="logoutBtn" class="big-btn logout-btn">Déconnexion</button>
+
+  <!-- BOUTON ACTUS PLUS VISIBLE -->
+  <div class="news-bar">
+    <button class="news-btn" onclick="location.href='actus.html'">📰 Actualités hippiques</button>
+  </div>
 </header>
-
-
-<!-- 🔥 ACTUALITES déplacé ici -->
-<div class="actu-wrap">
-  <button class="actu-btn" onclick="location.href='actus.html'">
-    📰 Actualités du jour
-  </button>
-</div>
 
 
 <div class="dashboard-wrapper">
@@ -193,8 +195,27 @@ header{
   <div class="dashboard-card">
 
     <h1 id="welcome">Bienvenue</h1>
+
+    <!-- MESSAGE ACCUEIL -->
+    <div class="welcome-msg">
+      👋 Bienvenue sur <b>Sulky-Bet</b> !<br><br>
+
+      Parie simplement sur les courses disponibles dans la rubrique <b>Courses</b> et suis tes paris en toute tranquillité.<br><br>
+
+      Pour le moment, seules quelques combinaisons de paris sont proposées, mais la plateforme évoluera progressivement avec de nouvelles fonctionnalités.<br><br>
+
+      💬 Pour créditer ton compte, contacte-moi sur <b>Sulkyland</b> au pseudo <b>Turfiste83</b>.  
+      Je reverserai les fonds le plus rapidement possible sur ton solde afin que tu puisses jouer.<br><br>
+
+      🔐 Pense bien à conserver ton pseudo et ton mot de passe.<br><br>
+
+      Merci pour ta confiance et bons paris 🏇
+    </div>
+
     <h2 id="balance">Solde : ... €</h2>
 
+
+    <!-- ACTIONS -->
     <div class="actions-grid">
 
       <button class="big-btn" id="btnRaces">🏇 Courses</button>
@@ -205,6 +226,7 @@ header{
     </div>
 
 
+    <!-- ADMIN -->
     <div id="adminPanel">
 
       <h3>⚙️ Administration</h3>
@@ -237,6 +259,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const adminPanel = document.getElementById("adminPanel");
   const adminMsg = document.getElementById("adminMsg");
 
+  /* ================= USER INFO ================= */
+
   try{
     const res = await fetch(
       "https://sulky-manager-backend.onrender.com/api/users/me",
@@ -248,6 +272,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     welcome.innerText = "Bienvenue " + user.pseudo;
     balanceBox.innerText = "Solde : " + user.balance + " €";
 
+    localStorage.setItem("balance", user.balance);
+
     const payload = JSON.parse(atob(token.split(".")[1]));
     if(payload.isAdmin) adminPanel.style.display="block";
 
@@ -255,6 +281,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     localStorage.clear();
     location.href="login.html";
   }
+
+
+  /* ================= NAVIGATION ================= */
 
   btnRaces.onclick = ()=>location.href="races.html";
   btnHistory.onclick = ()=>location.href="history.html";

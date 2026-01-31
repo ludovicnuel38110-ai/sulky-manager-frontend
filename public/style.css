@@ -285,3 +285,26 @@ td{
     flex-direction:column;
   }
 }
+/* ================= ACTUALITES BUTTON ================= */
+
+.actu-btn-wrap{
+  text-align:center;
+  margin-top:-25px; /* colle au bloc dessous */
+  margin-bottom:20px;
+}
+
+.actu-btn{
+  background:linear-gradient(135deg,#00ff88,#00cc66);
+  padding:10px 28px;
+  border:none;
+  border-radius:12px;
+  font-weight:bold;
+  box-shadow:0 0 15px rgba(0,255,136,.6);
+  cursor:pointer;
+  font-size:15px;
+  transition:.2s;
+}
+
+.actu-btn:hover{
+  transform:scale(1.05);
+}
