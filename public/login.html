@@ -7,27 +7,100 @@
 
 <style>
 
+/* ================= BACKGROUND ================= */
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.85)),
+    url("images/bg.jpg");
+
+  background-size:cover;
+  background-position:center;
+}
+
+
+/* ================= LOGIN BOX ================= */
+
+.login-box{
+  display:none; /* 🔥 caché tant que serveur pas prêt */
+
+  width:360px;
+  padding:35px;
+
+  background:rgba(0,110,55,.65);
+  backdrop-filter:blur(12px);
+
+  border-radius:22px;
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:0 0 40px rgba(0,255,136,.2);
+  text-align:center;
+}
+
+.login-box h2{
+  margin-bottom:20px;
+  color:#00ff88;
+}
+
+
+/* ================= INPUTS ================= */
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+
+  border-radius:10px;
+  border:none;
+
+  background:#dfe5ee;
+}
+
+
+/* ================= BUTTON ================= */
+
+button{
+  margin-top:15px;
+  width:100%;
+}
+
+
+/* ================= ERROR ================= */
+
+#error{
+  margin-top:12px;
+  color:#ff6b6b;
+  font-size:14px;
+}
+
+
 /* ================= LOADER ================= */
 
 #loader{
   position:fixed;
   inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
 
   background:#000;
-  color:#00ff88;
 
-  font-size:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+
+  color:#00ff88;
+  font-size:18px;
   z-index:9999;
 }
 
 .spinner{
-  width:40px;
-  height:40px;
-  border:4px solid #003d22;
+  width:42px;
+  height:42px;
+  border:4px solid #033;
   border-top:4px solid #00ff88;
   border-radius:50%;
   animation:spin 1s linear infinite;
@@ -38,21 +111,15 @@
   to{ transform:rotate(360deg); }
 }
 
-
-/* ================= LOGIN BOX ================= */
-
-.login-box{
-  display:none; /* 🔥 caché au début */
-  max-width:400px;
-  margin:120px auto;
-}
-
 </style>
 </head>
 
+
 <body>
 
-<!-- ================= LOADER ================= -->
+<!-- =================================================
+   LOADER SERVEUR
+================================================= -->
 
 <div id="loader">
   <div class="spinner"></div>
@@ -60,18 +127,20 @@
 </div>
 
 
-<!-- ================= LOGIN ================= -->
+<!-- =================================================
+   LOGIN BOX
+================================================= -->
 
-<div class="login-box form-container">
+<div class="login-box">
 
   <h2>Connexion</h2>
 
   <input id="pseudo" placeholder="Pseudo">
   <input id="password" type="password" placeholder="Mot de passe">
 
-  <button id="loginBtn">Se connecter</button>
+  <button onclick="login()">Se connecter</button>
 
-  <p id="msg"></p>
+  <div id="error"></div>
 
 </div>
 
@@ -81,9 +150,12 @@
 
 const API = "https://sulky-manager-backend.onrender.com";
 
+
 /* =================================================
    WAIT BACKEND (Render cold start safe)
 ================================================= */
+
+document.addEventListener("DOMContentLoaded", waitBackend);
 
 async function waitBackend(){
 
@@ -92,14 +164,21 @@ async function waitBackend(){
   while(true){
 
     try{
-      await fetch(API + "/api/health");
-      break;
+
+      /* 🔥 on teste une route existante (PAS /health) */
+      await fetch(API + "/api/users/login", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({})
+      });
+
+      break; // serveur OK
+
     }
     catch{
       loaderText.innerText = "Démarrage du serveur… patience";
       await new Promise(r=>setTimeout(r,2000));
     }
-
   }
 
   loaderText.innerText = "✅ Serveur prêt";
@@ -115,40 +194,36 @@ async function waitBackend(){
    LOGIN
 ================================================= */
 
-document.getElementById("loginBtn").onclick = async ()=>{
+async function login(){
 
   const pseudo = document.getElementById("pseudo").value;
   const password = document.getElementById("password").value;
-  const msg = document.getElementById("msg");
+  const error = document.getElementById("error");
+
+  error.innerText = "";
 
   try{
 
     const res = await fetch(API + "/api/users/login",{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({pseudo,password})
+      body: JSON.stringify({ pseudo, password })
     });
 
     const data = await res.json();
 
-    if(!data.token)
-      return msg.innerText="❌ Identifiants incorrects";
+    if(!res.ok)
+      throw new Error(data.message || "Erreur connexion");
 
-    localStorage.setItem("token",data.token);
+    localStorage.setItem("token", data.token);
 
-    location.href="dashboard.html";
+    location.href = "dashboard.html";
 
   }
-  catch{
-    msg.innerText="Erreur connexion serveur";
+  catch(e){
+    error.innerText = e.message;
   }
-
-};
-
-
-/* ================================================= */
-
-waitBackend();
+}
 
 </script>
 
