@@ -7,8 +7,6 @@
 
 <style>
 
-/* ================= BACKGROUND ================= */
-
 body{
   min-height:100vh;
   display:flex;
@@ -18,118 +16,46 @@ body{
   background:
     linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.85)),
     url("images/bg.jpg");
-
   background-size:cover;
-  background-position:center;
 }
 
-
-/* ================= LOGIN BOX ================= */
-
+/* box */
 .login-box{
-  display:none; /* 🔥 caché tant que serveur pas prêt */
-
   width:360px;
   padding:35px;
 
-  background:rgba(0,110,55,.65);
+  background:rgba(0,110,55,.7);
   backdrop-filter:blur(12px);
 
   border-radius:22px;
-  border:1px solid rgba(0,255,136,.6);
-
-  box-shadow:0 0 40px rgba(0,255,136,.2);
   text-align:center;
 }
 
 .login-box h2{
-  margin-bottom:20px;
   color:#00ff88;
+  margin-bottom:20px;
 }
-
-
-/* ================= INPUTS ================= */
 
 input{
   width:100%;
   padding:12px;
-  margin-top:12px;
-
-  border-radius:10px;
-  border:none;
-
-  background:#dfe5ee;
+  margin-top:10px;
 }
-
-
-/* ================= BUTTON ================= */
 
 button{
-  margin-top:15px;
   width:100%;
+  margin-top:15px;
 }
-
-
-/* ================= ERROR ================= */
 
 #error{
-  margin-top:12px;
+  margin-top:10px;
   color:#ff6b6b;
-  font-size:14px;
-}
-
-
-/* ================= LOADER ================= */
-
-#loader{
-  position:fixed;
-  inset:0;
-
-  background:#000;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-
-  color:#00ff88;
-  font-size:18px;
-  z-index:9999;
-}
-
-.spinner{
-  width:42px;
-  height:42px;
-  border:4px solid #033;
-  border-top:4px solid #00ff88;
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-  margin-bottom:15px;
-}
-
-@keyframes spin{
-  to{ transform:rotate(360deg); }
 }
 
 </style>
 </head>
 
-
 <body>
-
-<!-- =================================================
-   LOADER SERVEUR
-================================================= -->
-
-<div id="loader">
-  <div class="spinner"></div>
-  <div id="loaderText">Connexion au serveur…</div>
-</div>
-
-
-<!-- =================================================
-   LOGIN BOX
-================================================= -->
 
 <div class="login-box">
 
@@ -145,54 +71,7 @@ button{
 </div>
 
 
-
 <script>
-
-const API = "https://sulky-manager-backend.onrender.com";
-
-
-/* =================================================
-   WAIT BACKEND (Render cold start safe)
-================================================= */
-
-document.addEventListener("DOMContentLoaded", waitBackend);
-
-async function waitBackend(){
-
-  const loaderText = document.getElementById("loaderText");
-
-  while(true){
-
-    try{
-
-      /* 🔥 on teste une route existante (PAS /health) */
-      await fetch(API + "/api/users/login", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({})
-      });
-
-      break; // serveur OK
-
-    }
-    catch{
-      loaderText.innerText = "Démarrage du serveur… patience";
-      await new Promise(r=>setTimeout(r,2000));
-    }
-  }
-
-  loaderText.innerText = "✅ Serveur prêt";
-
-  setTimeout(()=>{
-    document.getElementById("loader").style.display="none";
-    document.querySelector(".login-box").style.display="block";
-  },600);
-}
-
-
-/* =================================================
-   LOGIN
-================================================= */
 
 async function login(){
 
@@ -204,11 +83,14 @@ async function login(){
 
   try{
 
-    const res = await fetch(API + "/api/users/login",{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ pseudo, password })
-    });
+    const res = await fetch(
+      "https://sulky-manager-backend.onrender.com/api/users/login",
+      {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ pseudo, password })
+      }
+    );
 
     const data = await res.json();
 
@@ -217,7 +99,7 @@ async function login(){
 
     localStorage.setItem("token", data.token);
 
-    location.href = "dashboard.html";
+    location.href="dashboard.html";
 
   }
   catch(e){
