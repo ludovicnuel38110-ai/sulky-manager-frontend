@@ -100,6 +100,11 @@ button:hover{
   box-shadow:0 0 35px #00ff88;
 }
 
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 
 /* ================= MESSAGE ================= */
 
@@ -159,7 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if(!token) return location.href="login.html";
 
   const msg = document.getElementById("msg");
-
   const btn = document.getElementById("btnSettle");
 
   btn.onclick = settle;
@@ -167,13 +171,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function settle(){
 
+    const raceId = document.getElementById("raceId").value.trim();
+    const first  = document.getElementById("first").value.trim();
+    const second = document.getElementById("second").value.trim();
+    const third  = document.getElementById("third").value.trim();
+
+    /* ================= VALIDATIONS ================= */
+
+    if(!raceId){
+      msg.innerText = "⚠️ Indique un Race ID";
+      return;
+    }
+
+    if(!first || !second || !third){
+      msg.innerText = "⚠️ Indique les 3 chevaux à l'arrivée";
+      return;
+    }
+
+    /* ================= LOCK BOUTON ================= */
+
+    btn.disabled = true;
+    btn.innerText = "Paiement en cours...";
     msg.innerText = "Traitement en cours...";
 
     const body = {
-      raceId: Number(document.getElementById("raceId").value),
-      first: document.getElementById("first").value,
-      second: document.getElementById("second").value,
-      third: document.getElementById("third").value,
+      raceId: Number(raceId),
+      first,
+      second,
+      third,
       coteWin: Number(document.getElementById("coteWin").value || 1),
       cotePlace: Number(document.getElementById("cotePlace").value || 1),
       coteCouple: Number(document.getElementById("coteCouple").value || 1),
@@ -199,9 +224,15 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.innerText =
         `${data.message} | gagnants: ${data.winners}/${data.total}`;
 
-    }catch{
+    }
+    catch{
       msg.innerText = "❌ Erreur serveur";
     }
+
+    /* ================= UNLOCK ================= */
+
+    btn.disabled = false;
+    btn.innerText = "Valider et payer automatiquement";
   }
 
 });
