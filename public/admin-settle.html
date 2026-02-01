@@ -30,43 +30,32 @@ body{
 .box{
   background:rgba(0,110,55,.55);
   backdrop-filter:blur(14px);
-
   border-radius:22px;
   padding:40px;
-
   border:1px solid rgba(0,255,136,.6);
-
   box-shadow:
     0 0 40px rgba(0,255,136,.25),
     inset 0 0 25px rgba(0,0,0,.45);
-
   text-align:center;
 }
 
 
 /* ================= TITRES ================= */
 
-h2{
+h2,h3{
   color:#00ff88;
-  margin-bottom:20px;
-}
-
-h3{
-  margin-top:25px;
-  color:#00ff88;
+  margin:18px 0;
 }
 
 
 /* ================= INPUTS ================= */
 
-input{
+input, select{
   width:100%;
   padding:12px;
   margin-top:10px;
-
   border-radius:10px;
   border:none;
-
   background:rgba(0,0,0,.6);
   color:white;
   font-size:15px;
@@ -79,18 +68,13 @@ button{
   width:100%;
   margin-top:20px;
   padding:14px;
-
   border:none;
   border-radius:12px;
-
   font-weight:bold;
   font-size:16px;
-
   background:linear-gradient(135deg,#00ff88,#00cc66);
   color:#001a0f;
-
   cursor:pointer;
-
   box-shadow:0 0 20px rgba(0,255,136,.7);
   transition:.2s;
 }
@@ -100,9 +84,10 @@ button:hover{
   box-shadow:0 0 35px #00ff88;
 }
 
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
+.back-btn{
+  background:#001a0f;
+  color:#00ff88;
+  border:2px solid #00ff88;
 }
 
 
@@ -114,95 +99,135 @@ button:disabled{
   color:#00ff88;
 }
 
-.back-btn{
-  margin-top:12px;
-  background:#001a0f;
-  color:#00ff88;
-  border:2px solid #00ff88;
-}
-
 </style>
 </head>
+
 
 
 <body>
 
 <div class="wrapper">
-
   <div class="box">
 
     <h2>⚙️ Règlement automatique de la course</h2>
 
+    <!-- Race ID -->
     <input id="raceId" placeholder="Race ID (ex: 101)">
 
-    <h3>🏁 Arrivée officielle</h3>
-    <input id="first" placeholder="🥇 1er">
-    <input id="second" placeholder="🥈 2e">
-    <input id="third" placeholder="🥉 3e">
+    <!-- 🆕 Bouton charger -->
+    <button id="btnLoad">📥 Charger les partants</button>
 
+
+    <!-- ARRIVEE OFFICIELLE -->
+    <h3>🏁 Arrivée officielle</h3>
+
+    <select id="first"></select>
+    <select id="second"></select>
+    <select id="third"></select>
+
+
+    <!-- COTES -->
     <h3>💰 Cotes finales</h3>
+
     <input id="coteWin" type="number" step="0.01" placeholder="Simple gagnant">
     <input id="cotePlace" type="number" step="0.01" placeholder="Simple placé">
-    <input id="coteCouple" type="number" step="0.01" placeholder="Couplé">
+    <input id="coteCoupleWin" type="number" step="0.01" placeholder="Couplé gagnant">
+    <input id="coteCouplePlace" type="number" step="0.01" placeholder="Couplé placé">
     <input id="coteTrio" type="number" step="0.01" placeholder="Trio">
 
-    <button id="btnSettle">Valider et payer automatiquement</button>
+
+    <button id="btnSettle">✅ Valider et payer automatiquement</button>
     <button class="back-btn" onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
 
     <p id="msg"></p>
 
   </div>
-
 </div>
 
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const token = localStorage.getItem("token");
   if(!token) return location.href="login.html";
 
   const msg = document.getElementById("msg");
-  const btn = document.getElementById("btnSettle");
 
-  btn.onclick = settle;
+  const $ = id => document.getElementById(id);
 
+  $("btnLoad").onclick = loadHorses;
+  $("btnSettle").onclick = settle;
+
+
+  /* =========================================
+     CHARGER LES PARTANTS AUTO
+  ========================================= */
+
+  async function loadHorses(){
+
+    const raceId = $("raceId").value;
+
+    if(!raceId) return alert("Entre un Race ID");
+
+    msg.innerText = "Chargement des chevaux...";
+
+    try{
+
+      const res = await fetch(
+        "https://sulky-manager-backend.onrender.com/api/races/" + raceId
+      );
+
+      const race = await res.json();
+
+      const horses = race.partants.map(p => p.cheval);
+
+      fillSelect($("first"), horses);
+      fillSelect($("second"), horses);
+      fillSelect($("third"), horses);
+
+      msg.innerText = "✅ Chevaux chargés";
+
+    }catch{
+      msg.innerText = "❌ Impossible de charger la course";
+    }
+  }
+
+
+  function fillSelect(select, horses){
+
+    select.innerHTML = "";
+
+    horses.forEach(h => {
+
+      const opt = document.createElement("option");
+      opt.value = h;
+      opt.innerText = h;
+
+      select.appendChild(opt);
+    });
+  }
+
+
+  /* =========================================
+     SETTLE
+  ========================================= */
 
   async function settle(){
 
-    const raceId = document.getElementById("raceId").value.trim();
-    const first  = document.getElementById("first").value.trim();
-    const second = document.getElementById("second").value.trim();
-    const third  = document.getElementById("third").value.trim();
-
-    /* ================= VALIDATIONS ================= */
-
-    if(!raceId){
-      msg.innerText = "⚠️ Indique un Race ID";
-      return;
-    }
-
-    if(!first || !second || !third){
-      msg.innerText = "⚠️ Indique les 3 chevaux à l'arrivée";
-      return;
-    }
-
-    /* ================= LOCK BOUTON ================= */
-
-    btn.disabled = true;
-    btn.innerText = "Paiement en cours...";
     msg.innerText = "Traitement en cours...";
 
     const body = {
-      raceId: Number(raceId),
-      first,
-      second,
-      third,
-      coteWin: Number(document.getElementById("coteWin").value || 1),
-      cotePlace: Number(document.getElementById("cotePlace").value || 1),
-      coteCouple: Number(document.getElementById("coteCouple").value || 1),
-      coteTrio: Number(document.getElementById("coteTrio").value || 1)
+      raceId: Number($("raceId").value),
+      first: $("first").value,
+      second: $("second").value,
+      third: $("third").value,
+      coteWin: Number($("coteWin").value || 1),
+      cotePlace: Number($("cotePlace").value || 1),
+      coteCoupleWin: Number($("coteCoupleWin").value || 1),
+      coteCouplePlace: Number($("coteCouplePlace").value || 1),
+      coteTrio: Number($("coteTrio").value || 1)
     };
 
     try{
@@ -224,18 +249,13 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.innerText =
         `${data.message} | gagnants: ${data.winners}/${data.total}`;
 
-    }
-    catch{
+    }catch{
       msg.innerText = "❌ Erreur serveur";
     }
-
-    /* ================= UNLOCK ================= */
-
-    btn.disabled = false;
-    btn.innerText = "Valider et payer automatiquement";
   }
 
 });
+
 </script>
 
 </body>
