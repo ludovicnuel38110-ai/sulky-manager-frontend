@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -11,82 +11,105 @@
 
 body{
   background:
-    linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.85)),
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
     url("images/bg.jpg");
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 
-/* ================= HEADER PRO ================= */
+/* =====================================================
+   HEADER NOIR AVEC LOGO IMAGE + TEXTE NEON
+===================================================== */
 
 .main-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
 
-  background:#0b0f14;
-  border-bottom:2px solid #0fbf9f;
+  background:#000;
+  border-bottom:2px solid #00ff88;
 
-  padding:16px 40px;
+  padding:12px 35px;
 }
 
+/* bloc logo */
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+/* image cheval */
+.logo-img{
+  height:70px;
+  width:auto;
+  object-fit:contain;
+  filter:none;
+  animation:none;
+  opacity:.95;
+}
+
+/* texte logo */
 .logo-text{
-  font-size:32px;
-  font-weight:800;
+  font-size:42px;
+  font-weight:900;
   letter-spacing:2px;
-  color:#0fbf9f;
+  color:#00ff88;
+
+  text-shadow:
+    0 0 12px #00ff88,
+    0 0 35px #00ff88,
+    0 0 60px rgba(0,255,136,.8);
 }
 
-.header-actions button{
-  background:#0fbf9f;
-  color:#001a16;
-  border:none;
-  padding:10px 18px;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-.header-actions button:hover{
-  opacity:.85;
+.header-actions{
+  display:flex;
+  gap:12px;
 }
 
 
 /* ================= LAYOUT ================= */
 
 .dashboard-wrapper{
-  max-width:1150px;
-  margin:70px auto;
+  max-width:1200px;
+  margin:80px auto;
   padding:25px;
 }
 
 
-/* ================= MAIN CARD ================= */
+/* ================= CARD ================= */
 
 .dashboard-card{
-  background:rgba(10,18,24,.9);
-  border-radius:18px;
-  padding:50px;
+  background:rgba(0,110,55,.55);
+  backdrop-filter:blur(14px);
 
-  border:1px solid rgba(15,191,159,.35);
-  backdrop-filter:blur(8px);
+  border-radius:26px;
+  padding:60px;
+
+  border:1px solid rgba(0,255,136,.6);
+
+  box-shadow:
+    0 0 45px rgba(0,255,136,.25),
+    inset 0 0 35px rgba(0,0,0,.45);
+
+  text-align:center;
 }
 
 
 /* ================= TITRES ================= */
 
 #welcome{
-  font-size:30px;
-  margin-bottom:10px;
+  font-size:38px;
+  margin-bottom:25px;
 }
 
 #balance{
-  font-size:20px;
-  color:#0fbf9f;
-  margin-bottom:40px;
+  font-size:34px;
+  margin:40px 0;
+  color:#00ff88;
+  text-shadow:0 0 20px #00ff88;
 }
 
 
@@ -94,83 +117,88 @@ body{
 
 .actions-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:25px;
+  margin-bottom:35px;
+  
+  
+
 }
 
 
-/* ================= BUTTON CARDS (PRO) ================= */
+/* ================= BOUTONS ================= */
 
 .big-btn{
-  background:#101820;
-  border:1px solid rgba(15,191,159,.35);
+  padding:24px;
+  font-size:18px;
+  font-weight:700;
 
-  padding:22px;
-  border-radius:12px;
+  border-radius:18px;
+  border:none;
 
-  font-size:16px;
-  font-weight:600;
-  color:#e9f7f5;
+  background:linear-gradient(135deg,#00ff88,#00cc66);
+  color:#001a0f;
 
   cursor:pointer;
-  transition:.2s;
+
+  box-shadow:0 0 25px rgba(0,255,136,.6);
+  transition:.25s;
 }
 
 .big-btn:hover{
-  background:#0fbf9f;
-  color:#001a16;
-  transform:translateY(-2px);
+  transform:translateY(-5px) scale(1.05);
+  box-shadow:0 0 45px #00ff88;
 }
 
 
-/* ================= INFO BOX ================= */
+/* ================= MESSAGE ================= */
 
 .welcome-box{
-  margin-top:40px;
-  padding:25px;
+  margin-top:25px;
+  padding:28px;
 
-  background:#0d151c;
-  border-radius:12px;
-  font-size:14px;
+  background:rgba(0,0,0,.5);
+  border-radius:18px;
   line-height:1.7;
-  color:#cfd8dc;
+  font-size:16px;
 }
 
 
-/* ================= ADMIN ================= */
+/* ================= ADMIN PANEL ================= */
 
 #adminPanel{
   display:none;
   margin-top:40px;
 }
 
-.admin-title{
-  margin-bottom:15px;
-  color:#0fbf9f;
-  font-weight:700;
-}
-
 
 /* ================= MOBILE ================= */
 
-@media(max-width:700px){
-  .dashboard-card{ padding:30px; }
+@media(max-width:800px){
+  .logo-img{ height:55px; }
+  .logo-text{ font-size:30px; }
 }
 
 </style>
 </head>
 
-<body>
 
+
+<body>
 
 <!-- HEADER -->
 <header class="main-header">
-  <div class="logo-text">SULKY-BET</div>
+
+  <div class="logo-wrap">
+    <img src="images/horse-neon.png" class="logo-img">
+    <div class="logo-text">SULKY-BET</div>
+  </div>
 
   <div class="header-actions">
-    <button onclick="location.href='actus.html'">Actualités</button>
-    <button id="logoutBtn">Déconnexion</button>
+    <button onclick="location.href='actus.html'" class="big-btn">📰 Actualités</button>
+    <button id="logoutBtn" class="big-btn">Déconnexion</button>
   </div>
+
 </header>
 
 
@@ -181,45 +209,49 @@ body{
   <div class="dashboard-card">
 
     <h1 id="welcome">Bienvenue</h1>
-    <div id="balance">Solde : ... €</div>
-
 
     <!-- ACTIONS -->
     <div class="actions-grid">
-
-      <button class="big-btn" id="btnRaces">Courses</button>
-      <button class="big-btn" id="btnHistory">Mes paris</button>
-      <button class="big-btn" id="btnResults">Résultats</button>
-      <button class="big-btn" id="btnAide">Aide</button>
-
-      <!-- admin only -->
-      <button class="big-btn" id="btnAdminBets">Tous les paris</button>
+      <button class="big-btn" id="btnRaces">🏇 Courses</button>
+      <button class="big-btn" id="btnHistory">📜 Mes paris</button>
+      <button class="big-btn" id="btnResults">🏁 Résultats</button>
+      <button class="big-btn" id="btnAide">❓ Aide</button>
+      <button class="big-btn" id="btnAdminBets">📊 Tous les paris</button>
 
     </div>
 
 
+   <!-- MESSAGE -->
+<div class="welcome-box">
+  👋 Bienvenue sur <strong>Sulky-Bet</strong> !<br><br>
 
-    <!-- INFO TEXT -->
-    <div class="welcome-box">
-      Sulky-Bet est une plateforme indépendante de gestion de paris hippiques.  
-      Accédez aux courses, placez vos paris et suivez vos performances en temps réel dans un environnement simple, rapide et sécurisé.
+  Parie facilement sur les courses proposées dans l’onglet <strong>Courses</strong> et suis tes paris en toute tranquillité.<br><br>
 
-      <br><br>
+  Pour créditer ton compte, contacte-moi sur <strong>Sulkyland</strong> au pseudo <strong>Turfiste83</strong>.  
+  Je reverserai les fonds le plus rapidement possible afin que tu puisses jouer.<br><br>
 
-      Le site est un projet personnel. Sulkyland n’intervient pas dans la gestion technique du service.
-    </div>
+  🔒 Pense à conserver ton pseudo et ton mot de passe.<br><br>
+
+  ℹ️ <em>Sulky-Bet est un projet indépendant et autodidacte.  
+  Sulkyland ne gère pas le site et ne peut en aucun cas intervenir ou être tenu responsable en cas de problème technique.  
+  Pour toute question ou aide, contacte-moi directement.</em><br><br>
+
+  Merci pour ta confiance et bons paris 🐎
+</div>
 
 
+    <h2 id="balance">Solde : ... €</h2>
 
-    <!-- ADMIN PANEL -->
+
+    <!-- ADMIN PANEL (VISIBLE UNIQUEMENT ADMIN) -->
     <div id="adminPanel">
 
-      <div class="admin-title">Administration</div>
+      <h3 style="color:#00ff88;margin-bottom:20px;">⚙️ Administration</h3>
 
       <div class="actions-grid">
-        <button class="big-btn" onclick="location.href='admin-courses.html'">Gérer les courses</button>
-        <button class="big-btn" onclick="location.href='admin-settle.html'">Régler une course</button>
-        <button class="big-btn" onclick="location.href='admin-balance.html'">Créditer joueur</button>
+        <button class="big-btn" onclick="location.href='admin-courses.html'">🏗️ Gérer les courses</button>
+        <button class="big-btn" onclick="location.href='admin-settle.html'">🏁 Régler une course</button>
+        <button class="big-btn" onclick="location.href='admin-balance.html'">💰 Créditer joueur</button>
       </div>
 
     </div>
@@ -250,9 +282,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   welcome.innerText = "Bienvenue " + user.pseudo;
   balanceBox.innerText = "Solde : " + user.balance + " €";
 
+  /* 🔥 ADMIN DETECTION */
   const payload = JSON.parse(atob(token.split(".")[1]));
   if(payload.isAdmin) adminPanel.style.display = "block";
 
+
+  /* NAVIGATION */
   btnRaces.onclick   = ()=>location.href="races.html";
   btnHistory.onclick = ()=>location.href="history.html";
   btnResults.onclick = ()=>location.href="results.html";
@@ -269,3 +304,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 </body>
 </html>
+
+       
