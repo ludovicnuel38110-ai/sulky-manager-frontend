@@ -120,6 +120,9 @@ body{
   grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:25px;
   margin-bottom:35px;
+  
+  
+
 }
 
 
@@ -213,6 +216,8 @@ body{
       <button class="big-btn" id="btnHistory">📜 Mes paris</button>
       <button class="big-btn" id="btnResults">🏁 Résultats</button>
       <button class="big-btn" id="btnAide">❓ Aide</button>
+      <button class="big-btn" id="btnAdminBets">📊 Tous les paris</button>
+
     </div>
 
 
@@ -287,6 +292,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   btnHistory.onclick = ()=>location.href="history.html";
   btnResults.onclick = ()=>location.href="results.html";
   btnAide.onclick    = ()=>location.href="aide.html";
+  btnAdminBets.onclick = ()=>location.href="admin-bets.html";
 
   logoutBtn.onclick = ()=>{
     localStorage.clear();
