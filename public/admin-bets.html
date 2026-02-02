@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sulky-Bet – Tous les paris</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+  background:
+    linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.85)),
+    url("images/bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  font-family:Arial;
+}
+
+.wrapper{
+  max-width:1300px;
+  margin:70px auto;
+  padding:25px;
+}
+
+.box{
+  background:rgba(0,110,55,.6);
+  backdrop-filter:blur(14px);
+  border-radius:22px;
+  padding:30px;
+  border:1px solid rgba(0,255,136,.6);
+}
+
+h2{
+  color:#00ff88;
+  margin-bottom:20px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+
+th{
+  background:#000;
+  color:#00ff88;
+  padding:12px;
+}
+
+td{
+  padding:10px;
+  background:rgba(0,0,0,.6);
+  text-align:center;
+}
+
+.status-win{ color:#00ff88; }
+.status-lose{ color:#ff5555; }
+.status-pending{ color:#ffaa00; }
+
+#msg{
+  margin-top:15px;
+  text-align:center;
+  font-weight:bold;
+}
+
+button{
+  margin-top:20px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="wrapper">
+
+  <div class="box">
+
+    <h2>📊 Historique global des paris</h2>
+
+    <div id="msg">Chargement...</div>
+
+    <table id="betsTable" style="display:none">
+      <thead>
+        <tr>
+          <th>Joueur</th>
+          <th>Course</th>
+          <th>Chevaux</th>
+          <th>Type</th>
+          <th>Mise</th>
+          <th>Gain</th>
+          <th>Statut</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button onclick="location.href='dashboard.html'">⬅ Retour</button>
+
+  </div>
+
+</div>
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+
+  const token = localStorage.getItem("token");
+
+  if(!token){
+    location.href="login.html";
+    return;
+  }
+
+  const msg = document.getElementById("msg");
+  const table = document.getElementById("betsTable");
+  const tbody = table.querySelector("tbody");
+
+  try{
+
+    const res = await fetch(
+      "https://sulky-manager-backend.onrender.com/api/admin/bets",
+      {
+        headers:{ Authorization:"Bearer "+token }
+      }
+    );
+
+    if(!res.ok){
+      msg.innerText = "❌ Accès refusé (admin uniquement)";
+      return;
+    }
+
+    const bets = await res.json();
+
+    if(!bets.length){
+      msg.innerText = "Aucun pari pour le moment";
+      return;
+    }
+
+    msg.style.display="none";
+    table.style.display="table";
+
+    bets.forEach(b=>{
+
+      const tr = document.createElement("tr");
+
+      const horses = (b.chevaux||[])
+        .map(h=>h.cheval)
+        .join(", ");
+
+      tr.innerHTML = `
+        <td>${b.userPseudo || "?"}</td>
+        <td>${b.raceId}</td>
+        <td>${horses}</td>
+        <td>${b.type}</td>
+        <td>${b.montant}€</td>
+        <td>${b.gain}€</td>
+        <td class="status-${b.status}">${b.status}</td>
+        <td>${new Date(b.createdAt).toLocaleString()}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+  }
+  catch(err){
+    console.error(err);
+    msg.innerText = "❌ Erreur serveur";
+  }
+
+});
+
+</script>
+
+</body>
+</html>
