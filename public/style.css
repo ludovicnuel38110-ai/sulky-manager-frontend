@@ -315,6 +315,108 @@ td{
   background:#000;
   z-index:9999;
 }
+/* ================= SECTION COURSES PRO ================= */
+
+.schedule-section{
+  max-width:1200px;
+  margin:70px auto;
+  padding:40px;
+
+  background:rgba(0,40,35,.75);
+  backdrop-filter:blur(12px);
+
+  border-radius:20px;
+  border:1px solid rgba(0,224,184,.3);
+}
+
+.section-title{
+  color:#00e0b8;
+  font-size:26px;
+  margin-bottom:30px;
+}
+
+
+/* grid */
+
+.schedule-grid{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+
+/* card */
+
+.race-card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:18px 25px;
+
+  background:#052927;
+  border-radius:12px;
+
+  border:1px solid rgba(0,224,184,.25);
+
+  transition:.2s;
+}
+
+.race-card:hover{
+  background:#063a36;
+  border-color:#00e0b8;
+  transform:translateY(-2px);
+}
+
+
+/* info */
+
+.race-info{
+  display:flex;
+  flex-direction:column;
+}
+
+.race-date{
+  font-size:14px;
+  opacity:.7;
+}
+
+.race-track{
+  font-size:18px;
+  font-weight:700;
+  margin-top:4px;
+}
+
+
+/* bouton */
+
+.race-btn{
+  padding:10px 18px;
+
+  background:#00e0b8;
+  color:#00201c;
+
+  border-radius:8px;
+  font-weight:700;
+  text-decoration:none;
+
+  transition:.2s;
+}
+
+.race-btn:hover{
+  box-shadow:0 0 12px #00e0b8;
+}
+
+
+/* mobile */
+
+@media(max-width:700px){
+  .race-card{
+    flex-direction:column;
+    gap:10px;
+    text-align:center;
+  }
+}
 
 
 /* ================= MOBILE ================= */
