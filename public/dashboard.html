@@ -1,4 +1,4 @@
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -7,176 +7,197 @@
 
 <style>
 
-/* ================= BACKGROUND ================= */
+/* =================================================
+   🌌 BACKGROUND (comme accueil)
+================================================= */
 
 body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+
   background:
-    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
+    linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.85)),
     url("images/bg.jpg");
+
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
+
+  color:white;
 }
 
 
-/* =====================================================
-   HEADER NOIR AVEC LOGO IMAGE + TEXTE NEON
-===================================================== */
+/* =================================================
+   🔵 HEADER PRO STYLE BOOKMAKER
+================================================= */
 
 .main-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
 
-  background:#000;
-  border-bottom:2px solid #00ff88;
+  padding:18px 40px;
 
-  padding:12px 35px;
+  background:#061b1a;
+  border-bottom:2px solid #00e0b8;
 }
 
-/* bloc logo */
-.logo-wrap{
+.logo-text{
+  font-size:34px;
+  font-weight:900;
+  letter-spacing:2px;
+
+  color:#00e0b8;
+
+  text-shadow:0 0 15px rgba(0,224,184,.5);
+}
+
+/* bloc droite */
+.header-right{
   display:flex;
   align-items:center;
   gap:18px;
 }
 
-/* image cheval */
-.logo-img{
-  height:70px;
-  width:auto;
-  object-fit:contain;
-  filter:none;
-  animation:none;
-  opacity:.95;
-}
+/* solde visible direct */
+.balance-pill{
+  padding:10px 18px;
+  border-radius:30px;
 
-/* texte logo */
-.logo-text{
-  font-size:42px;
-  font-weight:900;
-  letter-spacing:2px;
-  color:#00ff88;
+  background:#002e2a;
+  border:1px solid #00e0b8;
 
-  text-shadow:
-    0 0 12px #00ff88,
-    0 0 35px #00ff88,
-    0 0 60px rgba(0,255,136,.8);
-}
-
-.header-actions{
-  display:flex;
-  gap:12px;
+  font-weight:700;
+  color:#00e0b8;
 }
 
 
-/* ================= LAYOUT ================= */
+/* boutons header */
+
+.header-btn{
+  padding:10px 18px;
+  border-radius:10px;
+
+  background:#00e0b8;
+  color:#00201c;
+
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.header-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 15px #00e0b8;
+}
+
+
+/* =================================================
+   📦 CARD PRINCIPALE
+================================================= */
 
 .dashboard-wrapper{
   max-width:1200px;
-  margin:80px auto;
+  margin:70px auto;
   padding:25px;
 }
 
-
-/* ================= CARD ================= */
-
 .dashboard-card{
-  background:rgba(0,110,55,.55);
-  backdrop-filter:blur(14px);
+  background:rgba(0,40,35,.75);
+  backdrop-filter:blur(12px);
 
-  border-radius:26px;
-  padding:60px;
+  border-radius:20px;
+  padding:45px;
 
-  border:1px solid rgba(0,255,136,.6);
-
-  box-shadow:
-    0 0 45px rgba(0,255,136,.25),
-    inset 0 0 35px rgba(0,0,0,.45);
-
-  text-align:center;
+  border:1px solid rgba(0,224,184,.35);
 }
 
 
-/* ================= TITRES ================= */
+/* =================================================
+   TITRE
+================================================= */
 
 #welcome{
-  font-size:38px;
-  margin-bottom:25px;
-}
-
-#balance{
-  font-size:34px;
-  margin:40px 0;
-  color:#00ff88;
-  text-shadow:0 0 20px #00ff88;
+  font-size:32px;
+  margin-bottom:35px;
+  color:#00e0b8;
 }
 
 
-/* ================= GRID ================= */
+/* =================================================
+   GRID BOUTONS (STYLE PRO)
+================================================= */
 
 .actions-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:25px;
-  margin-bottom:35px;
-  
-  
-
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:22px;
 }
 
+.action-btn{
 
-/* ================= BOUTONS ================= */
+  padding:22px;
 
-.big-btn{
-  padding:24px;
-  font-size:18px;
-  font-weight:700;
+  border-radius:14px;
+  border:1px solid rgba(0,224,184,.25);
 
-  border-radius:18px;
-  border:none;
+  background:#052927;
 
-  background:linear-gradient(135deg,#00ff88,#00cc66);
-  color:#001a0f;
+  color:white;
+
+  font-size:16px;
+  font-weight:600;
 
   cursor:pointer;
-
-  box-shadow:0 0 25px rgba(0,255,136,.6);
   transition:.25s;
 }
 
-.big-btn:hover{
-  transform:translateY(-5px) scale(1.05);
-  box-shadow:0 0 45px #00ff88;
+.action-btn:hover{
+  background:#063a36;
+  border-color:#00e0b8;
+  transform:translateY(-3px);
 }
 
 
-/* ================= MESSAGE ================= */
+/* =================================================
+   MESSAGE INFO
+================================================= */
 
-.welcome-box{
-  margin-top:25px;
-  padding:28px;
+.info-box{
+  margin-top:40px;
 
-  background:rgba(0,0,0,.5);
-  border-radius:18px;
-  line-height:1.7;
-  font-size:16px;
+  background:#041e1c;
+  padding:25px;
+
+  border-radius:14px;
+  font-size:15px;
+  line-height:1.6;
+  opacity:.85;
 }
 
 
-/* ================= ADMIN PANEL ================= */
+/* =================================================
+   ADMIN PANEL
+================================================= */
 
 #adminPanel{
-  display:none;
   margin-top:40px;
+  display:none;
+}
+
+.admin-title{
+  color:#00e0b8;
+  margin-bottom:15px;
 }
 
 
-/* ================= MOBILE ================= */
+/* =================================================
+   MOBILE
+================================================= */
 
-@media(max-width:800px){
-  .logo-img{ height:55px; }
-  .logo-text{ font-size:30px; }
+@media(max-width:700px){
+  .dashboard-card{ padding:25px; }
 }
 
 </style>
@@ -186,72 +207,62 @@ body{
 
 <body>
 
-<!-- HEADER -->
+<!-- =================================================
+   HEADER
+================================================= -->
+
 <header class="main-header">
 
-  <div class="logo-wrap">
-    <img src="images/horse-neon.png" class="logo-img">
-    <div class="logo-text">SULKY-BET</div>
-  </div>
+  <div class="logo-text">SULKY-BET</div>
 
-  <div class="header-actions">
-    <button onclick="location.href='actus.html'" class="big-btn">📰 Actualités</button>
-    <button id="logoutBtn" class="big-btn">Déconnexion</button>
+  <div class="header-right">
+    <div id="balanceTop" class="balance-pill">Solde : ... €</div>
+    <button onclick="location.href='actus.html'" class="header-btn">Actualités</button>
+    <button id="logoutBtn" class="header-btn">Déconnexion</button>
   </div>
 
 </header>
 
 
 
-<!-- DASHBOARD -->
+<!-- =================================================
+   DASHBOARD
+================================================= -->
+
 <div class="dashboard-wrapper">
 
   <div class="dashboard-card">
 
     <h1 id="welcome">Bienvenue</h1>
 
-    <!-- ACTIONS -->
+    <!-- ACTIONS PRINCIPALES -->
     <div class="actions-grid">
-      <button class="big-btn" id="btnRaces">🏇 Courses</button>
-      <button class="big-btn" id="btnHistory">📜 Mes paris</button>
-      <button class="big-btn" id="btnResults">🏁 Résultats</button>
-      <button class="big-btn" id="btnAide">❓ Aide</button>
-      <button class="big-btn" id="btnAdminBets">📊 Tous les paris</button>
+
+      <button class="action-btn" id="btnRaces">Courses</button>
+      <button class="action-btn" id="btnHistory">Mes paris</button>
+      <button class="action-btn" id="btnResults">Résultats</button>
+      <button class="action-btn" id="btnAide">Aide</button>
+      <button class="action-btn" id="btnAdminBets">Tous les paris</button>
 
     </div>
 
 
-   <!-- MESSAGE -->
-<div class="welcome-box">
-  👋 Bienvenue sur <strong>Sulky-Bet</strong> !<br><br>
-
-  Parie facilement sur les courses proposées dans l’onglet <strong>Courses</strong> et suis tes paris en toute tranquillité.<br><br>
-
-  Pour créditer ton compte, contacte-moi sur <strong>Sulkyland</strong> au pseudo <strong>Turfiste83</strong>.  
-  Je reverserai les fonds le plus rapidement possible afin que tu puisses jouer.<br><br>
-
-  🔒 Pense à conserver ton pseudo et ton mot de passe.<br><br>
-
-  ℹ️ <em>Sulky-Bet est un projet indépendant et autodidacte.  
-  Sulkyland ne gère pas le site et ne peut en aucun cas intervenir ou être tenu responsable en cas de problème technique.  
-  Pour toute question ou aide, contacte-moi directement.</em><br><br>
-
-  Merci pour ta confiance et bons paris 🐎
-</div>
+    <!-- MESSAGE SOBRE -->
+    <div class="info-box">
+      Sulky-Bet est une plateforme indépendante de paris hippiques.  
+      Placez vos paris, suivez vos performances et gérez votre solde en toute simplicité.
+    </div>
 
 
-    <h2 id="balance">Solde : ... €</h2>
-
-
-    <!-- ADMIN PANEL (VISIBLE UNIQUEMENT ADMIN) -->
+    <!-- ADMIN PANEL -->
     <div id="adminPanel">
 
-      <h3 style="color:#00ff88;margin-bottom:20px;">⚙️ Administration</h3>
+      <h3 class="admin-title">Administration</h3>
 
       <div class="actions-grid">
-        <button class="big-btn" onclick="location.href='admin-courses.html'">🏗️ Gérer les courses</button>
-        <button class="big-btn" onclick="location.href='admin-settle.html'">🏁 Régler une course</button>
-        <button class="big-btn" onclick="location.href='admin-balance.html'">💰 Créditer joueur</button>
+        <button class="action-btn" onclick="location.href='admin-courses.html'">Gérer les courses</button>
+        <button class="action-btn" onclick="location.href='admin-settle.html'">Régler une course</button>
+        <button class="action-btn" onclick="location.href='admin-balance.html'">Créditer joueur</button>
       </div>
 
     </div>
@@ -263,13 +274,14 @@ body{
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", async () => {
 
   const token = localStorage.getItem("token");
   if(!token) return location.href="login.html";
 
   const welcome = document.getElementById("welcome");
-  const balanceBox = document.getElementById("balance");
+  const balanceTop = document.getElementById("balanceTop");
   const adminPanel = document.getElementById("adminPanel");
 
   const res = await fetch(
@@ -280,9 +292,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = await res.json();
 
   welcome.innerText = "Bienvenue " + user.pseudo;
-  balanceBox.innerText = "Solde : " + user.balance + " €";
+  balanceTop.innerText = "Solde : " + user.balance + " €";
 
-  /* 🔥 ADMIN DETECTION */
+
+  /* ADMIN */
   const payload = JSON.parse(atob(token.split(".")[1]));
   if(payload.isAdmin) adminPanel.style.display = "block";
 
@@ -300,9 +313,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
 });
+
 </script>
 
 </body>
 </html>
-
-       
