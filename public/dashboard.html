@@ -242,7 +242,8 @@ body{
       <button class="action-btn" id="btnHistory">Mes paris</button>
       <button class="action-btn" id="btnResults">Résultats</button>
       <button class="action-btn" id="btnAide">Aide</button>
-      <button class="action-btn" id="btnAdminBets">Tous les paris</button>
+      <button class="big-btn" id="btnAdminBets" style="display:none">Tous les paris</button>
+
 
     </div>
 
@@ -297,9 +298,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   balanceTop.innerText = "Solde : " + user.balance + " €";
 
 
-  /* ADMIN */
-  const payload = JSON.parse(atob(token.split(".")[1]));
-  if(payload.isAdmin) adminPanel.style.display = "block";
+ /* ADMIN */
+const payload = JSON.parse(atob(token.split(".")[1]));
+
+if(payload.isAdmin){
+  adminPanel.style.display = "block";     // panneau admin
+  btnAdminBets.style.display = "block";   // bouton Tous les paris
+}
+
 
 
   /* NAVIGATION */
