@@ -393,7 +393,7 @@ td{
 .race-btn{
   padding:10px 18px;
 
-  background:#00e0b8;
+  background:#066957;
   color:#00201c;
 
   border-radius:8px;
@@ -404,7 +404,7 @@ td{
 }
 
 .race-btn:hover{
-  box-shadow:0 0 12px #00e0b8;
+  box-shadow:0 0 12px #055c4c;
 }
 
 
