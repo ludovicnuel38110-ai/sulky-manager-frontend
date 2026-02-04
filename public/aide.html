@@ -11,11 +11,41 @@
 
 body{
   background:
-    linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.85)),
+    linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.90)),
     url("images/bg.jpg");
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
+  font-family:system-ui,Segoe UI,Roboto;
+  color:#e8fdf6;
+}
+
+
+/* ================= HEADER STYLE DASH ================= */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  background:#000;
+  border-bottom:2px solid #00e6a8;
+}
+
+.logo{
+  font-size:34px;
+  font-weight:900;
+  color:#00e6a8;
+  letter-spacing:2px;
+}
+
+.header button{
+  background:linear-gradient(135deg,#00e6a8,#00b386);
+  border:none;
+  padding:10px 20px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
 }
 
 
@@ -23,51 +53,60 @@ body{
 
 .help-wrapper{
   max-width:1100px;
-  margin:80px auto;
+  margin:60px auto;
   padding:25px;
 }
 
+
+/* ================= CARD ================= */
+
 .help-card{
-  background:rgba(0,110,55,.60);
-  backdrop-filter:blur(14px);
-
-  border-radius:25px;
-  padding:45px;
-
-  border:1px solid rgba(0,255,136,.6);
+  background:linear-gradient(145deg,#062c23,#0c3c32);
+  border-radius:22px;
+  padding:50px;
+  border:1px solid rgba(0,230,168,.25);
 
   box-shadow:
-    0 0 40px rgba(0,255,136,.25),
-    inset 0 0 30px rgba(0,0,0,.45);
+    0 0 50px rgba(0,230,168,.15),
+    inset 0 0 35px rgba(0,0,0,.45);
 }
 
 
-/* ================= TITRES ================= */
+/* ================= TITLES ================= */
 
 h1{
   text-align:center;
-  color:#00ff88;
+  font-size:34px;
   margin-bottom:10px;
+  color:#00e6a8;
 }
 
 h2{
-  color:#00ff88;
-  margin-top:40px;
-  border-bottom:1px solid #00ff88;
+  margin-top:50px;
   padding-bottom:8px;
+  border-bottom:1px solid rgba(0,230,168,.3);
+  color:#00e6a8;
 }
 
 h3{
-  margin-top:25px;
-  color:#00ff88;
+  margin-top:22px;
+  color:#8dfbd8;
+}
+
+
+/* ================= TEXT ================= */
+
+p, li{
+  line-height:1.7;
+  opacity:.95;
 }
 
 
 /* ================= BOXES ================= */
 
 .info-box{
-  background:rgba(0,0,0,.55);
-  border:1px solid #00ff88;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(0,230,168,.25);
   border-radius:14px;
   padding:18px;
   margin:18px 0;
@@ -79,26 +118,55 @@ h3{
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:15px;
+  margin-top:18px;
+  overflow:hidden;
+  border-radius:10px;
 }
 
 th, td{
   padding:12px;
-  border:1px solid rgba(0,255,136,.4);
   text-align:center;
 }
 
 th{
-  background:#001a0f;
-  color:#00ff88;
+  background:#001a14;
+  color:#00e6a8;
+}
+
+td{
+  background:rgba(0,0,0,.35);
+}
+
+tr:nth-child(even) td{
+  background:rgba(0,0,0,.25);
 }
 
 
 /* ================= BUTTON ================= */
 
 .back-btn{
-  margin-top:35px;
   width:100%;
+  margin-top:45px;
+  padding:16px;
+
+  background:linear-gradient(135deg,#00e6a8,#00b386);
+  color:#001a14;
+
+  font-size:16px;
+  font-weight:700;
+
+  border:none;
+  border-radius:14px;
+
+  cursor:pointer;
+
+  box-shadow:0 0 20px rgba(0,230,168,.5);
+  transition:.25s;
+}
+
+.back-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 40px rgba(0,230,168,.9);
 }
 
 </style>
@@ -108,82 +176,74 @@ th{
 
 <body>
 
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">SULKY-BET</div>
+  <button onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
+</div>
+
+
 <div class="help-wrapper">
 
   <div class="help-card">
 
-    <h1>🏇 Centre d’aide Sulky-Bet</h1>
-    <p style="text-align:center;opacity:.85">
-      Tout comprendre pour parier rapidement et gagner des Sulky 💰
+    <h1>🏇 Centre d’aide</h1>
+    <p style="text-align:center;opacity:.8">
+      Tout comprendre pour parier simplement et efficacement
     </p>
 
 
-    <!-- ================= COMMENT JOUER ================= -->
-
+    <!-- COMMENT JOUER -->
     <h2>🎯 Comment jouer ?</h2>
 
     <ol>
-      <li>Va sur <b>Dashboard → Courses</b></li>
-      <li>Choisis une réunion puis une course</li>
-      <li>Sélectionne tes chevaux dans le tableau</li>
-      <li>Choisis ton type de pari</li>
-      <li>Entre ta mise → clique <b>Parier</b></li>
+      <li>Dashboard → Courses</li>
+      <li>Choisis une réunion</li>
+      <li>Sélectionne tes chevaux</li>
+      <li>Choisis le type de pari</li>
+      <li>Entre ta mise → Parier</li>
     </ol>
 
     <div class="info-box">
-      Pour créditer ton compte, contacte-moi sur Sulkyland au pseudo Turfiste83. Je reverserai les fonds le plus rapidement possible afin que tu puisses jouer.
-      ✅ Les paris sont <b>enregistrés automatiquement</b> sur ton compte.<br>
-      ❌ Plus besoin d’envoyer de message ou de don.
+      Les paris sont enregistrés automatiquement sur ton compte.<br>
+      Contact admin (Sulkyland : Turfiste83) pour créditer ton solde.
     </div>
 
 
-    <!-- ================= TYPES PARIS ================= -->
+    <!-- TYPES -->
+    <h2>🎲 Types de paris</h2>
 
-    <h2>🎲 Types de paris disponibles</h2>
+    <h3>Simple gagnant</h3>
+    <p>Ton cheval doit finir 1er.</p>
 
-    <h3>🥇 Simple gagnant</h3>
-    <p>Tu gagnes si ton cheval finit <b>1er</b>.</p>
+    <h3>Simple placé</h3>
+    <p>
+      1er, 2e ou 3e.<br>
+      ➜ Cote différente selon la position.
+    </p>
 
-    <h3>🥈 Simple placé</h3>
-    <p>Tu gagnes si ton cheval finit <b>1er, 2e ou 3e</b>.</p>
+    <h3>Couplé gagnant</h3>
+    <p>Les 2 premiers dans l’ordre.</p>
 
-    <h3>👥 Couplé gagnant</h3>
-    <p>Tu dois trouver <b>les 2 premiers chevaux</b>.</p>
+    <h3>Couplé placé</h3>
+    <p>
+      Deux chevaux dans les 3 premiers.<br>
+      ➜ Chaque combinaison possède sa propre cote.
+    </p>
 
-    <h3>👥 Couplé placé</h3>
-    <p>Le 1er + (2e ou 3e).</p>
-
-    <h3>🥉 Trio</h3>
-    <p>Tu dois trouver <b>les 3 premiers chevaux</b>.</p>
+    <h3>Trio</h3>
+    <p>Les 3 premiers.</p>
 
 
-    <!-- ================= CALCUL ================= -->
-
+    <!-- GAINS -->
     <h2>💰 Calcul des gains</h2>
 
     <div class="info-box">
-      <b>Formule :</b><br><br>
       Gain = Mise × Cote finale
     </div>
 
-    <p>
-      Les gains sont versés <b>automatiquement</b> lorsque l’admin règle la course.
-      Ton solde est mis à jour instantanément sur le dashboard.
-    </p>
 
-
-    <!-- ================= EXEMPLES ================= -->
-
-    <h3>Exemples</h3>
-
-    <ul>
-      <li>1000 × cote 3.5 → <b>3500 Sulky</b></li>
-      <li>5000 × cote 8 → <b>40 000 Sulky</b></li>
-    </ul>
-
-
-    <!-- ================= LIMITES ================= -->
-
+    <!-- LIMITES -->
     <h2>📊 Limites de mise</h2>
 
     <table>
@@ -198,35 +258,25 @@ th{
       <tr><td>Trio</td><td>5 000</td></tr>
     </table>
 
-    <div class="info-box">
-      💡 Mise minimum : <b>1000 Sulky</b>
-    </div>
 
-
-    <!-- ================= FAQ ================= -->
-
-    <h2>❓ Questions fréquentes</h2>
+    <!-- FAQ -->
+    <h2>❓ FAQ</h2>
 
     <div class="info-box">
-      <b>Mon cheval est non partant ?</b><br>
-      ➜ Ta mise est remboursée automatiquement.
+      Non partant → remboursement automatique
     </div>
 
     <div class="info-box">
-      <b>Quand suis-je payé ?</b><br>
-      ➜ Dès que l’admin règle la course.
+      Paiement → dès que la course est réglée
     </div>
 
     <div class="info-box">
-      <b>Où voir mes paris ?</b><br>
-      ➜ Dashboard → Mes paris.
+      Mes paris → Dashboard → Mes paris
     </div>
 
 
-    <!-- ================= CTA ================= -->
-
-    <button class="bet-btn back-btn" onclick="location.href='dashboard.html'">
-      ⬅ Retour au dashboard
+    <button class="back-btn" onclick="location.href='dashboard.html'">
+      Retour au dashboard
     </button>
 
   </div>
