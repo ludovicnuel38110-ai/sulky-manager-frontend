@@ -6,10 +6,32 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+
+/* ================= LAYOUT ================= */
+
 .section{
   max-width:1300px;
   margin:auto;
 }
+
+/* 🔹 Bulle info cotes (NOUVEAU) */
+
+.odds-info{
+  margin:18px 0 22px 0;
+  padding:12px 16px;
+
+  background:rgba(0,200,160,.08);
+  border:1px solid rgba(0,255,170,.35);
+
+  border-radius:12px;
+
+  font-size:13px;
+  color:#aaffee;
+
+  backdrop-filter:blur(6px);
+}
+
+/* ================= COURSE LAYOUT ================= */
 
 .race-layout{
   display:flex;
@@ -17,18 +39,26 @@
   align-items:flex-start;
 }
 
-.race-table{ flex:3; }
+.race-table{
+  flex:3;
+}
 
 .bet-slip{
   flex:1;
-  background:#021;
-  padding:20px;
-  border-radius:15px;
-  border:2px solid #00ff88;
+
+  background:rgba(0,0,0,.65);
+  padding:22px;
+
+  border-radius:18px;
+  border:2px solid rgba(0,255,170,.5);
+
   position:sticky;
   top:20px;
+
   height:fit-content;
 }
+
+/* ================= COUNTDOWN ================= */
 
 #countdownBox{
   display:block;
@@ -37,11 +67,18 @@
   color:#00ff88;
 }
 
+/* ================= MOBILE ================= */
+
 @media(max-width:900px){
-  .race-layout{ flex-direction:column; }
+  .race-layout{
+    flex-direction:column;
+  }
 }
+
 </style>
 </head>
+
+
 
 <body>
 
@@ -63,8 +100,19 @@
 </header>
 
 
+
 <div class="section">
+
+  <!-- 🔥 INFO COTES (AJOUTÉ ICI) -->
+  <div class="odds-info">
+    ℹ️ Les cotes affichées sont indicatives et basées sur les dernières informations disponibles.  
+    Les cotes finales officielles sont celles publiées sur <strong>pmu.fr</strong> au départ de la course.
+  </div>
+
+
   <div class="race-layout">
+
+    <!-- ================= TABLE ================= -->
 
     <div class="race-table">
       <table id="partantsTable" class="pmu-table">
@@ -83,7 +131,11 @@
       </table>
     </div>
 
+
+    <!-- ================= BET SLIP ================= -->
+
     <div class="bet-slip">
+
       <h3>🧾 Mon pari</h3>
 
       <div id="selectedList">Aucun cheval sélectionné</div>
@@ -99,16 +151,19 @@
       <input id="stakeInput" type="number" placeholder="Mise €">
 
       <button id="betBtn">Parier</button>
+
     </div>
 
   </div>
 </div>
 
 
+
 <script>
 document.addEventListener("DOMContentLoaded", init);
 
 let selectedHorses = [];
+
 
 /* ================= INIT ================= */
 
@@ -161,9 +216,7 @@ function startCountdown(dateStr){
       return;
     }
 
-    const minutesLeft = diff/60000;
-
-    if(minutesLeft <= 30){
+    if(diff <= 30*60*1000){
       box.innerText = "🔴 Paris fermés";
       btn.disabled = true;
       return;
