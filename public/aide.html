@@ -11,41 +11,12 @@
 
 body{
   background:
-    linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.90)),
+    linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.9)),
     url("images/bg.jpg");
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
-  font-family:system-ui,Segoe UI,Roboto;
-  color:#e8fdf6;
-}
-
-
-/* ================= HEADER STYLE DASH ================= */
-
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  background:#000;
-  border-bottom:2px solid #00e6a8;
-}
-
-.logo{
-  font-size:34px;
-  font-weight:900;
-  color:#00e6a8;
-  letter-spacing:2px;
-}
-
-.header button{
-  background:linear-gradient(135deg,#00e6a8,#00b386);
-  border:none;
-  padding:10px 20px;
-  border-radius:10px;
-  font-weight:600;
-  cursor:pointer;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
 
@@ -53,63 +24,57 @@ body{
 
 .help-wrapper{
   max-width:1100px;
-  margin:60px auto;
+  margin:70px auto;
   padding:25px;
 }
 
-
-/* ================= CARD ================= */
-
 .help-card{
-  background:linear-gradient(145deg,#062c23,#0c3c32);
+  background:rgba(10,20,25,.92);
   border-radius:22px;
-  padding:50px;
-  border:1px solid rgba(0,230,168,.25);
-
-  box-shadow:
-    0 0 50px rgba(0,230,168,.15),
-    inset 0 0 35px rgba(0,0,0,.45);
+  padding:45px;
+  border:1px solid #0fdc9a;
+  box-shadow:0 0 35px rgba(0,255,170,.15);
 }
 
 
-/* ================= TITLES ================= */
+/* ================= TITRES ================= */
 
 h1{
   text-align:center;
   font-size:34px;
-  margin-bottom:10px;
-  color:#00e6a8;
+  margin-bottom:8px;
+  color:#0fdc9a;
+}
+
+.subtitle{
+  text-align:center;
+  opacity:.75;
+  margin-bottom:35px;
 }
 
 h2{
-  margin-top:50px;
+  margin-top:40px;
+  margin-bottom:12px;
+  color:#0fdc9a;
+  border-bottom:1px solid rgba(0,255,170,.4);
   padding-bottom:8px;
-  border-bottom:1px solid rgba(0,230,168,.3);
-  color:#00e6a8;
 }
 
 h3{
-  margin-top:22px;
-  color:#8dfbd8;
+  margin-top:18px;
+  color:#1fe0ff;
 }
 
 
-/* ================= TEXT ================= */
-
-p, li{
-  line-height:1.7;
-  opacity:.95;
-}
-
-
-/* ================= BOXES ================= */
+/* ================= BLOCS ================= */
 
 .info-box{
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(0,230,168,.25);
-  border-radius:14px;
+  background:#0f1b20;
+  border:1px solid rgba(0,255,170,.35);
+  border-radius:12px;
   padding:18px;
-  margin:18px 0;
+  margin:15px 0;
+  line-height:1.6;
 }
 
 
@@ -118,9 +83,8 @@ p, li{
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:18px;
-  overflow:hidden;
-  border-radius:10px;
+  margin-top:15px;
+  font-size:14px;
 }
 
 th, td{
@@ -129,16 +93,13 @@ th, td{
 }
 
 th{
-  background:#001a14;
-  color:#00e6a8;
+  background:#0b161a;
+  color:#0fdc9a;
 }
 
 td{
-  background:rgba(0,0,0,.35);
-}
-
-tr:nth-child(even) td{
-  background:rgba(0,0,0,.25);
+  background:#111c20;
+  border-top:1px solid rgba(255,255,255,.05);
 }
 
 
@@ -146,27 +107,19 @@ tr:nth-child(even) td{
 
 .back-btn{
   width:100%;
-  margin-top:45px;
-  padding:16px;
-
-  background:linear-gradient(135deg,#00e6a8,#00b386);
-  color:#001a14;
-
-  font-size:16px;
-  font-weight:700;
-
+  margin-top:35px;
+  padding:14px;
+  border-radius:12px;
   border:none;
-  border-radius:14px;
-
+  font-weight:bold;
+  background:linear-gradient(135deg,#00d4ff,#00ff88);
+  color:#002;
   cursor:pointer;
-
-  box-shadow:0 0 20px rgba(0,230,168,.5);
-  transition:.25s;
+  transition:.2s;
 }
 
 .back-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 0 40px rgba(0,230,168,.9);
+  transform:scale(1.03);
 }
 
 </style>
@@ -176,80 +129,69 @@ tr:nth-child(even) td{
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo">SULKY-BET</div>
-  <button onclick="location.href='dashboard.html'">⬅ Retour dashboard</button>
-</div>
-
-
 <div class="help-wrapper">
 
   <div class="help-card">
 
-    <h1>🏇 Centre d’aide</h1>
-    <p style="text-align:center;opacity:.8">
-      Tout comprendre pour parier simplement et efficacement
+    <h1>Centre d’aide Sulky-Bet</h1>
+    <p class="subtitle">
+      Tout comprendre pour parier simplement et gérer tes gains efficacement
     </p>
 
 
     <!-- COMMENT JOUER -->
-    <h2>🎯 Comment jouer ?</h2>
+
+    <h2>Comment jouer ?</h2>
 
     <ol>
-      <li>Dashboard → Courses</li>
-      <li>Choisis une réunion</li>
-      <li>Sélectionne tes chevaux</li>
-      <li>Choisis le type de pari</li>
-      <li>Entre ta mise → Parier</li>
+      <li>Va sur <b>Dashboard → Courses</b></li>
+      <li>Sélectionne une réunion puis une course</li>
+      <li>Choisis tes chevaux</li>
+      <li>Sélectionne ton type de pari</li>
+      <li>Entre ta mise puis clique <b>Parier</b></li>
     </ol>
 
-    <div class="info-box">
-      Les paris sont enregistrés automatiquement sur ton compte.<br>
-      Contact admin (Sulkyland : Turfiste83) pour créditer ton solde.
-    </div>
 
+    <!-- TYPES DE PARIS -->
 
-    <!-- TYPES -->
-    <h2>🎲 Types de paris</h2>
+    <h2>Types de paris</h2>
 
     <h3>Simple gagnant</h3>
     <p>Ton cheval doit finir 1er.</p>
 
     <h3>Simple placé</h3>
-    <p>
-      1er, 2e ou 3e.<br>
-      ➜ Cote différente selon la position.
-    </p>
+    <p>Ton cheval doit finir dans les 3 premiers.</p>
 
     <h3>Couplé gagnant</h3>
-    <p>Les 2 premiers dans l’ordre.</p>
+    <p>Les 2 premiers chevaux.</p>
 
     <h3>Couplé placé</h3>
-    <p>
-      Deux chevaux dans les 3 premiers.<br>
-      ➜ Chaque combinaison possède sa propre cote.
-    </p>
+    <p>Deux chevaux parmi les 3 premiers.</p>
 
     <h3>Trio</h3>
-    <p>Les 3 premiers.</p>
+    <p>Les 3 premiers chevaux.</p>
 
 
     <!-- GAINS -->
-    <h2>💰 Calcul des gains</h2>
+
+    <h2>Calcul des gains</h2>
 
     <div class="info-box">
+      <b>Formule :</b><br><br>
       Gain = Mise × Cote finale
+      <br><br>
+      Les gains sont crédités automatiquement lorsque la course est réglée.
     </div>
 
 
     <!-- LIMITES -->
-    <h2>📊 Limites de mise</h2>
+
+    <h2>Limites de mise</h2>
 
     <table>
       <tr>
-        <th>Type</th>
-        <th>Mise max</th>
+        <th>Type de pari</th>
+        <th>Mise maximale</th>
       </tr>
       <tr><td>Simple gagnant</td><td>20 000</td></tr>
       <tr><td>Simple placé</td><td>20 000</td></tr>
@@ -258,20 +200,31 @@ tr:nth-child(even) td{
       <tr><td>Trio</td><td>5 000</td></tr>
     </table>
 
-
-    <!-- FAQ -->
-    <h2>❓ FAQ</h2>
-
     <div class="info-box">
-      Non partant → remboursement automatique
+      ⚠️ <b>Limite globale par course :</b><br>
+      Un joueur ne peut pas miser plus de <b>20 000 Sulky au total</b> sur une même course.<br>
+      Cette limite peut évoluer à l’avenir selon l’économie du jeu.
     </div>
 
-    <div class="info-box">
-      Paiement → dès que la course est réglée
-    </div>
+
+    <!-- CONTACT -->
+
+    <h2>Besoin d’aide ?</h2>
 
     <div class="info-box">
-      Mes paris → Dashboard → Mes paris
+      Pour toute question, crédit, problème technique ou assistance,<br><br>
+      contacte-moi directement sur <b>Sulkyland</b><br>
+      pseudo : <b>Turfiste83</b>
+      <br><br>
+      Je réponds le plus rapidement possible.
+    </div>
+
+
+    <!-- DISCLAIMER -->
+
+    <div class="info-box">
+      Sulky-Bet est un projet indépendant et autodidacte.  
+      Sulkyland ne gère pas le site et ne peut être tenu responsable en cas de problème.
     </div>
 
 
