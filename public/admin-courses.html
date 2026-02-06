@@ -36,12 +36,23 @@ body{
   margin-bottom:40px;
 }
 
+.top-bar h2{
+  color:#00ff88;
+  text-shadow:0 0 12px #00ff88;
+}
+
 .admin-card{
   background:rgba(0,110,55,.6);
   backdrop-filter:blur(12px);
   border-radius:22px;
   padding:28px;
   border:1px solid rgba(0,255,136,.6);
+  box-shadow:0 0 35px rgba(0,255,136,.25);
+}
+
+.admin-card h3{
+  color:#00ff88;
+  margin-bottom:15px;
 }
 
 input, textarea{
@@ -91,11 +102,57 @@ button{
 
   <div class="admin-grid">
 
+    <!-- ================= REUNION ================= -->
     <div class="admin-card">
-      <h3>⚡ Import automatique (CSV ; )</h3>
+      <h3>🏟️ Réunion</h3>
 
+      <input id="rName" placeholder="R1 – VINCENNES">
+      <input id="rDate" type="date">
+      <button id="btnReunion">Créer la réunion</button>
+
+      <input id="delReunionId" placeholder="ID à supprimer">
+      <button id="btnDeleteReunion">🗑 Supprimer réunion</button>
+    </div>
+
+
+    <!-- ================= COURSE ================= -->
+    <div class="admin-card">
+      <h3>🏇 Course</h3>
+
+      <input id="cReunion" placeholder="Reunion ID">
+      <input id="cId" placeholder="ID course (101)">
+      <input id="cLabel" placeholder="C1 – Prix test">
+
+      <label style="margin-top:10px;">Date</label>
+      <input id="cDate" type="date">
+
+      <label>Heure départ</label>
+      <input id="cTime" type="time">
+
+      <button id="btnCourse">Ajouter la course</button>
+      <button id="btnDeleteCourse">🗑 Supprimer course</button>
+    </div>
+
+
+    <!-- ================= RUNNERS ================= -->
+    <div class="admin-card">
+      <h3>🐎 Chevaux</h3>
+
+      <input id="pReunion" placeholder="Reunion ID">
+      <input id="pRace" placeholder="Race ID">
+      <input id="pCheval" placeholder="Nom du cheval">
+      <input id="pDriver" placeholder="Driver">
+      <input id="pProp" placeholder="Propriétaire">
+      <input id="pMusique" placeholder="Musique">
+      <input id="pCote" placeholder="Cote">
+
+      <button id="btnRunner">Ajouter le partant</button>
+
+      <h3 style="margin-top:25px;">⚡ Import automatique (CSV ; )</h3>
+
+      <!-- ✅ FORMAT CORRIGÉ -->
       <textarea id="bulkInput"
-placeholder="cheval;driver;proprietaire;musique;cote"></textarea>
+placeholder="numero;cheval;driver;proprietaire;musique;cote"></textarea>
 
       <button id="btnBulk">Importer tous les chevaux</button>
     </div>
@@ -106,7 +163,10 @@ placeholder="cheval;driver;proprietaire;musique;cote"></textarea>
 </div>
 
 
+
 <script>
+
+/* ================= INIT DIRECT ================= */
 
 init();
 
@@ -119,9 +179,6 @@ function init(){
   const msg = document.getElementById("msg");
 
   const $ = id => document.getElementById(id);
-
-  $("btnBulk").onclick = importBulk;
-
 
   async function post(url, body){
     const res = await fetch(API+url,{
@@ -136,23 +193,77 @@ function init(){
   }
 
 
-  /* =========================================
-     🔥 IMPORT CSV FIX FINAL
-  ========================================= */
+  /* ================= EVENTS ================= */
+
+  $("btnReunion").onclick = createReunion;
+  $("btnCourse").onclick = addCourse;
+  $("btnRunner").onclick = addRunner;
+  $("btnBulk").onclick = importBulk;
+  $("btnDeleteReunion").onclick = deleteReunion;
+  $("btnDeleteCourse").onclick = deleteCourse;
+
+
+  /* ================= CREATE REUNION ================= */
+
+  async function createReunion(){
+    const res = await post("/create-reunion",{
+      reunion:$("rName").value,
+      date:$("rDate").value
+    });
+
+    msg.innerText = res.message + " | ID: " + res.id;
+  }
+
+
+  /* ================= CREATE COURSE ================= */
+
+  async function addCourse(){
+
+    const date = $("cDate").value;
+    const time = $("cTime").value || "00:00";
+
+    const iso = date + "T" + time;
+
+    const res = await post("/add-course",{
+      reunionId:$("cReunion").value,
+      id:Number($("cId").value),
+      label:$("cLabel").value,
+      date: iso
+    });
+
+    msg.innerText = res.message + " (" + iso + ")";
+  }
+
+
+  /* ================= RUNNER ================= */
+
+  async function addRunner(){
+    const res = await post("/add-runner",{
+      reunionId:$("pReunion").value,
+      raceId:Number($("pRace").value),
+      cheval:$("pCheval").value,
+      driver:$("pDriver").value,
+      proprietaire:$("pProp").value,
+      musique:$("pMusique").value,
+      cote:Number($("pCote").value)
+    });
+
+    msg.innerText = res.message;
+  }
+
+
+  /* ================= BULK CSV FIX ================= */
+  /* accepte : numero;cheval;driver;proprietaire;musique;cote */
 
   async function importBulk(){
 
-    const reunionId = $("pReunion")?.value;
-    const raceId = Number($("pRace")?.value);
+    const reunionId = $("pReunion").value;
+    const raceId = Number($("pRace").value);
 
-    const raw = $("bulkInput").value.trim();
-
-    if(!raw){
-      msg.innerText = "CSV vide ❌";
-      return;
-    }
-
-    const lines = raw.split(/\r?\n/); // ⭐ FIX universel
+    const lines = $("bulkInput").value
+      .split("\n")
+      .map(l => l.trim())
+      .filter(Boolean);
 
     let created = 0;
 
@@ -160,9 +271,9 @@ function init(){
 
       const cols = line.split(";").map(v => v.trim());
 
-      if(cols.length < 5) continue; // ⭐ FIX 5 colonnes
+      if(cols.length !== 6) continue;
 
-      const [cheval, driver, proprietaire, musique, cote] = cols;
+      const [numero, cheval, driver, proprietaire, musique, cote] = cols;
 
       await post("/add-runner",{
         reunionId,
@@ -178,6 +289,36 @@ function init(){
     }
 
     msg.innerText = created + " chevaux importés ✅";
+  }
+
+
+  /* ================= DELETE ================= */
+
+  async function deleteReunion(){
+    const id = $("delReunionId").value;
+
+    const res = await fetch(API+"/delete-reunion/"+id,{
+      method:"DELETE",
+      headers:{ Authorization:"Bearer "+token }
+    }).then(r=>r.json());
+
+    msg.innerText = res.message;
+  }
+
+  async function deleteCourse(){
+    const res = await fetch(API+"/delete-course",{
+      method:"DELETE",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token
+      },
+      body:JSON.stringify({
+        reunionId:$("cReunion").value,
+        raceId:Number($("cId").value)
+      })
+    }).then(r=>r.json());
+
+    msg.innerText = res.message;
   }
 
 }
